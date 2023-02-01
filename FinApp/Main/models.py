@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Q
+from django.contrib.auth.models import User as DjangoUser
 
 class UserManager(models.Manager):
     def validate(self,username,password):
@@ -16,3 +17,8 @@ class User(models.Model):
     password = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     user = UserManager() 
+
+class UserInformation(models.Model):
+    user = models.ForeignKey(DjangoUser, on_delete=models.CASCADE)
+    birth_date = models.DateField()
+    marital_status = models.CharField(max_length=7)

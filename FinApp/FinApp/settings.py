@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'SimpliPlan.urls'
+ROOT_URLCONF = 'FinApp.urls'
 
 TEMPLATES = [
     {
@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'SimpliPlan.wsgi.application'
+WSGI_APPLICATION = 'FinApp.wsgi.application'
 
 
 # Database
