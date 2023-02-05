@@ -1,4 +1,4 @@
-"""SimpliPlan URL Configuration
+"""FinApp URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
@@ -58,6 +58,15 @@ from House.views import (
     costBreakdown_view,
 )
 
+from user_profile.views import (
+    register,
+    login,
+    logout,
+    change_password,
+    forget_password,
+    update_user_information
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', registration_view, name="register"),
@@ -94,6 +103,14 @@ urlpatterns = [
     path('finance/growWealth/', growWealth_view, name="growWealth"),
     path('finance/updateUserInfo/', updateUserInfo_View, name="updateUserInfo"),
     path('finance/updateError/', updateError_view, name="updateError"),
+
+    # Path for user profile
+    path('profile/register/', register, name="register"),
+    path('profile/login/', login, name="login"),
+    path('profile/logout/', logout, name="logout"),
+    path('profile/change_password/', change_password, name="change_password"),
+    # path('profile/forget_password/', forget_password, name="forget_password"),
+    path('profile/update_information/', update_user_information, name="update_user_information")
 ]
 
 if settings.DEBUG:
