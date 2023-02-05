@@ -7,6 +7,18 @@ from .models import *
 from Finance.models import *
 from Finance.FinanceMgr import *
 
+from .constants import (
+    ANNUAL_INTEREST_RATE,
+    LOAN_PERIOD,
+    HDB_LOAN_RATE
+)
+
+from .pricing_helper import (
+    calculate_max_home_loan,
+    calculate_option_fee,
+    calculate_stamp_duty
+)
+
 # Create your views here.
 # def houseInsertUserData_view(request):
 #     form = HousingUserDataForm()
@@ -36,7 +48,6 @@ from Finance.FinanceMgr import *
 #     }
 #     return render(request, "houseInsertHousingCalculate.html", context)
 
-
 def form_view(request):
     if request.session.has_key('username'):
         username = request.session['username']
@@ -65,51 +76,26 @@ def form_view(request):
                 # user = User.user.validate("Main_user2","main12345")
 
                 towns = request.POST.getlist("towns[]")
-                estimatedMonthlySavings = request.POST.get(
+                estimated_monthly_savings = request.POST.get(
                     "estimatedMonthlySavings")
                 propertyTypes = request.POST.getlist("propertyType[]")
 
                 # assuming housing loan instead of bank loan
-                # 90% of maxPropertyPrice can be loaned, 10% downpayment
-                monthlyInstallment = float(estimatedMonthlySavings)
-                interestRate_annual = 0.026
-                monthlyInterestRate = interestRate_annual/12
-                loanPeriod = 25  # maximum 25
-                maxHomeLoan = monthlyInstallment*(((1 + monthlyInterestRate)**(loanPeriod*12)-1) /
-                                                  (monthlyInterestRate*(1+monthlyInterestRate)**(loanPeriod*12)))
-                maxPropertyPrice = (100/90) * maxHomeLoan
-                downPayment = 0.1*maxPropertyPrice
-                if "4 ROOM" or "5 ROOM" or "EXECUTIVE" or "MULTI-GENERATION" in propertyTypes:
-                    optionFee = 2000
-                elif "3 ROOM" in propertyTypes:
-                    optionFee = 1000
-                else:
-                    optionFee = 500
-                # 1% first 180k, 2% next 180k, 3% next 640k, 4% remaining
-                if maxPropertyPrice < 180000:
-                    stampDuty = 0.01 * maxPropertyPrice
-                else:
-                    stampDuty = 0.01 * 180000
-                    remainingPropertyPrice = maxPropertyPrice - 180000
-                    if(remainingPropertyPrice < 180000):
-                        stampDuty += 0.02*remainingPropertyPrice
-                    else:
-                        stampDuty += 0.02*180000
-                        remainingPropertyPrice -= 180000
-                        if (remainingPropertyPrice < 640000):
-                            stampDuty += 0.03 * remainingPropertyPrice
-                        else:
-                            stampDuty += 0.03 * 640000
-                            remainingPropertyPrice -= 640000
-                            stampDuty += 0.04 * remainingPropertyPrice
-                lumpSumPayment = downPayment + optionFee + stampDuty
+                # 85% of maxPropertyPrice can be loaned, 15% downpayment over a loan period of 25 years
+                monthly_installment = float(estimated_monthly_savings)
+                max_home_loan = calculate_max_home_loan(monthly_installment)
+                max_property_price = (1 / (1 - HDB_LOAN_RATE)) * max_home_loan
+                down_payment = HDB_LOAN_RATE * max_property_price
+                option_fee = calculate_option_fee(propertyTypes)
+                stamp_duty = calculate_stamp_duty(max_property_price)
+                lump_sum_payment = down_payment + option_fee + stamp_duty
 
                 try:
                     # will give error if housinguserdata does not exist yet
                     housingUserData = user.housinguserdata
                     HousingUserData.housingDataMgr.updateHousingData(user=user,
                                                                      preferredPropertyType=propertyTypes,
-                                                                     estimatedMonthlySavings=estimatedMonthlySavings,
+                                                                     estimatedMonthlySavings=estimated_monthly_savings,
                                                                      preferredLocation=towns)
                     # housingUserData.preferredPropertyType = propertyTypes
                     # housingUserData.estimatedMonthlySavings = estimatedMonthlySavings
@@ -117,12 +103,12 @@ def form_view(request):
                     # housingUserData.save()
 
                     HousingCalculate.housingCalculateMgr.updateHousingCalculateData(housingUserData=housingUserData,
-                                                                                    maxPropertyPrice=maxPropertyPrice,
-                                                                                    downPayment=downPayment,
-                                                                                    lumpSumPayment=lumpSumPayment,
-                                                                                    maxHomeLoan=maxHomeLoan,
-                                                                                    monthlyInstallment=monthlyInstallment,
-                                                                                    loanPeriod=loanPeriod)
+                                                                                    maxPropertyPrice=max_property_price,
+                                                                                    downPayment=down_payment,
+                                                                                    lumpSumPayment=lump_sum_payment,
+                                                                                    maxHomeLoan=max_home_loan,
+                                                                                    monthlyInstallment=monthly_installment,
+                                                                                    loanPeriod=LOAN_PERIOD)
 
                     #housingCalculate = housingUserData.housingcalculate
                     # housingCalculate.maxPropertyPrice = maxPropertyPrice
@@ -136,16 +122,16 @@ def form_view(request):
                     # creating
                     housingUserData = HousingUserData.housingDataMgr.createHousingData(user=user,
                                                                                        preferredPropertyType=propertyTypes,
-                                                                                       estimatedMonthlySavings=estimatedMonthlySavings,
+                                                                                       estimatedMonthlySavings=estimated_monthly_savings,
                                                                                        preferredLocation=towns)
 
                     HousingCalculate.housingCalculateMgr.createHousingCalculateData(housingUserData=housingUserData,
-                                                                                    maxPropertyPrice=maxPropertyPrice,
-                                                                                    downPayment=downPayment,
-                                                                                    lumpSumPayment=lumpSumPayment,
-                                                                                    maxHomeLoan=maxHomeLoan,
-                                                                                    monthlyInstallment=monthlyInstallment,
-                                                                                    loanPeriod=loanPeriod)
+                                                                                    maxPropertyPrice=max_property_price,
+                                                                                    downPayment=down_payment,
+                                                                                    lumpSumPayment=lump_sum_payment,
+                                                                                    maxHomeLoan=max_home_loan,
+                                                                                    monthlyInstallment=monthly_installment,
+                                                                                    loanPeriod=LOAN_PERIOD)
                     # HousingUserData.objects.create(user=user,
                     #                                                  preferredPropertyType=propertyTypes,
                     #                                                  estimatedMonthlySavings=estimatedMonthlySavings,
