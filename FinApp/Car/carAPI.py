@@ -1,19 +1,29 @@
-import urllib.request
+from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup, NavigableString, Tag
+from uuid import uuid4
 
-f = open("cars1.csv", "w")
+filename = f"./pricing/car_price_{uuid4()}.csv"
+f = open(filename, "w")
 
 # Write header
 f.write(str("car_code,sub_code,make,model,spec,current_price,depreciation,down_payment,installment,coe,road_tax,omv,arf,fuel_economy,fuel_type,coe_incl\n"))
 
-for i in range(12000,13100):
-    print(i)
+for i in range(12000,24000):
+    # print(i)
     carCode = str(i)
+
     #Ensure that url does not redirect
-    url = "https://www.sgcarmart.com/new_cars/newcars_pricing.php?CarCode=" + str(i)
-    response = urllib.request.urlopen(url)
+    url = f"https://www.sgcarmart.com/new_cars/newcars_pricing.php?CarCode={str(i)}"
+    hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
+       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+       'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
+       'Accept-Encoding': 'none',
+       'Accept-Language': 'en-US,en;q=0.8',
+       'Connection': 'keep-alive'}
+    request = Request(url, headers=hdr)
+    response = urlopen(request)
     if (response.geturl() != url):
-        print("redirect")
+        # print("redirect")
         continue
 
     page = BeautifulSoup(response, "html.parser")
@@ -38,13 +48,13 @@ for i in range(12000,13100):
             elif "newcars_overview.php?CarCode" in tag['href']:
                 model_name = (tag.text)
 
-    model_name.replace(car_make + ' ', '')
+    model_name.replace(f'{car_make} ', '')
 
     content740 = page.find("div", {"class": "content740"})
-    grayboxborders = content740.find_all("div", {"class": "grayboxborder"}, recursive=False)
+    newboxborders = content740.find_all("div", {"class": "newboxborder"}, recursive=False)
 
     try:
-        tablerows = grayboxborders[0].find("table").find_all("tr", recursive=False)
+        tablerows = newboxborders[0].find("table").find_all("tr", recursive=False)
     except AttributeError:
         continue
 
@@ -113,8 +123,11 @@ for i in range(12000,13100):
         skip = False
         fuelType = "-"
         fuelEconomy = "-"
-        url = "https://www.sgcarmart.com/new_cars/newcars_specs.php?" + "CarCode=" + str(carCode) + "&Subcode=" + str(subCode)
-        response = urllib.request.urlopen(url)
+
+        # f"https://www.sgcarmart.com/new_cars/newcars_specs.php?CarCode={str(carCode)}&Subcode={str(subCode)}"
+        url = f"https://www.sgcarmart.com/new_cars/newcars_specs.php?CarCode={str(carCode)}&Subcode={str(subCode)}"
+        request = Request(url, headers=hdr)
+        response = urlopen(request)
         if (response.geturl() != url):
             skip = True
 
@@ -147,10 +160,11 @@ for i in range(12000,13100):
         for i in range(5,14):
             if (input_values[i] != '-' and input_values[i] != "POA"):
                 input_values[i] = ''.join(x for x in input_values[i][:10] if (x.isdigit() or x == '.'))       #Get integer only
-        print(input_values)
+        # print(input_values)
 
         f.write(','.join(input_values))
         f.write('\n')
 
 
 f.close()
+print(filename)
