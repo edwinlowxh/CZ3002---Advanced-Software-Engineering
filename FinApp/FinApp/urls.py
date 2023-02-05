@@ -106,8 +106,8 @@ urlpatterns = [
 
     # Path for user profile
     path('profile/register/', register, name="register"),
-    path('profile/login/', login, name="login"),
-    path('profile/logout/', logout, name="logout"),
+    path('profile/login/', login, name="login_new"),
+    path('profile/logout/', logout, name="logout_new"),
     path('profile/change_password/', change_password, name="change_password"),
     # path('profile/forget_password/', forget_password, name="forget_password"),
     path('profile/update_information/', update_user_information, name="update_user_information")

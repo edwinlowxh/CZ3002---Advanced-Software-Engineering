@@ -48,7 +48,7 @@ def account_view(request):
     if request.session.has_key('username'):
         username = request.session['username']
 
-        user = User.user.get(username=username)
+        user = User.objects.get(username=username)
         accMgr = AccountMgr(user)
         
         if Information.objects.filter(user = username).exists():
