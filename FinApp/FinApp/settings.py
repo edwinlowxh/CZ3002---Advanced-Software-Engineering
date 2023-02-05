@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'Car',
     'Finance',
     'House',
-    'multiselectfield'    
+    'multiselectfield',
+    'user_profile'    
 ]
 
 MIDDLEWARE = [
