@@ -17,8 +17,3 @@ class User(models.Model):
     password = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     user = UserManager() 
-
-class UserInformation(models.Model):
-    user = models.ForeignKey(DjangoUser, on_delete=models.CASCADE)
-    birth_date = models.DateField()
-    marital_status = models.CharField(max_length=7)
