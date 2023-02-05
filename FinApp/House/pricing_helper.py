@@ -26,18 +26,20 @@ def calculate_option_fee(property_types):
 def calculate_stamp_duty(max_property_price):
     # 1% first 180k, 2% next 180k, 3% next 640k, 4% remaining
     if max_property_price < 180000:
-        stampDuty = 0.01 * max_property_price
+        stamp_duty = 0.01 * max_property_price
     else:
-        stampDuty = 0.01 * 180000
+        stamp_duty = 0.01 * 180000
         remainingPropertyPrice = max_property_price - 180000
         if(remainingPropertyPrice < 180000):
-            stampDuty += 0.02 * remainingPropertyPrice
+            stamp_duty += 0.02 * remainingPropertyPrice
         else:
-            stampDuty += 0.02 * 180000
+            stamp_duty += 0.02 * 180000
             remainingPropertyPrice -= 180000
             if (remainingPropertyPrice < 640000):
-                stampDuty += 0.03 * remainingPropertyPrice
+                stamp_duty += 0.03 * remainingPropertyPrice
             else:
-                stampDuty += 0.03 * 640000
+                stamp_duty += 0.03 * 640000
                 remainingPropertyPrice -= 640000
-                stampDuty += 0.04 * remainingPropertyPrice
+                stamp_duty += 0.04 * remainingPropertyPrice
+
+    return stamp_duty
