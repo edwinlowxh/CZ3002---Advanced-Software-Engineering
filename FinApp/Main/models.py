@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Q
+from django.contrib.auth.models import User as DjangoUser
 
 class UserManager(models.Manager):
     def validate(self,username,password):
