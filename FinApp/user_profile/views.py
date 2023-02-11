@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 
 from django.forms.models import model_to_dict
+from django.contrib.sessions.models import Session
 
 from django.http import JsonResponse
 
@@ -55,6 +56,10 @@ def login(request):
 @csrf_exempt
 def logout(request):
     try:
+        # Get the current session key
+        session_key = request.session.session_key
+        # Delete the session using the session key
+        Session.objects.get(session_key=session_key).delete()
         logout(request)
     except:
         pass
