@@ -13,7 +13,8 @@ from django.http import JsonResponse
 from FinApp.decorators import basic_auth
 
 from user_profile.constants import *
-import user_profile.controller
+import user_profile.manager
+from user_profile.models import UserInformation
 
 
 # Create your views here.
@@ -93,7 +94,7 @@ def update_user_information(request):
             marital_status = request.POST.get(MARITAL_STATUS_VAR_NAME)
             birth_date = (day, month, year)
             try:
-                user_profile.controller.save_user_information(user, marital_status=marital_status, birth_date=birth_date)
+                UserInformation.user_information_manager.save_user_information(user, marital_status=marital_status, birth_date=birth_date)
             except Exception as e:
                 print(e)
                 return JsonResponse({"message": "Failed to save user information"})
@@ -103,7 +104,8 @@ def update_user_information(request):
     elif request.method == "GET":
         if request.user.is_authenticated:
             try:
-                user_information = user_profile.controller.retrieve_user_information(user = request.user)
+                query_set = UserInformation.user_information_manager.retrieve_user_information(user = request.user)
+                user_information = query_set.get(user = request.user)
                 return JsonResponse(model_to_dict(user_information))
             except Exception as e:
                 print(e)
