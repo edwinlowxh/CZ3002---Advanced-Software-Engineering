@@ -1,5 +1,6 @@
 import csv
 import os
+import traceback
 from django.shortcuts import render, redirect
 
 from .forms import *
@@ -8,45 +9,20 @@ from Finance.models import *
 from Finance.FinanceMgr import *
 
 from .constants import (
-    ANNUAL_INTEREST_RATE,
+    HDB_DOWN_PAYMENT_RATE,
     LOAN_PERIOD,
-    HDB_LOAN_RATE
 )
+
+import json
 
 from .pricing_helper import (
+    calculate_down_payment,
     calculate_max_home_loan,
+    calculate_monthly_installment,
     calculate_option_fee,
-    calculate_stamp_duty
+    calculate_stamp_duty,
+    calculate_max_LTV
 )
-
-# Create your views here.
-# def houseInsertUserData_view(request):
-#     form = HousingUserDataForm()
-#     if request.method == "POST":
-#         form = HousingUserDataForm(request.POST)
-#         if form.is_valid():
-#             print(form.cleaned_data)
-#             HousingUserData.objects.create(**form.cleaned_data)
-#         else:
-#             print(form.errors)
-#     context = {
-#         "form" : form
-#     }
-#     return render(request, "houseInsertUserData.html", context)
-
-# def houseInsertHousingCalculate_view(request):
-#     form = HousingCalculateForm()
-#     if request.method == "POST":
-#         form = HousingCalculateForm(request.POST)
-#         if form.is_valid():
-#             print(form.cleaned_data)
-#             HousingCalculate.objects.create(**form.cleaned_data)
-#         else:
-#             print(form.errors)
-#     context = {
-#         "form" : form
-#     }
-#     return render(request, "houseInsertHousingCalculate.html", context)
 
 def form_view(request):
     if request.session.has_key('username'):
@@ -75,79 +51,44 @@ def form_view(request):
             if(request.POST):
                 # user = User.user.validate("Main_user2","main12345")
 
-                towns = request.POST.getlist("towns[]")
+                selected_locations = request.POST.getlist("towns[]")
                 estimated_monthly_savings = request.POST.get(
                     "estimatedMonthlySavings")
-                propertyTypes = request.POST.getlist("propertyType[]")
+                selected_property_types = request.POST.getlist("propertyType[]")
 
                 # assuming housing loan instead of bank loan
                 # 85% of maxPropertyPrice can be loaned, 15% downpayment over a loan period of 25 years
                 monthly_installment = float(estimated_monthly_savings)
                 max_home_loan = calculate_max_home_loan(monthly_installment)
-                max_property_price = (1 / (1 - HDB_LOAN_RATE)) * max_home_loan
-                down_payment = HDB_LOAN_RATE * max_property_price
-                option_fee = calculate_option_fee(propertyTypes)
+                max_property_price = (1 / (1 - HDB_DOWN_PAYMENT_RATE)) * max_home_loan
+                down_payment = HDB_DOWN_PAYMENT_RATE * max_property_price
+                option_fee = calculate_option_fee(selected_property_types)
                 stamp_duty = calculate_stamp_duty(max_property_price)
                 lump_sum_payment = down_payment + option_fee + stamp_duty
 
-                try:
-                    # will give error if housinguserdata does not exist yet
-                    housingUserData = user.housinguserdata
-                    HousingUserData.housingDataMgr.updateHousingData(user=user,
-                                                                     preferredPropertyType=propertyTypes,
-                                                                     estimatedMonthlySavings=estimated_monthly_savings,
-                                                                     preferredLocation=towns)
-                    # housingUserData.preferredPropertyType = propertyTypes
-                    # housingUserData.estimatedMonthlySavings = estimatedMonthlySavings
-                    # housingUserData.preferredLocation = towns
-                    # housingUserData.save()
+                request.session['user_housing_financials'] = json.dumps(
+                    {
+                        'max_property_price': max_property_price,
+                        'down_payment': down_payment,
+                        'lump_sum_payment': lump_sum_payment,
+                        'max_home_loan': max_home_loan,
+                        'monthly_installment': monthly_installment,
+                        'loan_period': LOAN_PERIOD
+                    }
+                )
 
-                    HousingCalculate.housingCalculateMgr.updateHousingCalculateData(housingUserData=housingUserData,
-                                                                                    maxPropertyPrice=max_property_price,
-                                                                                    downPayment=down_payment,
-                                                                                    lumpSumPayment=lump_sum_payment,
-                                                                                    maxHomeLoan=max_home_loan,
-                                                                                    monthlyInstallment=monthly_installment,
-                                                                                    loanPeriod=LOAN_PERIOD)
+                request.session['user_housing_preferences'] = json.dumps(
+                    {
+                        'preferred_property_type' : selected_property_types,
+                        'estimated_monthly_savings' : estimated_monthly_savings,
+                        'preferred_property_location' : selected_locations
+                    }
+                )
 
-                    #housingCalculate = housingUserData.housingcalculate
-                    # housingCalculate.maxPropertyPrice = maxPropertyPrice
-                    # housingCalculate.downPayment = downPayment
-                    # housingCalculate.lumpSumPayment = lumpSumPayment
-                    # housingCalculate.maxHomeLoan = maxHomeLoan
-                    # housingCalculate.monthlyInstallment = monthlyInstallment
-                    # housingCalculate.loanPeriod = loanPeriod
-                    # housingCalculate.save()
-                except:
-                    # creating
-                    housingUserData = HousingUserData.housingDataMgr.createHousingData(user=user,
-                                                                                       preferredPropertyType=propertyTypes,
-                                                                                       estimatedMonthlySavings=estimated_monthly_savings,
-                                                                                       preferredLocation=towns)
+                return redirect('/house/costBreakdown/')
 
-                    HousingCalculate.housingCalculateMgr.createHousingCalculateData(housingUserData=housingUserData,
-                                                                                    maxPropertyPrice=max_property_price,
-                                                                                    downPayment=down_payment,
-                                                                                    lumpSumPayment=lump_sum_payment,
-                                                                                    maxHomeLoan=max_home_loan,
-                                                                                    monthlyInstallment=monthly_installment,
-                                                                                    loanPeriod=LOAN_PERIOD)
-                    # HousingUserData.objects.create(user=user,
-                    #                                                  preferredPropertyType=propertyTypes,
-                    #                                                  estimatedMonthlySavings=estimatedMonthlySavings,
-                    #                                                  preferredLocation=towns)
-
-                    # HousingCalculate.objects.create(housingUserData = housingUserData,
-                    #                                                                 maxPropertyPrice = maxPropertyPrice,
-                    #                                                                 downPayment = downPayment,
-                    #                                                                 lumpSumPayment = lumpSumPayment,
-                    #                                                                 maxHomeLoan = maxHomeLoan,
-                    #                                                                 monthlyInstallment = monthlyInstallment,
-                    #                                                                 loanPeriod = loanPeriod)
-                finally:
-                    return redirect('/house/costBreakdown/')
-
-        return render(request, 'house/form.html', context)
+        elif request.method == 'GET':
+            return render(request, 'house/form.html', context)
     else:
         return redirect('home')
 
@@ -156,6 +97,7 @@ def costBreakdown_view(request):
     if request.session.has_key('username'):
 
         username = request.session['username']
+        user_housing_financials = json.loads(request.session['user_housing_financials'])
 
         if Information.objects.filter(user=username).exists():
             firstTime = False
@@ -189,100 +131,58 @@ def costBreakdown_view(request):
                     return redirect("/finance/questionaire/")
 
             else:
-                userData = user.housinguserdata
-                housingCalculate = HousingCalculate.housingCalculateMgr.retrieveHousingCalculateData(
-                    userData)
-                userData = HousingUserData.housingDataMgr.retrieveHousingData(
-                    user)
+                user_housing_preferences = json.loads(request.session['user_housing_preferences'])
                 # User prefered location and type
-                preferredPropertyType = userData['preferredPropertyType']
-                preferredLocation = userData['preferredLocation']
+                prefered_property_types = user_housing_preferences['preferred_property_type']
+                prefered_locations = user_housing_preferences['preferred_property_location']
 
-                # User prefered location and type
-                preferredPropertyType = userData['preferredPropertyType']
-                preferredLocation = userData['preferredLocation']
 
                 # Get list of resale properties for all permutations of type and location
-                resaleList = []
+                resale_flat_list = []
                 # workpath = os.path.dirname(os.path.abspath(__file__))
                 # with open(os.path.join(workpath, 'resale-flat-prices-2021.csv'), 'r') as csv_file:
                 #     reader = csv.reader(csv_file)
                 #     for row in reader:
                 #         if (row[1] in preferredLocation and row[2] in preferredPropertyType and float(row[3]) <= housingCalculate['maxPropertyPrice']):
                 #             resaleList.append([row[1], row[2], float(row[3])])
-                for i in preferredPropertyType:
-                    for j in preferredLocation:
-                        resaleList += ResaleFlatPrice.housingCalculateMgr.retrieveResaleFlatPrices(
-                            j, i, housingCalculate['maxPropertyPrice'])
+                for i in prefered_property_types:
+                    for j in prefered_locations:
+                        resale_flat_list += ResaleFlatPrice.resale_flat_price_manager.retrieve_prices(
+                            j, i, user_housing_financials['max_property_price'])
 
                 # Sort the list of resale properties by price
-                resaleList = sorted(resaleList, key=lambda x: x[2])
-                mostAffordable = resaleList[0]
-                maxAffordable = resaleList[-1]
-                suggestedProperties = []
-                for i in [mostAffordable, maxAffordable]:
-                    dictionary = {}
-                    dictionary['location'] = i[0]
-                    dictionary['type'] = i[1]
-                    price = i[2]
-                    dictionary['price'] = price
+                resale_flat_list = sorted(resale_flat_list, key=lambda x: x[2])
+                most_affordable = resale_flat_list[0]
+                max_affordable = resale_flat_list[-1]
+                suggested_properties = []
+                for location, property_type, property_price in [most_affordable, max_affordable]:                
+                    max_LTV = calculate_max_LTV(property_price)
+                    monthly_installment = calculate_monthly_installment(max_LTV=max_LTV, period=LOAN_PERIOD)
+                    down_payment = calculate_down_payment(property_price)
+                    option_fee = calculate_option_fee([property_type])
+                    stamp_duty = calculate_stamp_duty(property_price)
+                    lump_sum_payment = down_payment + option_fee + stamp_duty
 
-                    # MonthlyInstallment
-                    maxLTV = 0.90 * price
-                    dictionary["maxLTV"] = maxLTV
-                    interestRate_annual = 0.026
-                    interestRate_monthly = 0.026 / 12
-                    periods = 12 * 25  # Assume 25 years
-                    dictionary['period'] = 25
-                    monthlyInstallment = (maxLTV * (interestRate_monthly * (1 + interestRate_monthly) ** periods) /
-                                          ((1 + interestRate_monthly) ** periods - 1))
-                    dictionary['monthlyInstallment'] = round(
-                        monthlyInstallment, 1)
-
-                    downPayment = 0.10 * price
-                    dictionary['downPayment'] = downPayment
-
-                    if "4 ROOM" or "5 ROOM" or "EXECUTIVE" or "MULTI-GENERATION" in propertyTypes:
-                        optionFee = 2000
-                    elif "3 ROOM" in propertyTypes:
-                        optionFee = 1000
-                    else:
-                        optionFee = 500
-
-                    # Buyer stamp duties
-                    if price < 180000:
-                        stampDuty = 0.01 * price
-                    else:
-                        stampDuty = 0.01 * 180000
-                        remainingPropertyPrice = price - 180000
-                        if(remainingPropertyPrice < 180000):
-                            stampDuty += 0.02*remainingPropertyPrice
-                        else:
-                            stampDuty += 0.02*180000
-                            remainingPropertyPrice -= 180000
-                            if (remainingPropertyPrice < 640000):
-                                stampDuty += 0.03 * remainingPropertyPrice
-                            else:
-                                stampDuty += 0.03 * 640000
-                                remainingPropertyPrice -= 640000
-                                stampDuty += 0.04 * remainingPropertyPrice
-                    lumpSumPayment = downPayment + optionFee + stampDuty
-
-                    dictionary['buyerStampDuties'] = stampDuty
-
-                    dictionary['lumpSumPayment'] = downPayment + \
-                        optionFee + stampDuty
-
-                    suggestedProperties.append(dictionary)
+                    suggested_properties.append({
+                        'location' : location,
+                        'type' : property_type,
+                        'price' : property_price,
+                        "maxLTV" : max_LTV,
+                        'period' : 25,
+                        'monthlyInstallment' : round(monthly_installment, 1),
+                        'downPayment' : down_payment,
+                        'buyerStampDuties' : stamp_duty,
+                        'lumpSumPayment' : lump_sum_payment
+                    })
 
                     # Round values
-                    for key, value in housingCalculate.items():
+                    for key, value in user_housing_financials.items():
                         if (key != 'loanPeriod'):
-                            housingCalculate[key] = round(value, 1)
+                            user_housing_financials[key] = round(value, 1)
 
-                return render(request, "house/costBreakdown.html", {'mostAffordable': suggestedProperties[0], 'maxAffordable': suggestedProperties[1], 'housingCalculate': housingCalculate, 'username': username, "firstTime": firstTime})
-        except:
+                return render(request, "house/costBreakdown.html", {'mostAffordable': suggested_properties[0], 'maxAffordable': suggested_properties[1], 'housingCalculate': user_housing_financials, 'username': username, "firstTime": firstTime})
+        except Exception as e:
+            print(traceback.format_exc())
             return redirect("/house/form/")
-
     else:
         return redirect('home')
