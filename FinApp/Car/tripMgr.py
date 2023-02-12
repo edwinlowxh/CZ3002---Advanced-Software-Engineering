@@ -44,13 +44,13 @@ class TripMgr:
             self.tripObj.append(newTrip[0])
 
     def addUserTripDB(self, user):      #Use this to save/update user's trips to database
-        if Trips.objects.filter(User=user).exists():
-            trips = Trips.objects.get(User = user)
+        if UserTrip.objects.filter(User=user).exists():
+            trips = UserTrip.objects.get(User = user)
             trips.trip.set(self.tripObj, clear=True)
             trips.mileage = self.getTotalMileage()
             trips.save()
         else:
-            newUserTrips = Trips(User=user, mileage=self.getTotalMileage())
+            newUserTrips = UserTrip(User=user, mileage=self.getTotalMileage())
             newUserTrips.save()
             for i in self.tripObj:
                 newUserTrips.trip.add(i)
@@ -58,8 +58,8 @@ class TripMgr:
 
 
     def getUserTripDB(self, user):        #Get exisiting trips belonging to user
-        if Trips.objects.filter(User = user).exists():
-            trips = Trips.objects.get(User = user)
+        if UserTrip.objects.filter(User = user).exists():
+            trips = UserTrip.objects.get(User = user)
             self.trips = []
             self.tripObj = []
 
