@@ -1,10 +1,18 @@
 from django.shortcuts import render, redirect, reverse
 from django.db.models import Q
-from .models import Car, Trip
+from .models import (
+    Car,
+    Trip,
+    UserTrip
+)
 from .carMgr import *
 from .tripMgr import *
 from Finance.models import Information
 from Finance.FinanceMgr import *
+
+from Car.helper.CarHelper import(
+    calc_cost
+)
 
 def search_view(request):
     if request.session.has_key('username'):
@@ -25,18 +33,15 @@ def results_view(request):
         username = request.session['username']
 
         query = request.GET.get('search')
-        car_list = CarMgr.getCars(query)
+        car_list = Car.car_manager.search(query)
+        car_list.order_by('model')
+
         if not car_list:
             errors = True
         else:
             errors = False
 
-        if Information.objects.filter(user = username).exists():
-            firstTime = False
-        else:
-            firstTime = True
-
-        return render(request, "car/results.html", {"car_list" : car_list, "username" : username, "errors" : errors, "firstTime": firstTime})
+        return render(request, "car/results.html", {"car_list" : car_list, "username" : username, "errors" : errors})
     else:
         return render(request, 'car/results.html', {})
 
@@ -45,23 +50,13 @@ def details_view(request, pk):
     if request.session.has_key('username'):
         username = request.session['username']
 
-        car = CarMgr.getCar(pk)    
-        carMgr = CarMgr(car)
-
+        car = Car.car_manager.get_car(pk)[0]  
         tripMgr = TripMgr()
         user = User.user.get(username=username)
-        trips = tripMgr.getUserTripDB(user)
-        totalMileage = tripMgr.getTotalMileage()
-
-        if Information.objects.filter(user = username).exists():
-            firstTime = False
-        else:
-            firstTime = True
-
-        if Trips.objects.filter(User = user).exists():
-            totalCost = carMgr.calcCost(Trips.objects.get(User = user))
-        else:
-            totalCost = carMgr.calcCost(None)
+        user_trips = UserTrip.user_trip_manager.get_trips(user=user)[0]
+        trips = user_trips.trips.all()
+        mileage = user_trips.mileage
+        totalCost = calc_cost(car, mileage)
 
         if request.method == 'POST':  # Add trip
             if 'Add trip' in request.POST:
@@ -94,10 +89,9 @@ def details_view(request, pk):
         context={
             'car':car,
             'trips':trips,
-            'totalMileage':totalMileage/1000,
+            'totalMileage':mileage / 1000,
             'username':username,
             'totalCost': round(totalCost, 2),
-            "firstTime": firstTime,
         }
 
         return render(request, "car/details.html", context)

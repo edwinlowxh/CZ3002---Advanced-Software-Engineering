@@ -5,10 +5,9 @@ from django.utils import timezone
 from user_profile.constants import *
 
 from django.db import models
-from django.db.models import QuerySet
 
 class UserInformationManager(models.Manager):
-    def retrieve_user_information(self, user: User) -> QuerySet:
+    def retrieve_user_information(self, user: User) -> models.QuerySet:
         return super().get_queryset().filter(user=user)
 
     def save_user_information(self, user: User, marital_status: str, birth_date: tuple) -> None:
