@@ -1,31 +1,36 @@
 from django.db import models
 from Main.models import User
 
+from Car.manager.CarManager import CarManager
+from Car.manager.TripManager import TripManager
+from Car.manager.UserTripManager import UserTripManager
+
 # Create your models here.
 class Car(models.Model):
     id = models.IntegerField(primary_key=True)
     make = models.CharField(max_length=255)
     model = models.CharField(max_length=255)
     spec = models.CharField(max_length=255)
-    currentPrice = models.FloatField(null=True)
+    current_price = models.FloatField(null=True)
     depreciation = models.FloatField(null=True)
-    downPayment = models.FloatField(null=True)
+    down_payment = models.FloatField(null=True)
     installment = models.FloatField(null=True)
     COE = models.FloatField(null=True)
-    roadTax = models.FloatField(null=True)
+    road_tax = models.FloatField(null=True)
     OMV = models.FloatField(null=True)
     ARF = models.FloatField(null=True)
-    fuelEconomy = models.FloatField(null=True)
-    fuelType = models.CharField(max_length=255)
-    COEIncl = models.BooleanField(default=True)
+    fuel_economy = models.FloatField(null=True)
+    fuel_type = models.CharField(max_length=255)
+    COE_Incl = models.BooleanField(default=True)
     image = models.ImageField(upload_to='images/')
+    car_manager = CarManager()
 
     class Meta:
         unique_together = ('make', 'model', 'spec')
 
 class Fuel(models.Model):
-    fuelType = models.CharField(max_length=255, primary_key=True)
-    fuelPrice = models.FloatField()
+    fuel_type = models.CharField(max_length=255, primary_key=True)
+    fuel_price = models.FloatField()
 
 class Trip(models.Model):
     id = models.AutoField(primary_key=True)
@@ -33,14 +38,11 @@ class Trip(models.Model):
     destination = models.CharField(max_length=255)
     frequency = models.IntegerField()
     distance = models.FloatField()
-
-    @classmethod
-    def create(cls, source, destination, frequency, distance):
-        trip = cls(source=source, destination=destination, frequency=frequency, distance=distance)
-        return trip
+    trip_manager = TripManager()
 
 
-class Trips(models.Model):
-    User = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    trip = models.ManyToManyField('Trip')
+class UserTrip(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    trips = models.ManyToManyField(Trip)
     mileage = models.FloatField()
+    user_trip_manager = UserTripManager()
