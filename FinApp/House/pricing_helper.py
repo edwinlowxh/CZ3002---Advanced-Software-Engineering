@@ -1,3 +1,5 @@
+from typing import List
+
 from .constants import (
     ANNUAL_INTEREST_RATE,
     HDB_DOWN_PAYMENT_RATE,
@@ -13,7 +15,7 @@ def calculate_max_home_loan(monthly_installment: float) -> float:
 
 
 #TODO: Verify accuracy of option fee based on property types
-def calculate_option_fee(property_types: list[str]) -> int:
+def calculate_option_fee(property_types: List[str]) -> int:
     if "4 ROOM" or "5 ROOM" or "EXECUTIVE" or "MULTI-GENERATION" in property_types:
         optionFee = 2000
     elif "3 ROOM" in property_types:
