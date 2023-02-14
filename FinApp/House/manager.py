@@ -1,3 +1,5 @@
+from typing import List
+
 from django.db import models
 
 from Main.models import User
@@ -32,7 +34,7 @@ class HousingDataManager(models.Manager):
         )
 
 class ResaleFlatPriceManager(models.Manager):
-    def retrieve_prices(self, prefered_location: list[str], preferred_property_type: list[str], max_price: float) -> list:
+    def retrieve_prices(self, prefered_location: List[str], preferred_property_type: List[str], max_price: float) -> list:
         query = self.get_queryset().filter(location = prefered_location, flatType = preferred_property_type, propertyPrice__lte = max_price)
         resaleFlatPriceList = []
         for i in query:
