@@ -10,12 +10,12 @@
 --------------------------------------------------------------*/
 body {
   font-family: "Open Sans", sans-serif;
-  color: #555555;
+  color: #ffffff;
 }
 
 a {
   text-decoration: none;
-  color: #2ECBE9;
+  color: #ffffff;
 }
 
 a:hover {
@@ -23,8 +23,23 @@ a:hover {
   text-decoration: none;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5{
   font-family: "Montserrat", sans-serif;
+}
+
+.previous {
+  background-color: #f1f1f1;
+  color: black;
+}
+
+.next {
+  
+  background-color: #04AA6D;
+  color: white;
+}
+
+.round {
+  border-radius: 50%;
 }
 
 /*--------------------------------------------------------------
@@ -409,7 +424,6 @@ h1, h2, h3, h4, h5, h6 {
 # Sections General
 --------------------------------------------------------------*/
 section {
-  padding: 60px 0;
   overflow: hidden;
 }
 
@@ -513,7 +527,7 @@ section {
 .featured .nav-link {
   border: 0;
   padding: 20px;
-  color: #151515;
+  color: #ffffff;
   transition: 0.3s;
 }
 
@@ -533,6 +547,7 @@ section {
 }
 
 .featured .nav-link.active {
+  color: #ffffff;
   box-shadow: 0px 0 25px rgba(0, 0, 0, 0.08);
 }
 
@@ -1127,7 +1142,6 @@ section {
 --------------------------------------------------------------*/
 .team {
   background: #fff;
-  padding: 60px 0;
 }
 
 .team .member {
@@ -1721,11 +1735,11 @@ section {
 }
 
 .container {
-    margin: 30px auto
+    margin: 0;
 }
 
 .navbar-nav .nav-link {
-    color: #000 !important;
+    color: #ffffff!important;
     padding: 0.5rem 0rem !important;
     border-color: transparent;
     margin-left: 1.5rem;
