@@ -105,7 +105,7 @@ urlpatterns = [
     path('finance/updateError/', updateError_view, name="updateError"),
 
     # Path for user profile
-    path('profile/register/', register, name="register"),
+    path('profile/register/', register, name="register_new"),
     path('profile/login/', login, name="login_new"),
     path('profile/logout/', logout, name="logout_new"),
     path('profile/change_password/', change_password, name="change_password"),
