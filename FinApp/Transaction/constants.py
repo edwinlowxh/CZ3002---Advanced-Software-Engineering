@@ -1,0 +1,4 @@
+TRANSACTION_TYPE=[
+    ('INCOME', 'INCOME'),
+    ('EXPENSE', 'EXPENSE')
+]
