@@ -42,7 +42,10 @@ INSTALLED_APPS = [
     'Finance',
     'House',
     'multiselectfield',
-    'user_profile'    
+    'user_profile',
+    'Budget',
+    'Transaction',
+        
 ]
 
 MIDDLEWARE = [
