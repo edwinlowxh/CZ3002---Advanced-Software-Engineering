@@ -4,7 +4,7 @@
 {% block content %}
 
   <!-- ======= Homepage Section ======= -->
-  <section id="team" class="team">
+  <section id="team" class="team" style=" background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
     {% if username %}
       <div class="container">
         <div class="row">
@@ -47,44 +47,27 @@
         </div>
       </div>
     {% else %}
-      <div class="container">
+      <div class="container" >
+        <div class="row" >
 
-        <div class="row">
-
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+          <div class="col">
             <div class="member" data-aos="zoom-in">
-              <div class="member-img">
-                <a><img src="{% static "nav/assets/img/team/Finance.jpg" %}" class="img-fluid" alt=""></a>
-              </div>
-              <div class="member-info">
-                <h4>Financial Planning</h4>
-                <p>Path to financial freedom</p>
+              <div class="member-info" style="color: #fff;">
+                <div class="hometitle" style="font-size: 4.2rem; margin-right: 20px; margin-top: 50px; margin-left: 40px;">The One Stop Solution For Finance</div>
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg active" role="button"  style="margin-top: 60px; margin-left: 40px;">Login</a> <a class="btn btn-secondary btn-lg active" role="button" href="{% url 'register' %}" style="margin-left:30px; margin-top: 60px;">Sign Up</a>
+                <!-- <p>Path to financial freedom</p> -->
               </div>
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-            <div class="member" data-aos="zoom-in" data-aos-delay="100">
-              <div class="member-img">
-                <a><img src="{% static "nav/assets/img/team/Car.jpg" %}" class="img-fluid" alt=""></a>
-              </div>
-              <div class="member-info">
-                <h4>Car</h4>
-                <p>Know your costs</p>
-              </div>
-            </div>
-          </div>
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+          <div class="col">
             <div class="member" data-aos="zoom-in" data-aos-delay="200">
-              <div class="member-img">
-                <a><img src="{% static "nav/assets/img/team/Housing.jpg" %}" class="img-fluid" alt=""></a>
+              <div class="member-img" style="margin-right: 100px;">
+                <a><img src="{% static "nav/assets/img/homepic.png" %}" class="img-fluid" alt=""></a>
               </div>
-              <div class="member-info">
-                <h4>Housing</h4>
-                <p>Expert Guidance</p>
-              </div>
-            </div>
+
+            </div> 
           </div>
 
         </div>
