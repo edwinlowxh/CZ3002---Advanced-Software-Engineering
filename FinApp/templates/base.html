@@ -31,10 +31,10 @@
 
 </head>
 
-<body style="background-color: #000">
+<body>
 
   <!-- ======= Header ======= -->
-  <header id="header" class="d-flex align-items-center" style="background-color: #000">
+  <header id="header" class="d-flex align-items-center justify-content-center" style="background-color: #000">
     <div class="container d-flex align-items-center justify-content-center">
 
       <div class="logo">
@@ -51,10 +51,10 @@
                   <li><a href="{% url 'questionaire' %}">Questionaire</a></li>
                 </ul>
               </li>
-              <li class="dropdown"><a href="{% url 'form' %}"><span>Housing</span> <i class="bi bi-chevron-down"></i></a>
-                <ul>
+              <li class="dropdown"><a class="nav-link scrollto" href="{% url 'form' %}">Housing</a>
+                <!-- <ul>
                   <li><a href="{% url 'costBreakdown' %}">Housing Report</a></li>
-                </ul>
+                </ul> -->
               </li>
               <li><a class="nav-link scrollto" href="{% url 'car_search' %}">Car</a></li>
               <li class="dropdown"><a href="#"><span>{{username}}</span> <i class="bi bi-chevron-down"></i></a>
@@ -67,7 +67,7 @@
             <i class="bi bi-list mobile-nav-toggle"></i>
           {% else %}
             <ul>
-              <li><a class="nav-link scrollto" href="{% url 'home' %}">Home</a></li>
+              <!-- <li><a class="nav-link scrollto" href="{% url 'home' %}">Home</a></li> -->
               <li class="dropdown"><a href="{% url 'financeHome' %}"><span>Finance</span> <i class="bi bi-chevron-down"></i></a>
                 <ul>
                   <li><a href="{% url 'updateUserInfo' %}">Update User Info</a></li>
@@ -76,10 +76,10 @@
                   <li><a href="{% url 'growWealth' %}">Grow your wealth</a></li>
                 </ul>
               </li>
-              <li class="dropdown"><a  href="{% url 'form' %}"><span>Housing</span>   <i class="bi bi-chevron-down"></i></a>
-                <ul>
+              <li class="dropdown"><a class="nav-link scrollto" href="{% url 'form' %}">Housing</a>
+                <!-- <ul>
                   <li><a href="{% url 'costBreakdown' %}">Housing Report</a></li>
-                </ul>
+                </ul> -->
               </li>
               <li><a class="nav-link scrollto" href="{% url 'car_search' %}">Car</a></li>
               <li class="dropdown"><a href="#"><span>{{username}}</span> <i class="bi bi-chevron-down"></i></a>
@@ -91,13 +91,7 @@
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
           {% endif %}
-        {% else %}
-          <!-- <ul>
-            <li><a class="nav-link scrollto active" href="{% url 'home' %}">Home</a></li>
-            <li><a class="nav-link scrollto" href="{% url 'login' %}">Login</a></li>
-            <li><a class="nav-link scrollto" href="{% url 'register' %}">Register</a></li>
-          </ul>
-          <i class="bi bi-list mobile-nav-toggle"></i> -->
+
         {% endif %}
       </nav><!-- navbar -->
 
