@@ -11,6 +11,7 @@
 body {
   font-family: "Open Sans", sans-serif;
   color: #ffffff;
+  background-color: #000;
 }
 
 a {
@@ -28,7 +29,6 @@ h1, h2, h3, h4, h5{
 }
 
 .previous {
-  background-color: #f1f1f1;
   color: black;
 }
 
@@ -38,9 +38,6 @@ h1, h2, h3, h4, h5{
   color: white;
 }
 
-.round {
-  border-radius: 50%;
-}
 
 /*--------------------------------------------------------------
 # Back to top button
@@ -160,7 +157,7 @@ h1, h2, h3, h4, h5{
   justify-content: space-between;
   padding: 10px 0 10px 30px;
   font-size: 15px;
-  color: #151515;
+  color: #ffffff;
   text-transform: uppercase;
   white-space: nowrap;
   transition: 0.3s;
@@ -186,7 +183,7 @@ h1, h2, h3, h4, h5{
   z-index: 99;
   opacity: 0;
   visibility: hidden;
-  background: #fff;
+  background: rgb(59, 59, 59);
   box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
   transition: 0.3s;
 }
@@ -1735,7 +1732,7 @@ section {
 }
 
 .container {
-    margin: 0;
+    margin: auto;
 }
 
 .navbar-nav .nav-link {
