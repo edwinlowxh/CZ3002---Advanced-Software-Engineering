@@ -80,6 +80,18 @@ urlpatterns = [
     path('password_change/', password_change_view, name='password_change'),
     path('', home_view, name="home"), 
 
+    # Path for finance pages
+    path('finance/questionaire/', questionaire_view, name="questionaire"),
+    path('finance/balanceSheet_Result/', balanceSheet_Result_view, name="balanceSheet_Result"),
+    path('finance/balanceSheet_Edit/', balanceSheet_Edit_view, name="balanceSheet_Edit"),
+    path('finance/cashFlow_Result/', cashFlow_Result_view, name="cashFlow_Result"),
+    path('finance/cashFlow_Edit/', cashFlow_Edit_view, name="cashFlow_Edit"),
+    path('finance/financeHome/', financeHome_view, name="financeHome"),
+    path('finance/formError/', formError_view, name="formError"),
+    path('finance/growWealth/', growWealth_view, name="growWealth"),
+    path('finance/updateUserInfo/', updateUserInfo_View, name="updateUserInfo"),
+    path('finance/updateError/', updateError_view, name="updateError"),
+
     # Car urls
     path('car/search/', search_view, name="car_search"),
     path('car/results/', results_view, name="car_results"),
