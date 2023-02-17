@@ -17,4 +17,4 @@ class Transaction(models.Model):
     amount = models.FloatField()
     date = models.DateField(default=now)
     description = models.TextField()
-    type = MultiSelectField(choices=TRANSACTION_TYPE)
+    type = MultiSelectField(choices=TRANSACTION_TYPE, max_length=512)
