@@ -14,7 +14,6 @@ from django.http import JsonResponse
 from FinApp.decorators import basic_auth
 
 from user_profile.constants import *
-import user_profile.manager
 from user_profile.models import UserInformation
 
 
@@ -92,8 +91,9 @@ def forget_password(request):
 @csrf_exempt
 @basic_auth
 def update_user_information(request):
-    if request.method == "POST":
-        if request.user.is_authenticated:
+    if request.user.is_authenticated:
+        if request.method == "POST":
+        
             user = request.user
             day, month, year = request.POST.get(DATE_OF_BIRTH_VAR_NAME).split('/')
             marital_status = request.POST.get(MARITAL_STATUS_VAR_NAME)
@@ -104,10 +104,7 @@ def update_user_information(request):
                 print(e)
                 return JsonResponse({"message": "Failed to save user information"})
             return JsonResponse({"message": "User information saved"})
-        else:
-            return JsonResponse({"message": "Please log in"})
-    elif request.method == "GET":
-        if request.user.is_authenticated:
+        elif request.method == "GET":
             try:
                 query_set = UserInformation.user_information_manager.retrieve_user_information(user = request.user)
                 user_information = query_set.get(user = request.user)
@@ -115,8 +112,8 @@ def update_user_information(request):
             except Exception as e:
                 print(e)
                 return JsonResponse({"message": "Failed to retrieve user information"})
-        else:
-            return JsonResponse({"message": "Please log in"})
+    else:
+        return JsonResponse({"message": "Please log in"})
 
 
             
