@@ -9,6 +9,8 @@ from Budget.models import Category
 
 from multiselectfield import MultiSelectField
 
+from .manager.TransactionManager import TransactionManager
+
 # Create your models here.
 
 class Transaction(models.Model):
@@ -18,3 +20,4 @@ class Transaction(models.Model):
     date = models.DateField(default=now)
     description = models.TextField()
     type = MultiSelectField(choices=TRANSACTION_TYPE, max_length=512)
+    transaction_manager = TransactionManager()
