@@ -23,6 +23,36 @@
   <head>
     <!--CSS for Form-->
     <style>
+      #search {
+    width:90%;
+}
+
+.searchicon {
+    color:#5CB85C;
+}
+
+.items-collection{
+    margin:8px 0 0 0;
+}
+.items-collection label.btn-default.active{
+    background-color:#007ba7;
+    color:#FFF;
+}
+.items-collection label.btn-default{
+    width:80%;
+    border:1px solid #305891;
+    margin:5px; 
+    border-radius: 17px;
+    color: #305891;
+}
+.items-collection label .itemcontent{
+    width:100%;
+}
+.items-collection .btn-group{
+    width:100%
+}
+
+
     * {
       box-sizing: border-box;
     }
@@ -34,11 +64,17 @@
     #regForm {
       background-color: #ffffff;
       margin: 100px auto;
+      margin-top: 200px;
       font-family: Raleway;
       padding: 40px;
       padding-bottom: 70px;
-      width: 70%;
+      width: 80%;
       min-width: 300px;
+      border-radius: 20px;
+    }
+
+    h5{
+      text-align: center;
     }
 
     h1 {
@@ -97,6 +133,17 @@
         });
     </script>
     <script>
+
+$(function () {
+    $('#search').on('keyup', function () {
+        var pattern = $(this).val();
+        $('.items-collection .items').hide();
+        $('.items-collection .items').filter(function () {
+            return $(this).text().match(new RegExp(pattern, 'i'));
+        }).show();
+    });
+});
+
         function validateForm() {
             // This function deals with validation of the form fields
             var valid = true;
@@ -148,12 +195,105 @@
         
     </script>
   </head>
-  <body>
+  <body style="background-repeat: no-repeat; background-size: cover; height: 100vh; background-image: url({% static "nav/assets/img/housedark.jpeg" %});">
     <form id="regForm" action="", method="POST"> {% csrf_token %}
       
-        <h1>Let us know your housing preference</h1>
-        Preferred Property Type:
-        <div>
+        <!-- <h1>Let us know your housing preference</h1> -->
+        <h5>Preferred Property Type:</h5>
+
+        <div class="container" style="margin-top: 30px;">
+          <div class="row">
+              <div class="form-group">
+                  <div class="items-collection" style="display: flex;">
+      
+                      <div class="items col-md-2">
+                          <div class="info-block block-info clearfix">
+                              <div data-toggle="buttons" class="btn-group bizmoduleselect">
+                                  <label class="btn btn-default">
+                                      <div class="itemcontent">
+                                          <input type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                          <!-- <span class="fa fa-car fa-2x"></span> -->
+                                          <h5>1 Room</h5>
+                                      </div>
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="items col-md-2">
+                          <div class="info-block block-info clearfix">
+                              <div data-toggle="buttons" class="btn-group itemcontent">
+                                  <label class="btn btn-default">
+                                      <div class="itemcontent">
+                                          <input type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                          <!-- <span class="fa fa-truck fa-2x"></span> -->
+                                          <h5>2 Room</h5>
+                                      </div>
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="items col-md-2">
+                          <div class="info-block block-info clearfix">
+                              <div data-toggle="buttons" class="btn-group itemcontent">
+                                  <label class="btn btn-default">
+                                      <div class="itemcontent">
+                                          <input type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                          <!-- <span class="fa fa-laptop fa-2x"></span> -->
+                                          <h5>3 Room</h5>
+                                      </div>
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="items col-md-2">
+                          <div class="info-block block-info clearfix">
+                              <div data-toggle="buttons" class="btn-group itemcontent">
+                                  <label class="btn btn-default">
+                                      <div class="itemcontent">
+                                          <input type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                          <!-- <span class="fa fa-cube fa-2x"></span> -->
+                                          <h5>4 Room</h5>
+                                      </div>
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="items col-md-2">
+                          <div class="info-block block-info clearfix">
+                              <div data-toggle="buttons" class="btn-group itemcontent">
+                                  <label class="btn btn-default">
+                                      <div class="itemcontent">
+                                          <input type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                          <!-- <span class="fa fa-lock fa-2x"></span> -->
+                                          <h5>5 Room</h5>
+                                      </div>
+                                  </label>
+                              </div>
+                          </div>
+                      </div>                
+                      <div class="items col-md-2">
+                          <div class="info-block block-info clearfix">
+                              <div data-toggle="buttons" class="btn-group itemcontent">
+                                  <label class="btn btn-default">
+                                      <div class="itemcontent">
+                                          <input type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                          <!-- <span class="fa fa-barcode fa-2x"></span> -->
+                                          <h5>Executive</h5>
+                                      </div>
+                                  </label>
+                              </div>
+                          </div>
+                      </div>                              
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
+
+
+
+        <!-- <div>
             <select class="js-example-basic-multiple" name="propertyType[]" multiple="multiple" style="width: 80%;" required>
                 <option value="1 ROOM">1 ROOM</option>
                 <option value="2 ROOM">2 ROOM</option>
@@ -164,19 +304,11 @@
                 <option value="MULTI-GENERATION">Multi Generation / 3Gen</option>
             </select>
             <p class ="none" id="requiredPropertyType" >This is a required field</p>
-        </div>
+        </div> -->
         <br>
-        Estimated Monthly Savings:
-        <div style="padding: 5px; padding-left: 0px;">
-            <input type = "number" step=100 placeholder="Please insert value in $SGD" name="estimatedMonthlySavings" id ="estimatedMonthlySavings" style="width: 30%;" required>
-            <button id = "retrieve" type="button" class="button" onclick="retrieveInfo()">Retrieve from Profile</button>
-        </div>
-        <div class ="none" id="requiredEstimatedMonthlySavings" >This is a required field</div>
-        
-        <br>
-        Preferred Location 
-        <div>
-            <select class="js-example-basic-multiple" name="towns[]" id="towns"multiple="multiple" style="width: 80%;"  required>
+        <h5 style="margin-top: 20px;">Preferred Location:</h5>
+                <div style="display:flex; text-align:center; align-items:center; justify-content:center;margin-top: 25px;">
+            <select class="js-example-basic-multiple" name="towns[]" id="towns"multiple="multiple" style="width: 40%; "  required>
                 <option value="ANG MO KIO">ANG MO KIO</option>
                 <option value="BEDOK">BEDOK</option>
                 <option value="BISHAN">BISHAN</option>
@@ -206,6 +338,25 @@
             </select>
             <p class ="none" id="requiredTown" >This is a required field</p>
         </div>
+        <br>
+         
+
+
+
+        <h5 style="margin-top: 20px;">Estimated Monthly Savings:</h5>
+        <div style="padding: 5px; padding-left: 0px; display:flex; text-align:center; align-items:center; justify-content:center;margin-top: 25px;">
+          <input type = "number" step=100 name="estimatedMonthlySavings" id ="estimatedMonthlySavings" style="width: 40%;" required>
+          
+      </div>
+
+
+        <!-- <div style="padding: 5px; padding-left: 0px;">
+            <input type = "number" step=100 placeholder="Please insert value in $SGD" name="estimatedMonthlySavings" id ="estimatedMonthlySavings" style="width: 40%;" required>
+            <button id = "retrieve" type="button" class="button" onclick="retrieveInfo()">Retrieve from Profile</button>
+        </div>
+        <div class ="none" id="requiredEstimatedMonthlySavings" >This is a required field</div> -->
+
+
         <div style="float:right;">
             <input class = "button" type="button" value="Next" onclick="validateForm()">
         </div>
