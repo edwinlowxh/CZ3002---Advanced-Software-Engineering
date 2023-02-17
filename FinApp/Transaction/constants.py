@@ -2,3 +2,6 @@ TRANSACTION_TYPE=[
     ('INCOME', 'INCOME'),
     ('EXPENSE', 'EXPENSE')
 ]
+
+START_DATE_QUERY_PARAM = 'start_date'
+END_DATE_QUERY_PARAM = 'end_date'
