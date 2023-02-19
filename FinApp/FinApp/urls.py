@@ -71,6 +71,11 @@ from Transaction.views import(
     get_transactions
 )
 
+from Budget.views import(
+    create_category,
+    get_categories
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', registration_view, name="register"),
@@ -117,7 +122,11 @@ urlpatterns = [
     path('profile/update_information/', update_user_information, name="update_user_information"),
 
     # Path for transactions
-    path('transactions/', get_transactions, name = 'get_transactions')
+    path('transactions/', get_transactions, name = 'get_transactions'),
+
+    # Path for Budget
+    path('budget/create_category', create_category, name='create_category'),
+    path('budget/get_categories', get_categories, name='create_category')
 ]
 
 if settings.DEBUG:
