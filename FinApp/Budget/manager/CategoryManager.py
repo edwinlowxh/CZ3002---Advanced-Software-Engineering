@@ -12,24 +12,24 @@ if TYPE_CHECKING:
     from Budget.models import Category
 
 class CategoryManager(models.Manager):
-    def retrieve_catergory(self, **kwargs) -> models.QuerySet:
+    def retrieve_category(self, **kwargs) -> models.QuerySet:
         user = kwargs['user']
 
         return super().get_queryset().filter(
             user=user
         )
     
-    def create_catergory(self, user: User, name: str) -> Category:
+    def create_category(self, user: User, name: str) -> Category:
         return super().create(
             user=user,
             name = name
         )
 
-    def delete_catergory(self, id: int) -> None:
+    def delete_category(self, id: int) -> None:
         super().update(is_active = False)
         
 
-    def update_catergory(self, id: int, user: User, name: str, is_active: bool) -> Category:
+    def update_category(self, id: int, user: User, name: str, is_active: bool) -> Category:
         return super().update(
             id=id,
             user=user,
