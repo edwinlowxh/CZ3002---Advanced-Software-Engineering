@@ -72,8 +72,7 @@ from Transaction.views import(
 )
 
 from Budget.views import(
-    create_category,
-    get_categories
+    create_category
 )
 
 urlpatterns = [
@@ -126,7 +125,6 @@ urlpatterns = [
 
     # Path for Budget
     path('budget/create_category', create_category, name='create_category'),
-    path('budget/get_categories', get_categories, name='create_category')
 ]
 
 if settings.DEBUG:
