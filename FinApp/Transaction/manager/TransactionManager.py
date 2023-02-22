@@ -32,30 +32,37 @@ class TransactionManager(models.Manager):
             date__range=(start_date, end_date)
         )
     
-    def create_transaction(self, user: User, category: Category, amount: float, description: str, type: str) -> Transaction:
+    def create_transaction(self, user: User, category: Category, amount: float, description: str, type: str, date: datetime) -> Transaction:
         return super().create(
             user=user,
             category=category,
             amount=amount,
             description=description,
+            date=date,
             type=type,
         )
 
-    def delete_transaction(self, id: int) -> None:
-        super().delete(
+    def delete_transaction(self, user: User, id: int) -> None:
+        super().get_queryset().filter(
+            user=user,
             id=id
-        )
+        ).delete()
 
     def update_transaction(self, id: int, user: User, date: datetime, category: Category, amount: float, description: str, type: str) -> Transaction:
-        return super().update(
-            id=id,
-            user=user,
-            date=date,
-            category=category,
-            amount=amount,
-            description=description,
-            type=type,
-        )
+        print(id, user)
+        query_set = self.get_queryset().filter(user=user, id=id)
+        
+        if not query_set:
+            return None
+        else:
+            query_set.update(
+                date=date,
+                category=category,
+                amount=amount,
+                description=description,
+                type=type
+            )
 
+            return query_set[0]
 
 

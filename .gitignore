@@ -1,4 +1,6 @@
 **/__pycache__
 *.pyc
-**/env
+**/envimshow
 **/venv
+**/env
+db.sqlite3
