@@ -68,7 +68,10 @@ from user_profile.views import (
 )
 
 from Transaction.views import(
-    get_transactions
+    get_transactions,
+    create_transaction,
+    delete_transaction,
+    update_transaction
 )
 
 from Budget.views import(
@@ -122,6 +125,9 @@ urlpatterns = [
 
     # Path for transactions
     path('transactions/', get_transactions, name = 'get_transactions'),
+    path('transactions/create', create_transaction, name = 'create_transactions'),
+    path('transactions/delete', delete_transaction, name = 'delete_transactions'),
+    path('transactions/update', update_transaction, name = 'update_transactions'),
 
     # Path for Budget
     path('budget/create_category', create_category, name='create_category'),

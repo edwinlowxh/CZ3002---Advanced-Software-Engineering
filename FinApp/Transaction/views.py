@@ -3,23 +3,20 @@ from django.shortcuts import render
 
 from .models import Transaction
 
+from .form.CreateTransactionForm import CreateTransactionForm
+
 from django.http import JsonResponse
 
 from django.views.decorators.csrf import csrf_exempt
 
 from FinApp.decorators import basic_auth
 
+import json
+
 from .constants import (
     START_DATE_QUERY_PARAM,
     END_DATE_QUERY_PARAM,
-    TRANSACTION_AMOUNT_VAR,
-    TRANSACTION_DATE_VAR,
-    TRANSACTION_TYPE_VAR,
-    TRANSCATION_DESCRIPTION_VAR
-)
-
-from Budget.constants import(
-    CATEGORY_NAME_VAR
+    TRANSACTION_ID_VAR,
 )
 
 from Budget.models import(
@@ -53,25 +50,70 @@ def get_transactions(request, start_date: str = None, end_date: str = None):
 def create_transaction(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            category_name = request.POST.get(CATEGORY_NAME_VAR, default=None)
-            amount = request.POST.get(TRANSACTION_AMOUNT_VAR, default=0)
-            date = request.POST.get(TRANSACTION_DATE_VAR, default=None)
-            description = request.POST.get(TRANSCATION_DESCRIPTION_VAR, default=None)
-            transaction_type = request.POST.get(TRANSACTION_TYPE_VAR, default='EXPENSE')
+            # try:
+            form_data = CreateTransactionForm.map_json(request.POST.dict())
+            form_data['user'] = request.user
+            form = CreateTransactionForm(form_data)
+
+            if form.is_valid():
+                print(form.cleaned_data)
+                new_transaction = Transaction.transaction_manager.create_transaction(
+                    **form.cleaned_data
+                )
+                return JsonResponse(model_to_dict(new_transaction))
+            else:
+                return JsonResponse({'message': 'Failed to create transaction', 'errors': form.errors})
+
+            # except Exception as e:
+            #     return JsonResponse({'message': 'Failed to create new transaction'})
+        elif request.method == 'GET':
+            categories = Category.category_manager.retrieve_category(user=request.user)
+            return JsonResponse({'categories': [model_to_dict(category) for category in categories]})
+
+@csrf_exempt
+@basic_auth
+def delete_transaction(request):
+     if request.user.is_authenticated:
+        if request.method == 'POST':
+            id = request.POST.get(TRANSACTION_ID_VAR)
 
             try:
-                new_transaction = Transaction.transaction_manager.create_transaction(
-                    user=request.user,
-                    category=Category.category_manager.retrieve_category(user=request.user).filter(name=category_name)[0],
-                    amount=amount,
-                    date=date,
-                    description=description,
-                    type=transaction_type,
-                )
+                Transaction.transaction_manager.delete_transaction(user=request.user, id=id)
+                return JsonResponse({'message': 'Transaction deleted'})
+            except Exception as e:                
+                return JsonResponse({'message': 'Failed to delete transaction'})
 
-                return JsonResponse(model_to_dict(new_transaction))
-            except:
-                return JsonResponse({'message': 'Failed to create new transaction. Check Fields'})
+@csrf_exempt
+@basic_auth
+def update_transaction(request):
+     if request.user.is_authenticated:
+        if request.method == 'POST':
+            transaction_id = request.POST.get(TRANSACTION_ID_VAR)
+
+            try:
+                form_data = CreateTransactionForm.map_json(request.POST.dict())
+                form_data['user'] = request.user
+                form = CreateTransactionForm(form_data)
+                
+
+                if form.is_valid():
+                    print(form.cleaned_data)
+                    updated_transaction = Transaction.transaction_manager.update_transaction(
+                        id=transaction_id,
+                        **form.cleaned_data
+                    )
+
+                    if not updated_transaction:
+                        return JsonResponse({'message': 'Failed to update transaction', 'errors': 'Transaction do not exist'})
+                    else:
+                        return JsonResponse(model_to_dict(updated_transaction))
+                else:
+                    return JsonResponse({'message': 'Failed to update transaction', 'errors': form.errors})
+
+            except Exception as e:           
+                return JsonResponse({'message': 'Failed to update transaction'})
+
+
             
 
 
