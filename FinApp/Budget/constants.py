@@ -1,1 +1,1 @@
-CATEGORY_NAME_VAR = 'categoryname'
+CATEGORY_NAME_VAR = 'category_name'
