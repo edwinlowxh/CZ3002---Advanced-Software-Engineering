@@ -25,7 +25,7 @@ class HousingDataManager(models.Manager):
     def update_housing_data(self,user: User, preferred_property_type: str, estimated_monthly_savings: float,  preferred_property_location: str) -> None:
         query_set = self.get_queryset().filter(user=user)
         query_set.update_or_create(
-            user = User,
+            user = user,
             defaults = {
                 'preferred_property_type': preferred_property_type,
                 'estimated_monthly_savings': estimated_monthly_savings,
