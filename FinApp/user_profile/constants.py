@@ -1,13 +1,16 @@
 #Account
 USERNAME_VAR_NAME="username"
 PASSWORD_VAR_NAME="password"
-PASSWORD_CONFIRM_VAR_NAME="passwordconfirm"
+PASSWORD_CONFIRM_VAR_NAME="confirm_password"
 EMAIL_VAR_NAME="email"
-FIRST_NAME_VAR_NAME="firstname"
-LAST_NAME_VAR_NAME="lastname"
 
 #User information
-MARITAL_STATUS_VAR_NAME="maritalstatus"
-DATE_OF_BIRTH_VAR_NAME="dateofbirth"
+MARITAL_STATUS_VAR_NAME="marital_status"
+DATE_OF_BIRTH_VAR_NAME="date_of_birth"
+MARITAL_STATUS_LIST = [
+    ("SINGLE", "SINGLE"),
+    ("MARRIED", "MARRIED"),
+    ("DIVORCED", "DIVORCED")
+]
 
 
