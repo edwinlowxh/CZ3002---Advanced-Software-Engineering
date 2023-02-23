@@ -11,8 +11,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 from FinApp.decorators import basic_auth
 
-import json
-
 from .constants import (
     START_DATE_QUERY_PARAM,
     END_DATE_QUERY_PARAM,
@@ -50,7 +48,6 @@ def get_transactions(request, start_date: str = None, end_date: str = None):
 def create_transaction(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            # try:
             form_data = CreateTransactionForm.map_json(request.POST.dict())
             form_data['user'] = request.user
             form = CreateTransactionForm(form_data)
