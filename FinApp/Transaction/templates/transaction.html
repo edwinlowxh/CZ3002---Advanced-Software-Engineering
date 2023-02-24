@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% load template_tags %}
+
+{% block content %}
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<div class="row d-flex justify-content-center align-items-center h-70">
+    <div class="col d-flex justify-content-center align-items-center">
+        <div class="col-md-9">
+            <table class="table" id="expense-table">
+                <thead>
+                    <tr>
+                        {% for header in expense_table_header.values %}
+                            <th scope="col">{{ header }}</th>
+                        {% endfor %}
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                        <tr>
+                            {% if transaction.type.0 == "EXPENSE" %}
+                                {% for key in expense_table_header %}
+                                    <td>{{ transaction|get:key }}</th>
+                                {% endfor %}
+                                <td>
+                                    <a href="#">
+                                        <span class="material-icons">
+                                            delete
+                                        </span>
+                                    </a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+
+    </div>
+    
+    {% for transaction in transactions %}
+        
+    {% endfor %}
+
+</div>
+{% endblock %}
