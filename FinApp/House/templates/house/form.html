@@ -153,13 +153,13 @@ $(function () {
             // If a field is empty...
             if (estimatedMonthlySavingsInput.value == "") {
                 required = document.getElementById("requiredEstimatedMonthlySavings");
-                required.classList.remove("none");
+                // required.classList.remove("none");
                 // and set the current valid status to false
                 valid = false;
             }else{
                 //else hide the required text
                 required = document.getElementById("requiredEstimatedMonthlySavings");
-                required.classList.add("none");
+                // required.classList.add("none");
             }
             //A loop that checks every select field in the current tab:
             for (i = 0; i < currentSelectionInputs.length; i++) {
@@ -167,13 +167,13 @@ $(function () {
                 if (currentSelectionInputs[i].selectedIndex == -1) {
                     // If a field is empty display the required text
                     required = i==1 ?document.getElementById("requiredTown") : document.getElementById("requiredPropertyType");
-                    required.classList.remove("none");
+                    // required.classList.remove("none");
                     //set the current valid status to false
                     valid = false;
                 }else{
                     //else hide the required text
                     required = i==1 ?document.getElementById("requiredTown") : document.getElementById("requiredPropertyType");
-                    required.classList.add("none");
+                    // required.classList.add("none");
                 }
             }
             console.log(valid);
