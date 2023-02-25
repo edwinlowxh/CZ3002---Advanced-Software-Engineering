@@ -11,3 +11,16 @@ TRANSACTION_DATE_VAR = 'transaction_date'
 TRANSCATION_DESCRIPTION_VAR = 'transaction_description'
 TRANSACTION_TYPE_VAR = 'transaction_type'
 TRANSACTION_ID_VAR = 'transaction_id'
+
+INCOME_TABLE_HEADER = {
+    'date': 'Date',
+    'amount': 'Amount',
+    'description': 'Description'
+}
+
+EXPENSE_TABLE_HEADER = {
+    'date': 'Date',
+    'category': 'Category',
+    'amount': 'Amount',
+    'description': 'Description'
+}
