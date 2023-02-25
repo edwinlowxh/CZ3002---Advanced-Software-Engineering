@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
-from django.contrib.auth import logout, authenticate, update_session_auth_hash
+from django.contrib.auth import logout, authenticate, update_session_auth_hash, login as django_login
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
@@ -51,13 +51,16 @@ def login(request):
         password = request.POST.get(PASSWORD_VAR_NAME)
         user = authenticate(username=username, password=password)
 
+        if user is not None:
+            django_login(request=request, user=user)
+            return redirect('/')
+
         if user:
             return JsonResponse({"message": "Logged In"})
         else:
             return JsonResponse({"message": "Failed Authentication"})
-         
-    elif request.method == "GET":
-        return JsonResponse({})
+        
+    return render(request, 'accounts/login.html')
 
 @csrf_exempt
 def logout(request):
