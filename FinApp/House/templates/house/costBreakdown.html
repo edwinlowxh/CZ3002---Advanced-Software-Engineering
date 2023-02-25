@@ -7,6 +7,17 @@
   <!-- ======= House Details Section ======= -->
     <section id="portfolio-details" class="portfolio-details">
       <style>
+        .carousel-indicators li {
+          background-color: #999;
+          background-color: rgba(70, 70, 70, 0.25);
+        }
+        .carousel .carousel-item {
+            transition-duration: 0.4s;
+        }
+        .carousel-indicators .active {
+          background-color: #444;
+        }
+
         .button {
           background-color: #04AA6D;
           color: #ffffff;
@@ -33,10 +44,88 @@
           }
         }
       </script>
-      <div class="container">
-        <div class="row gy-4 justify-content-center">
-          <div class="d-flex flex-row justify-content-center">
-            <div class="portfolio-info d-flex-column gap-5 w-49">
+      <body style="background-repeat: no-repeat; background-size: cover; height: 100vh; background-image: url({% static "nav/assets/img/housedark.jpeg" %});">
+        <a href="{% url 'form' %}" class="previous" style="font-size: 60px; margin-left: 50px; color: rgb(255, 255, 255);" >&#8249;</a>
+
+        <div class="carousel-inner">
+          <div class="container" style="width: 60%; margin-top: 70px;">
+            
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+         <ol class="carousel-indicators" style="height: 5px;">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active" style="width: 20px;"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1" style="margin-left:10px; width: 20px;"></li>
+            <!-- <li data-target="#carouselExampleIndicators" data-slide-to="2" style="margin-right:10px; width: 20px;background-color: #000;"></li> -->
+          </ol>   
+          <div class="carousel-inner">
+            
+            <div class="carousel-item active">
+              <div class="portfolio-info d-flex gap-5 w-100" style="background-color: #fff; border-radius: 20px; color: #000;">
+                <div class="d-flex-column w-20">
+                  <h3>The most affordable option would be a...</h3>
+                  <h4>{{ mostAffordable.type }} in  {{ mostAffordable.location }}</h4>
+                  <h6>Price: ${{ mostAffordable.price }}</h6>
+                </div>
+                <ul>
+                  <li><strong>Maximum home loan</strong>: ${{ mostAffordable.maxLTV }}</li>
+                  <li><strong>Loan Period</strong>: 25 Years</li>
+                  <li><strong>Monthly Installment</strong>: ${{ mostAffordable.monthlyInstallment }}/month</li>
+                </ul>
+                <ul>
+                  <li><strong>Downpayment</strong>: ${{ mostAffordable.downPayment }}</li>
+                  <li><strong>Buyer's Stamp Duties</strong>: ${{ mostAffordable.buyerStampDuties }}</li>
+                  <li><strong>Lump Sum Payment</strong>: ${{ mostAffordable.lumpSumPayment }}</li>
+                  <li><input class = "button" type="button" value="Add/Update Balance Sheet" onclick="addToDebt(1)"></li>
+                </ul>
+                <form id = "regForm1" action="", method="POST"> {% csrf_token %}
+                  <input name = "price" type = "hidden" value = {{ mostAffordable.price }} >
+                  <input name = "repayment" type = "hidden" value = {{ mostAffordable.monthlyInstallment }}>
+                </form>
+                
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="column gy-4 justify-content-center">
+              <div class="portfolio-info d-flex gap-5 w-100" style="background-color: #fff; border-radius: 20px; color: #000;">
+                <div class="d-flex-column w-20">
+                  <h3>The best that you can do would be a...</h3>
+                  <h4>{{ maxAffordable.type }} in  {{ maxAffordable.location }}</h4>
+                  <h6>Price: ${{ maxAffordable.price }}</h6>
+                </div>
+                <ul>
+                  <li><strong>Maximum home loan</strong>: ${{ maxAffordable.maxLTV }}</li>
+                  <li><strong>Loan Period</strong>: 25 Years</li>
+                  <li><strong>Monthly Installment</strong>: ${{ maxAffordable.monthlyInstallment }}/month</li>
+                </ul>
+                <ul>
+                  <li><strong>Downpayment</strong>: ${{ maxAffordable.downPayment }}</li>
+                  <li><strong>Buyer's Stamp Duties</strong>: ${{ maxAffordable.buyerStampDuties }}</li>
+                  <li><strong>Lump Sum Payment</strong>: ${{ maxAffordable.lumpSumPayment }}</li>
+                  <li><input class = "button" type="button" value="Add/Update Balance Sheet" onclick="addToDebt(2)"></li>
+                </ul>
+                <form id = "regForm2" action="", method="POST"> {% csrf_token %}
+                  <input name = "price" type = "hidden" value = {{ maxAffordable.price }} >
+                  <input name = "repayment" type = "hidden" value = {{ maxAffordable.monthlyInstallment }}>
+                </form>
+                
+              </div>
+            </div>
+          </div>
+          
+            <!-- <div class="carousel-item">
+            </div> -->
+          </div>
+
+        </div>     
+
+<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true" ></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+           <!-- <div class="portfolio-info d-flex-column gap-5 w-49">
               <h3>What you can afford</h3>
               <ul>
                 <li><strong>Max Property Price</strong>: ${{ housingCalculate.max_property_price }}</li>
@@ -46,9 +135,14 @@
                 <li><strong>Monthly Installment</strong>: ${{ housingCalculate.monthly_installment }}/month</li>
                 <li><strong>Loan Period</strong>: {{ housingCalculate.loan_period }} Years</li>
               </ul>
-            </div>
+            </div> -->
 
-            <div class="column gy-4 justify-content-center">
+        </div>
+
+        <!-- <div class="row gy-4 justify-content-center"> -->
+          <!-- <div class="d-flex flex-row justify-content-center"> -->
+           
+            <!-- <div class="column gy-4 justify-content-center">
               <div class="portfolio-info d-flex gap-5 w-100">
                 <div class="d-flex-column w-20">
                   <h3>The most affordable option would be a...</h3>
@@ -73,7 +167,7 @@
                 
               </div>
 
-              <div class="portfolio-info d-flex gap-5 w-100">
+              <!-- <div class="portfolio-info d-flex gap-5 w-100">
                 <div class="d-flex-column w-20">
                   <h3>The best that you can do would be a...</h3>
                   <h4>{{ maxAffordable.type }} in  {{ maxAffordable.location }}</h4>
@@ -96,9 +190,11 @@
                 </form>
               </div>
               
-            </div>
-        </div>
-      </div>
+            </div> -->
+        <!-- </div>
+      </div> -->
+      </div>        
+    </body>
     </section>
 
     <!-- <div class="card">
