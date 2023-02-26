@@ -5,6 +5,9 @@
 {% block content %}
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <div class="row d-flex justify-content-center align-items-center h-70">
+    <!-- Add Toggle button between income and expenses -->
+    <!-- Add add transaction button -->
+    
     <div class="col d-flex justify-content-center align-items-center">
         <div class="col-md-9">
             <table class="table" id="expense-table">
@@ -36,13 +39,8 @@
                 </tbody>
             </table>
         </div>
-        
-
     </div>
-    
-    {% for transaction in transactions %}
-        
-    {% endfor %}
 
+    <!-- Add Modal Form which will popup on clicking add transaction button -->
 </div>
 {% endblock %}
