@@ -6,7 +6,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('user', 'name')
 
 class BudgetAdmin(admin.ModelAdmin):
-    list_display = ('user', 'limit', 'date', 'category')
+    list_display = ('user', 'limit', 'year', 'month', 'category')
 
 
 admin.site.register(Category, CategoryAdmin)
