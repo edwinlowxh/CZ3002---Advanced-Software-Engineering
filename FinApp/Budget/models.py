@@ -14,7 +14,10 @@ class Category(models.Model):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     category_manager = CategoryManager()
-
+    
+    def __str__(self):
+        return self.name
+        
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['user', 'name'], name='unique_user_category'),
