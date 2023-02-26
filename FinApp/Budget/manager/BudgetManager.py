@@ -14,33 +14,52 @@ if TYPE_CHECKING:
 
 
 class BudgetManager(models.Manager):
-    def retrieve_budget(self, year, month, **kwargs) -> models.QuerySet:
-        user = kwargs['user']
+    def get_budget(self,**kwargs) -> models.QuerySet:
+        filter_kwargs = {}
+        if 'user' in kwargs and kwargs['user']:
+            filter_kwargs['user'] = kwargs['user']
+        if 'year' in kwargs and kwargs['year']:
+            filter_kwargs['year'] = kwargs['year']
+        if 'month' in kwargs and kwargs['month']:
+            filter_kwargs['month'] = kwargs['month']
+        if 'category' in kwargs and kwargs['category']:
+            filter_kwargs['category'] = kwargs['category']
+        if 'id' in kwargs and kwargs['id']:
+            filter_kwargs['id'] = kwargs['id']
 
-        return super().get_queryset().filter(
-            user=user,
-            date__year=year,
-            date__month = month
-        )
-    
-    def create_budget(self, user: User, limit: float, date: datetime, category: Category) -> Budget:
+        return super().get_queryset().filter(**filter_kwargs)
+        
+    def create_budget(self, user: User, limit: float, year: int, month: int, category: Category) -> Budget:
         return super().create(
-            user=user,
+            user = user,
             limit = limit,
-            date = date,
+            year = year,
+            month = month, 
             category=category
         )
 
-    def delete_budget(self, id: int) -> None:
-        super().delete(
-            id=id
-        )
-
-    def update_budget(self, id: int, user: User, date: datetime, category: Category, limit: float, description: str, type: str) -> Budget:
-        return super().update(
-            id=id,
+    def delete_budget(self, user: User, id: int) -> None:
+        super().get_queryset().filter(
             user=user,
-            date=date,
-            category=category,
-            limit=limit
-        )
+            id=id
+        ).delete()
+
+
+    def update_budget(self, user: User, id: int, **kwargs) -> Budget:
+        query_set = self.get_budget(user=user, id=id)
+        if not query_set:
+            return None
+        else:
+            filter_kwargs = {}
+            if 'year' in kwargs and kwargs['year']:
+                filter_kwargs['year'] = kwargs['year']
+            if 'month' in kwargs and kwargs['month']:
+                filter_kwargs['month'] = kwargs['month']
+            if 'category' in kwargs and kwargs['category']:
+                filter_kwargs['category'] = kwargs['category']
+            if 'limit' in kwargs and kwargs['limit']:
+                filter_kwargs['limit'] = kwargs['limit']
+
+            query_set.update(**filter_kwargs)
+            return query_set[0]
+        
