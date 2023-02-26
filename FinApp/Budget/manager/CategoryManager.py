@@ -30,13 +30,8 @@ class CategoryManager(models.Manager):
         )
 
     def delete_category(self, user: User, id: int) -> None:
-        query_set = self.get_categories(user=user, id=id)
-        if not query_set:
-            return None
-        else:
-            query_set.update(is_active = False)
-            return query_set[0]
-        
+        self.get_categories(user = user, id=id).update(is_active = False)
+       
 
     def update_category(self, user: User,  id: int,  name: str) -> Category:
         query_set = self.get_categories(user=user,id=id)

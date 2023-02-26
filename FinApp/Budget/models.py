@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.db.models import Q
+
 from django.contrib.auth.models import User
 
 from django.utils.timezone import now
@@ -37,6 +39,7 @@ class Budget(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['user', 'category' , 'year', 'month'], name='unique_user_budget_by_date'),
             models.CheckConstraint(name="%(app_label)s_%(class)s_year_range", check=models.Q(year__range=(1990, 2100))),
-            models.CheckConstraint(name="%(app_label)s_%(class)s_month_range", check=models.Q(year__range=(1, 12)))       
+            models.CheckConstraint(name="%(app_label)s_%(class)s_month_range", check=models.Q(month__range=(1, 12))),
+            models.CheckConstraint(name="%(app_label)s_%(class)s_limit_range", check = Q(limit__gte=0.0) & Q(limit__lte=100000000))       
             ]
     
