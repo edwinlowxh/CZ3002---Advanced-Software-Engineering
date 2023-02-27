@@ -20,14 +20,18 @@ class CategoryManager(models.Manager):
             filter_kwargs['name'] = kwargs['name']
         if 'id' in kwargs and kwargs['id']:
             filter_kwargs['id'] = kwargs['id']
+        if 'is_active' in kwargs and kwargs['is_active']:
+            filter_kwargs['is_active'] = kwargs['is_active']
 
         return super().get_queryset().filter(**filter_kwargs)
     
     def create_category(self, user: User, name: str) -> Category:
-        return super().create(
+        category, created = super().update_or_create(
             user = user,
-            name = name
+            name = name,
+            defaults={'user': user, 'name': name, "is_active": True},
         )
+        return category
 
     def delete_category(self, user: User, id: int) -> None:
         self.get_categories(user = user, id=id).update(is_active = False)
