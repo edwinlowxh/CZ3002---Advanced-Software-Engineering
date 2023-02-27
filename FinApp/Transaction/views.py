@@ -73,11 +73,10 @@ def create_transaction(request):
                 return JsonResponse(model_to_dict(new_transaction))
             else:
                 return JsonResponse({'message': 'Failed to create transaction', 'errors': form.errors})
-
             # except Exception as e:
             #     return JsonResponse({'message': 'Failed to create new transaction'})
         elif request.method == 'GET':
-            categories = Category.category_manager.retrieve_category(user=request.user)
+            categories = Category.category_manager.get_categories(user=request.user)
             return JsonResponse({'categories': [model_to_dict(category) for category in categories]})
 
 @csrf_exempt
