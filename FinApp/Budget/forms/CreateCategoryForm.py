@@ -11,7 +11,7 @@ from Budget.models import Category
 
 class CreateCategoryForm(forms.Form):
     user = forms.ModelChoiceField(queryset=User.objects.all())
-    name = forms.CharField(max_length=255, required=False)
+    name = forms.CharField(max_length=255, required=True)
 
     def clean_name(self):
         name = self.cleaned_data['name']
