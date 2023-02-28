@@ -31,9 +31,9 @@ class Budget(models.Model):
     #date = models.DateField(default=now)
     year = models.PositiveIntegerField()
     month = models.PositiveIntegerField()
-    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     budget_manager = BudgetManager()
-
+    
 
     class Meta:
         constraints = [

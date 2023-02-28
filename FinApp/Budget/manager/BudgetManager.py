@@ -51,10 +51,6 @@ class BudgetManager(models.Manager):
             return None
         else:
             filter_kwargs = {}
-            if 'year' in kwargs and kwargs['year']:
-                filter_kwargs['year'] = kwargs['year']
-            if 'month' in kwargs and kwargs['month']:
-                filter_kwargs['month'] = kwargs['month']
             if 'category' in kwargs and kwargs['category']:
                 filter_kwargs['category'] = kwargs['category']
             if 'limit' in kwargs and kwargs['limit']:
