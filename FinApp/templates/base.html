@@ -73,7 +73,6 @@
               <!-- <li><a class="nav-link scrollto" href="{% url 'home' %}">Home</a></li> -->
               <li class="dropdown"><a href="{% url 'financeHome' %}"><span>Finance</span> <i class="bi bi-chevron-down"></i></a>
                 <ul>
-                  <li><a href="{% url 'updateUserInfo' %}">Update User Info</a></li>
                   <li><a href="{% url 'balanceSheet_Result' %}">Balance Sheet</a></li>
                   <li><a href="{% url 'cashFlow_Result' %}">Financial Statement</a></li>
                   <li><a href="{% url 'growWealth' %}">Grow your wealth</a></li>
@@ -87,6 +86,7 @@
               <li><a class="nav-link scrollto" href="{% url 'car_search' %}">Car</a></li>
               <li class="dropdown"><a href="#"><span>{{username}}</span> <i class="bi bi-chevron-down"></i></a>
                 <ul>
+                  <li><a href="{% url 'updateUserInfo' %}">Update User Info</a></li>
                   <li><a href="{% url 'account' %}">Account</a></li>
                   <li><a href="{% url 'logout' %}">Logout</a></li>
                 </ul>

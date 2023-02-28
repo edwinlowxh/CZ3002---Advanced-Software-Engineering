@@ -10,17 +10,19 @@
         }
 
         body {
-        background-color: #f1f1f1;
+          height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);
         }
 
         #regForm {
-        background-color: #ffffff;
+        background-color: #424367;
         margin: 100px auto;
         font-family: Raleway;
-        padding: 40px;
+        padding: 80px;
         width: 70%;
         min-width: 300px;
         }
+
+        
 
         h1 {
         text-align: center;  
@@ -28,10 +30,12 @@
 
         input {
         padding: 10px;
-        width: 100%;
+        width: 50%;
         font-size: 17px;
         font-family: Raleway;
         border: 1px solid #aaaaaa;
+        display: block;
+			  /* margin: 0 auto; */
         }
 
         /* Mark input boxes that gets an error on validation: */
@@ -87,16 +91,22 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 </head>
 <body>
-    <form id="regForm" method = "POST" action='/finance/updateUserInfo/'>
+  <a href="{% url 'home' %}" class="previous" style="font-size: 60px; margin-left: 50px; color: aliceblue;" >&#8249;</a>
+
+  <h1>Updating Information</h1>
+    <form id="regForm" method = "POST" action='/finance/updateUserInfo/' style="border-radius: 24px; margin-top:50px; ">
     {% csrf_token %}
       <!-- One "tab" for each step in the form: -->
       <!--first sub page-->
-        <h1>Updating Information</h1>
-        <h2 style = "text-align: center;">Please enter your personal details</h2>
-        Date of Birth:
-          <p><input type = "date" id = "DoB" name="DoB" value = "{{DOB}}"></p>
-
-        Gender:
+        
+        <h3 style = "text-align: center; ">Please enter your personal details</h3>
+        <div style="display: flex;
+        align-items: center; margin-top: 40px; justify-content: center"><p style="width:20% ;">Name:</p><input value = "{{name}}" oninput="this.className = ''" name="Name" >
+        </div>
+        <div style="display: flex;
+        align-items: center; margin-top: 20px; justify-content: center"><p style="width:20% ;">Date of Birth:</p><input type = "date"  id = "DoB" name="DoB" value = "{{DOB}}">
+        </div>
+        <!-- Gender:
         <p>
           <select id="gender" name="gender">
             <option value="{{gender}}" selected hidden>{{gender}}</option>
@@ -104,9 +114,9 @@
             <option value="Female">Female</option>
             <option value="NA">I prefer not to Say</option>
           </select>
-        </p>
+        </p> -->
 
-        Education Level:
+        <!-- Education Level:
         <p>
           <select id="eLevel" name="eLevel">
             <option value="{{education}}" selected hidden>{{education}}</option>
@@ -130,30 +140,35 @@
             <option value="Divorced">Divorced</option>
             <option value="Widowed">Widowed</option>
           </select>
-        </p>
-        Occupuation:
-        <p><input value = "{{occupation}}" oninput="this.className = ''" name="Occupation"></p>
+        </p> -->
+        <!-- Occupuation:
+        <p><input value = "{{occupation}}" oninput="this.className = ''" name="Occupation"></p> -->
 
-        Monthly Income:
-        <p><input type = "number" step = 0.01 value = "{{monthlyIncome}}" oninput="this.className = ''" name="mIncome"></p>
-
-        <h2 style = "text-align: center;">Please enter your family's details</h2>
+        <div style="display: flex;
+        align-items: center; margin-top: 20px; justify-content: center"><p style="width:20% ;">Monthly Income:
+        </p><input type = "number" step = 0.01 value = "{{monthlyIncome}}" oninput="this.className = ''" name="mIncome"></div>
+<!-- 
+        <h3 style = "text-align: center;">Please enter your family's details</h3>
         Spouse Income:
         <p><input  type = "number" step = 0.01 value = "{{spouseMonthlyIncome}}"  oninput="this.className = ''" name="sIncome"></p>
         
         Number of Dependents:
-        <p><input type = "number" step = 1 value = "{{noOfDependents}}" oninput="this.className = ''" name="noOfDependent"></p>
+        <p><input type = "number" step = 1 value = "{{noOfDependents}}" oninput="this.className = ''" name="noOfDependent"></p> -->
 
-        <h2 style = "text-align: center;">Please enter your CPF details</h2>
+        <h3 style = "text-align: center; margin-top: 70px;">Please enter your CPF details</h3>
 
-        Ordinary Account:
-        <p><input type = 'number' step = 0.01 value = "{{OAAmount}}" oninput="this.className = ''" name="OAcpf"></p>
-        Special Account:
-        <p><input type = 'number' step = 0.01 value = "{{SAAmount}}" oninput="this.className = ''" name="SAcpf"></p>
-        Medisave Account:
-        <p><input type = 'number' step = 0.01 value = "{{medisave}}" oninput="this.className = ''" name="MAcpf"></p>
+        <div style="display: flex;
+        align-items: center; margin-top: 40px; justify-content: center"><p style="width:20% ;">Ordinary Account:
+        </p><input type = 'number' step = 0.01 value = "{{OAAmount}}" oninput="this.className = ''" name="OAcpf"></div>
+        <div style="display: flex;
+        align-items: center; margin-top: 20px; justify-content: center"><p style="width:20% ;">Special Account:
+        </p><input type = 'number' step = 0.01 value = "{{SAAmount}}" oninput="this.className = ''" name="SAcpf"></div>
+        <div style="display: flex;
+        align-items: center; margin-top: 20px; justify-content: center"><p style="width:20% ;">Medisave Account:
+        </p><input type = 'number' step = 0.01 value = "{{medisave}}" oninput="this.className = ''" name="MAcpf"></div>
 
-      <button type="submit" class="btn btn-lg btn-danger col-md-12">Save Changes</button>
+      <button type="submit" class="btn btn-lg btn-primary" style="width: 300px; display: block;
+			margin: 0 auto; margin-top: 60px;">Save Changes</button>
     
     </form>
 </body>
