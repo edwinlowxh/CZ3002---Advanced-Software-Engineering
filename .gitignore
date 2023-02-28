@@ -3,4 +3,4 @@
 **/envimshow
 **/venv
 **/env
-*.sqlite3
+FinApp/db.sqlite3
