@@ -44,7 +44,7 @@ def create_category(request):
         if request.method == 'POST':
             form_data = CreateCategoryForm.map_json(request.POST.dict())
             form_data['user'] = request.user
-            form = CreateCategoryForm(form_data)
+            form = CreateCategoryForm(update=False, **form_data)
             
             if form.is_valid():
                 print(form.cleaned_data)
@@ -84,7 +84,7 @@ def update_category(request):
             try:
                 form_data = CreateCategoryForm.map_json(request.POST.dict())
                 form_data['user'] = request.user
-                form = CreateCategoryForm(form_data)
+                form = CreateCategoryForm(update=True, **form_data)
                 
                 if form.is_valid():
                     print(form.cleaned_data)
