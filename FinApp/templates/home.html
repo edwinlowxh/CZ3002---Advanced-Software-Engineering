@@ -2,12 +2,164 @@
 {% load static %}
 
 {% block content %}
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+<style>
 
-  <!-- ======= Homepage Section ======= -->
-  <section id="team" class="team" style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
+@keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-30px); }
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.tooltip-inner {
+    font-size: 20px;
+}
+  
+  .Legend-colorBox {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 100%;
+    display: inline-block;
+    background-color: blue;
+}
+
+  .progress-bar__container {
+    /* margin-left: 380px; */
+  width: 65%;
+  height: 400px;
+  position: absolute;
+  /* left: 0;
+  right: 0; */
+  /* margin: 50px auto; */
+}
+
+.progress-bar__wrap {
+  border-radius: 8%;
+  background-color: rgb(233, 235, 238);
+  position: relative;
+  transform: translateY(-50%);
+  top: 50%;
+  /* margin-left: 50px; */
+  width: 50px;
+  height: 320px;
+  float: left;
+}
+
+.bar-value {
+  border-radius: 0% 0% 8% 8%;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  animation: grow 1.5s ease-out forwards;
+  transform-origin: bottom;
+}
+.bar-value::before {
+  content: attr(title);
+  text-align: center;
+  bottom:10px;
+  left:5px;
+  color:white;
+  
+}
+@keyframes grow {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+.bar-value  {
+  -webkit-animation: slideIn 1s;
+  -moz-animation: slideIn 1s;
+  -o-animation: slideIn 1s;
+  animation: slideIn 1s;
+}
+
+@-webkit-keyframes slideIn {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: normal;
+  }
+}
+
+@-moz-keyframes slideIn {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: normal;
+  }
+}
+
+/* @-ms-keyframes slideIn {
+  .progress-bar 0% {
+    height: 0;
+  }
+  .progress-bar 100% {
+    height: normal;
+  }
+} */
+
+@-o-keyframes slideIn {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: normal;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: normal;
+  }
+}
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">  
+<!-- ======= Homepage Section ======= -->
+  
+  
+
     {% if username %}
-      <div class="container">
-        <div class="row">
+    <section id="team" class="team" style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
+
+      <center><h1 style="margin-top: 70px;"><u>January</u></h1></center>
+      <center><h3 style="margin-top: 100px;">You have spent $100 out of $500.</h3></center>
+      <div class="container d-flex align-items-center justify-content-between">
+        
+        <div class="progress" style=" height: 30px; width:100%; margin-top: 100px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"  role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" style="width: 55%; " data-toggle="tooltip" data-placement="top" title="$55"></div>
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%" data-toggle="tooltip" data-placement="top" title="$25"></div>
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width: 5%" data-toggle="tooltip" data-placement="top" title="$5"></div>
+        </div>
+        
+
+        
+        <!-- <div class="row">
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
             <div class="member" data-aos="zoom-in">
               <div class="member-img">
@@ -44,17 +196,69 @@
             </div>
           </div>
 
+        </div> -->
+      </div>
+      <div class="container" style=" width: 100%;
+      height: 100px; display: flex;
+      justify-content: center;
+      margin-top: 80px;">
+        <div>
+          
+          <span class="Legend-colorBox" style="background-color: rgb(146, 40, 30); margin-right: 10px; ">
+          </span>
+          <span class="Legend-label" style="margin-right: 30px;">
+            Transport
+          </span>
+
+          <span class="Legend-colorBox" style="background-color: green; margin-right: 10px; ">
+          </span>
+          <span class="Legend-label">
+            Food
+          </span>
+
+          <span class="Legend-colorBox" style="background-color: rgb(71, 89, 169); margin-left: 30px; margin-right: 10px; ">
+          </span>
+          <span class="Legend-label">
+            Shopping
+          </span>
         </div>
       </div>
+      <div class="container" style=" width: 100%;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      margin-top: 400px;">
+      <div class="progress-bar__container d-flex align-items-center justify-content-between" >
+        <div class="progress-bar__wrap" style="width: 200px;">
+          <div class="bar-value" style="height:55%; text-align: center; background: linear-gradient(to top, #c11616, #cd4c4c);" > Transport
+          </div></div>
+          <div class="progress-bar__wrap" style="margin-left: 40px; width: 200px;">
+            <div class="bar-value" style="height:40%; text-align: center; background: linear-gradient(to top, #439a50, #83b890);" > Food
+            </div></div>
+            <div class="progress-bar__wrap" style="margin-left: 40px; width: 200px;">
+              <div class="bar-value" style="height:30%; text-align: center; background: linear-gradient(to top, #2931d2, #3e56b8);" > Shopping
+              </div></div>
+              <div class="progress-bar__wrap" style="margin-left: 40px; width: 200px;">
+                <div class="bar-value" style="height:30%; text-align: center; background: linear-gradient(to top, #da7832, #daa151);" > Others
+                </div></div>
+        </div></div>
+
+  </section>
+        
     {% else %}
+    <section id="team" class="team" style="height:100vh; background: linear-gradient(-30deg, #76adce, #314054, #0c1138, #5b64a6);
+    background-size: 400% 400%;
+    animation: gradient 20s ease infinite;
+    height: 100vh; ">
+
       <div class="container" >
-        <div class="row" style="margin-left: 130px; margin-top: 100px;" >
+        <div class="row" style="margin-left: 130px; margin-top: 80px;" >
 
           <div class="col">
             <div class="member" data-aos="zoom-in">
-              <div class="member-info" style="color: #fff;">
-                <div class="hometitle" style="font-size: 4.2rem; margin-right: 20px; margin-top: 30px; margin-left: 40px;">The One Stop Solution For Finance</div>
-                <a href="{% url 'login' %}" class="btn btn-primary btn-lg active" role="button"  style="margin-top: 60px; margin-left: 40px;">Login</a> <a class="btn btn-secondary btn-lg active" role="button" href="{% url 'register' %}" style="margin-left:30px; margin-top: 60px;">Sign Up</a>
+              <div class="member-info" style="color: #fff; width: 110%;">
+                <div class="hometitle" style="  font-family: 'Lora', serif; font-size: 4.8rem; margin-right: 20px; margin-top: 5%; margin-left: 20px;">The One Stop Solution For Finance</div>
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg active" role="button"  style="margin-top: 60px; margin-left: 20px;">Login</a> <a class="btn btn-secondary btn-lg active" role="button" href="{% url 'register' %}" style="margin-left:30px; margin-top: 60px;">Sign Up</a>
                 <!-- <p>Path to financial freedom</p> -->
               </div>
             </div>
@@ -63,8 +267,8 @@
 
           <div class="col">
             <div class="member" data-aos="zoom-in" data-aos-delay="200">
-              <div class="member-img" style="margin-right: 100px; margin-top: 20px;">
-                <a><img src="{% static "nav/assets/img/homepic.png" %}" class="img-fluid" alt=""></a>
+              <div class="member-img" style="margin-right: 100px; margin-top: 60px; width: 70%;">
+                <a><img src="{% static "nav/assets/img/homepic.png" %}" class="img-fluid" alt="" style="animation: mover 2s infinite  alternate;"></a>
               </div>
 
             </div> 
@@ -72,7 +276,8 @@
 
         </div>
       </div>
+    </section>
     {% endif %}
-  </section><!-- Homepage Section -->
+  <!-- Homepage Section -->
     
 {% endblock %}
