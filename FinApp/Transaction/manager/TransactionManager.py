@@ -14,8 +14,7 @@ if TYPE_CHECKING:
 
 
 class TransactionManager(models.Manager):
-    def retrieve_transaction(self, **kwargs) -> models.QuerySet:
-        user = kwargs['user']
+    def retrieve_transaction(self, user: User, **kwargs) -> models.QuerySet:
         
         if 'start_date' not in kwargs:
             start_date = datetime(1900,1,1)
@@ -49,7 +48,6 @@ class TransactionManager(models.Manager):
         ).delete()
 
     def update_transaction(self, id: int, user: User, date: datetime, category: Category, amount: float, description: str, type: str) -> Transaction:
-        print(id, user)
         query_set = self.get_queryset().filter(user=user, id=id)
         
         if not query_set:
@@ -64,5 +62,14 @@ class TransactionManager(models.Manager):
             )
 
             return query_set[0]
+        
+    def sum_of_category(self, user: User, category: Category, **kwargs) -> float:
+        query_set = self.retrieve_transaction(user, **kwargs).filter(category=category)
+
+        if not query_set:
+            return 0
+        else:
+            return list(query_set.aggregate(models.Sum('amount')).values())[0]
+
 
 
