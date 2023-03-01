@@ -25,14 +25,7 @@ class CreateTransactionForm(forms.Form):
     category = forms.CharField(max_length=255, required=False)
     date = forms.DateField(input_formats=['%d/%m/%Y'], required=False)
     description = forms.CharField(max_length=255, required=False)
-    
 
-    def clean_category(self):
-        
-
-       
-            
-        return query_set[0]
 
     def clean_date(self):
         date = self.cleaned_data['date']
