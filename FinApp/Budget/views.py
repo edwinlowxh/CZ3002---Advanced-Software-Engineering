@@ -14,8 +14,8 @@ from .models import Category, Budget
 
 from .constants import(
     CATEGORY_NAME_VAR,
-    CATEGORY_ID_VAR
-
+    CATEGORY_ID_VAR,
+    CATEGORY_TABLE_HEADER,
 )
 
 from .forms.CreateCategoryForm import CreateCategoryForm
@@ -58,8 +58,11 @@ def create_category(request):
             # except Exception as e:
             #     return JsonResponse({'message': 'Failed to create new transaction'})
         elif request.method == 'GET':
-            categories = Category.category_manager.get_categories(user=request.user, is_active = True)
-            return JsonResponse({'categories': [model_to_dict(category) for category in categories]})
+            query_set = Category.category_manager.get_categories(user=request.user, is_active = True)
+            context = {'category_table_header': CATEGORY_TABLE_HEADER}
+            context["categories"] = [model_to_dict(transaction) for transaction in query_set]
+            return render(request, 'categories.html', context)
+            #return JsonResponse({'categories': [model_to_dict(category) for category in categories]})
             
 
 @csrf_exempt

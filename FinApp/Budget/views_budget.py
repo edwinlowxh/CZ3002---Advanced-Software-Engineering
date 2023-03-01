@@ -16,7 +16,8 @@ from .constants import(
     BUDGET_ID_VAR,
     BUDGET_LIMIT_VAR,
     BUDGET_YEAR_VAR,
-    BUDGET_MONTH_VAR
+    BUDGET_MONTH_VAR,
+    BUDGET_TABLE_HEADER
 )
 
 from .models import Category, Budget
@@ -59,8 +60,11 @@ def create_budget(request):
                 return JsonResponse({'Message': 'Failed to create budget', 'errors': form.errors})
 
         elif request.method == 'GET':
-            budgets = Budget.budget_manager.get_budget(user = request.user)
-            return JsonResponse({'budgets': [model_to_dict(budget) for budget in budgets]})
+            query_set = Budget.budget_manager.get_budget(user = request.user)
+            context = {'budget_table_header': BUDGET_TABLE_HEADER}
+            context["budgets"] = [model_to_dict(budget) for budget in query_set]
+            return render(request, 'budget.html', context)
+            
             
 
 @csrf_exempt
