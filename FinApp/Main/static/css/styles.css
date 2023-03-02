@@ -313,8 +313,13 @@ caption {
 }
 
 th {
+  color: #000;
   text-align: inherit;
   text-align: -webkit-match-parent;
+}
+
+thead{
+  font-size: large;
 }
 
 thead,
