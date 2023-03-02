@@ -144,7 +144,7 @@
   
   
 
-    {% if username %}
+    {% if request.user.is_authenticated %}
     <section id="team" class="team" style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
 
       <center><h1 style="margin-top: 70px;"><u>January</u></h1></center>
