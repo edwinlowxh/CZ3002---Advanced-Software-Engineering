@@ -31,10 +31,12 @@ class Budget(models.Model):
     #date = models.DateField(default=now)
     year = models.PositiveIntegerField()
     month = models.PositiveIntegerField()
-    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     budget_manager = BudgetManager()
-
-
+    
+    def __str__(self):
+        return self.category.name
+    
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['user', 'category' , 'year', 'month'], name='unique_user_budget_by_date'),

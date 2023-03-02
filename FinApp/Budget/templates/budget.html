@@ -10,21 +10,20 @@
     
     <div class="col d-flex justify-content-center align-items-center">
         <div class="col-md-9">
-            <table class="table" id="expense-table">
+            <table class="table" id="category-table">
                 <thead>
                     <tr>
-                        {% for header in expense_table_header.values %}
+                        {% for header in budget_table_header.values %}
                             <th scope="col">{{ header }}</th>
                         {% endfor %}
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for transaction in transactions %}
+                    {% for budget in budgets %}
                         <tr>
-                            {% if transaction.type.0 == "EXPENSE" %}
-                                {% for key in expense_table_header %}
-                                    <td>{{ transaction|get:key }}</th>
+                                {% for key in budget_table_header %}
+                                    <td>{{ budget|get:key }}</th>
                                 {% endfor %}
                                 <td>
                                     <a href="#">
@@ -33,7 +32,6 @@
                                         </span>
                                     </a>
                                 </td>
-                            {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>
