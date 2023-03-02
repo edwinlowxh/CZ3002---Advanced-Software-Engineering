@@ -9,9 +9,9 @@
     <!-- Add add transaction button -->
     
     <div class="col d-flex justify-content-center align-items-center">
-        <div class="col-md-9">
-            <table class="table" id="expense-table">
-                <thead>
+        <div class="col-md-9 mt-5">
+            <table class="table table-light table-striped table-hover rounded-3 overflow-hidden" id="expense-table">
+                <thead class="table-info">
                     <tr>
                         {% for header in expense_table_header.values %}
                             <th scope="col">{{ header }}</th>
@@ -30,6 +30,12 @@
                                     <a href="#">
                                         <span class="material-icons">
                                             delete
+                                        </span>
+                                    </a>
+
+                                    <a href="#">
+                                        <span class="material-icons">
+                                            edit
                                         </span>
                                     </a>
                                 </td>

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load template_tags %}
 
 {% block content %}
 
@@ -21,14 +22,9 @@
             <div class="portfolio-info">
               <h3>{{ car.model }} {{ car.spec }}</h3>
               <ul>
-                <li><strong>Current Price</strong>: {{ car.currentPrice }}</li>
-                <li><strong>Depreciation</strong>: {{ car.depreciation }}/month</li>
-                <li><strong>Downpayment</strong>: {{ car.downPayment }}</li>
-                <li><strong>Monthly Installment</strong>: {{ car.installment }}</li>
-                <li><strong>COE</strong>: {{ car.COE }}</li>
-                <li><strong>Road Tax</strong>: {{ car.roadTax }}/month</li>
-                <li><strong>Open Market Value (OMV)</strong>: {{ car.OMV }}</li>
-                <li><strong>Additional Registration Fee (ARF)</strong>: {{ car.ARF }}</li>
+                {% for key, header in car_table_header.items  %}
+                  <li><strong>{{header}}</strong>: {{ car|get:key }}</li>
+                {% endfor %}
               </ul>
             </div>
             <div class="portfolio-description">
@@ -58,19 +54,17 @@
         <table class="table table-bordered table-dark table align-middle">
           <thead>
             <tr>
-              <th scope="col">Source</th>
-              <th scope="col">Destination</th>
-              <th scope="col">Distance</th>
-              <th scope="col">Frequency</th>
+              {% for header in trip_table_header.values %}
+                <td>{{ header}}</td>
+              {% endfor %}
             </tr>
           </thead>
           <tbody>
             {% for trip in trips %}
             <tr>
-              <td>{{ trip.source }}</td>
-              <td>{{ trip.destination }}</td>
-              <td>{{ trip.distance }}</td>
-              <td>{{ trip.frequency }}</td>
+              {% for key in trip_table_header %}
+                <td>{{ trip|model_to_dict|get:key }}</td>
+              {% endfor %}
             </tr>
             {% endfor %}
           </tbody>
@@ -78,14 +72,14 @@
       </div>
 
       <div class="container">
-          <h2 class="float-start col-md-7">Total Mileage: {{ totalMileage }} KM</h2>
+          <h2 class="float-start col-md-7">Total Mileage: {{ total_mileage }} KM</h2>
           <a href="{% url 'trip_delete' car.id %}"><button class="btn btn-outline-dark btn-lg p-3 m-2 float-end" type="submit">Delete Trip</button><a/>
           <!-- <a href="/finance/cashFlow/"><button class="btn btn-outline-dark btn-lg px-5 float-end" type="submit">Add Total Mileage</button><a/> -->
           <form method="POST">
             {% csrf_token %}
             <a href="/finance/cashFlow/"><button type="submit" name="Update Balance Sheet" class="btn btn-outline-dark bt-lg p-3 m-2 float-end">Update Balance Sheet</button><a/>
           </form>
-          <h2 class="float-start col-md-7">Monthly Cost: ${{ totalCost }}</h2>
+          <h2 class="float-start col-md-7">Monthly Cost: ${{ total_cost }}</h2>
       </div>
     </section><!-- End Car Details Section -->
 

@@ -53,7 +53,7 @@ def login(request):
 
         if user is not None:
             django_login(request=request, user=user)
-            return redirect('/')
+            return redirect('home')
 
         if user:
             return JsonResponse({"message": "Logged In"})

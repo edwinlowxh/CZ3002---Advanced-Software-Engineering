@@ -88,24 +88,12 @@ from Budget.views_budget import(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', registration_view, name="register"),
-    path('logout/', logout_view, name="logout"),
-    path('login/', login_view, name="login"),
-    path('account/', account_view, name="account"),
-    path('password_change/', password_change_view, name='password_change'),
+    # path('register/', registration_view, name="register"),
+    # path('logout/', logout_view, name="logout"),
+    # path('login/', login_view, name="login"),
+    # path('account/', account_view, name="account"),
+    # path('password_change/', password_change_view, name='password_change'),
     path('', home_view, name="home"), 
-
-    # Path for finance pages
-    path('finance/questionaire/', questionaire_view, name="questionaire"),
-    path('finance/balanceSheet_Result/', balanceSheet_Result_view, name="balanceSheet_Result"),
-    path('finance/balanceSheet_Edit/', balanceSheet_Edit_view, name="balanceSheet_Edit"),
-    path('finance/cashFlow_Result/', cashFlow_Result_view, name="cashFlow_Result"),
-    path('finance/cashFlow_Edit/', cashFlow_Edit_view, name="cashFlow_Edit"),
-    path('finance/financeHome/', financeHome_view, name="financeHome"),
-    path('finance/formError/', formError_view, name="formError"),
-    path('finance/growWealth/', growWealth_view, name="growWealth"),
-    path('finance/updateUserInfo/', updateUserInfo_View, name="updateUserInfo"),
-    path('finance/updateError/', updateError_view, name="updateError"),
 
     # Car urls
     path('car/search/', search_view, name="car_search"),
@@ -124,9 +112,9 @@ urlpatterns = [
     path('house/costBreakdown/', costBreakdown_view, name = 'costBreakdown'),
 
     # Path for user profile
-    path('profile/register/', register, name="register_new"),
-    path('profile/login/', login, name="login_new"),
-    path('profile/logout/', logout, name="logout_new"),
+    path('register/', register, name="register"),
+    path('login/', login, name="login"),
+    path('logout/', logout, name="logout"),
     path('profile/change_password/', change_password, name="change_password"),
     # path('profile/forget_password/', forget_password, name="forget_password"),
     path('profile/update_information/', update_user_information, name="update_user_information"),
