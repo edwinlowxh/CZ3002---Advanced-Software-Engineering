@@ -46,9 +46,9 @@
       </script>
       <body style="background-repeat: no-repeat; background-size: cover; height: 100vh; background-image: url({% static "nav/assets/img/housedark.jpeg" %});">
         <a href="{% url 'form' %}" class="previous" style="font-size: 60px; margin-left: 50px; color: rgb(255, 255, 255);" >&#8249;</a>
-
-        <div class="carousel-inner">
-          <div class="container" style="width: 60%; margin-top: 70px;">
+        <div style="margin-top: 60px">
+        <div class="carousel-inner" style="width: 70%; display: inline-block;  vertical-align: middle; ">
+          <div class="container" style="width: 80%; ">
             
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
          <ol class="carousel-indicators" style="height: 5px;">
@@ -59,8 +59,8 @@
           <div class="carousel-inner">
             
             <div class="carousel-item active">
-              <div class="portfolio-info d-flex gap-5 w-100" style="background-color: #fff; border-radius: 20px; color: #000;">
-                <div class="d-flex-column w-20">
+              <div class="portfolio-info d-flex gap-5 w-100" style="background-color: #fff; border-radius: 20px; color: #000; vertical-align: middle;">
+                <div class="d-flex-column w-20" >
                   <h3>The most affordable option would be a...</h3>
                   <h4>{{ mostAffordable.type }} in  {{ mostAffordable.location }}</h4>
                   <h6>Price: ${{ mostAffordable.price }}</h6>
@@ -125,17 +125,7 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
           </a>
-           <!-- <div class="portfolio-info d-flex-column gap-5 w-49">
-              <h3>What you can afford</h3>
-              <ul>
-                <li><strong>Max Property Price</strong>: ${{ housingCalculate.max_property_price }}</li>
-                <li><strong>Downpayment</strong>: ${{ housingCalculate.down_payment }}</li>
-                <li><strong>Lump Sum Payment</strong>: ${{ housingCalculate.lump_sum_payment }}</li>
-                <li><strong>Maximum home loan</strong>: ${{ housingCalculate.max_home_loan }}/month</li>
-                <li><strong>Monthly Installment</strong>: ${{ housingCalculate.monthly_installment }}/month</li>
-                <li><strong>Loan Period</strong>: {{ housingCalculate.loan_period }} Years</li>
-              </ul>
-            </div> -->
+           
 
         </div>
 
@@ -193,7 +183,19 @@
             </div> -->
         <!-- </div>
       </div> -->
-      </div>        
+      </div> 
+      <div class="carousel-inner" style=" padding: 3rem; width: 25%; display: inline-block;  vertical-align: middle;  background-color: #fff; border-radius: 20px; color: #000; ">
+              <h3>What you can afford</h3><br><br>
+              
+                <strong>Max Property Price</strong>: ${{ housingCalculate.max_property_price }}<br><br>
+                <strong>Downpayment</strong>: ${{ housingCalculate.down_payment }}<br><br>
+                <strong>Lump Sum Payment</strong>: ${{ housingCalculate.lump_sum_payment }}<br><br>
+                <strong>Maximum home loan</strong>: ${{ housingCalculate.max_home_loan }}/month<br><br>
+                <strong>Monthly Installment</strong>: ${{ housingCalculate.monthly_installment }}/month<br><br>
+                <strong>Loan Period</strong>: {{ housingCalculate.loan_period }} Years
+              
+            </div>       
+          </div>
     </body>
     </section>
 
