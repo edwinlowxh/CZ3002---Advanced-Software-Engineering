@@ -1,5 +1,5 @@
 from django.db import models
-from Main.models import User
+from django.contrib.auth.models import User
 
 from Car.manager.CarManager import CarManager
 from Car.manager.TripManager import TripManager

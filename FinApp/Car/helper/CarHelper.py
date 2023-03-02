@@ -5,12 +5,12 @@ def calc_cost(car: Car, mileage: float):
         insurance = 17500 #Assuming average
         servicing = 10000 #Assuming average
         installment = car.installment * 12 * 10
-        road_tax = car.roadTax * 10
-        remaining_value = car.currentPrice - 10 * car.depreciation
+        road_tax = car.road_tax * 10
+        remaining_value = car.current_price - 10 * car.depreciation
         fuel_cost = 0
 
         
-        fuel_type = car.fuelType
+        fuel_type = car.fuel_type
 
         if ('Petrol' in fuel_type):
             fuel_type = 'Petrol'
@@ -19,7 +19,7 @@ def calc_cost(car: Car, mileage: float):
         else:
             fuel_type = 'Electricity'
 
-        fuel_economy = car.fuelEconomy
+        fuel_economy = car.fuel_economy
 
         if fuel_economy == None:
             fuel_economy = 9.7   #Based on survey average
