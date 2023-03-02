@@ -45,56 +45,24 @@
       </div>
 
       <nav id="navbar" class="navbar">
-        {% if username %}
-          <!-- {% if firstTime %}
-            <ul>
-              <li><a class="nav-link scrollto" href="{% url 'home' %}">Home</a></li>
-              <li class="dropdown"><a href="{% url 'financeHome' %}"><span>Finance</span> <i class="bi bi-chevron-down"></i></a>
-                <ul>
-                  <li><a href="{% url 'questionaire' %}">Questionaire</a></li>
-                </ul>
-              </li>
-              <li class="dropdown"><a class="nav-link scrollto" href="{% url 'form' %}">Housing</a>
-                <!-- <ul>
-                  <li><a href="{% url 'costBreakdown' %}">Housing Report</a></li>
-                </ul> -->
-              <!-- </li>
-              <li><a class="nav-link scrollto" href="{% url 'car_search' %}">Car</a></li>
-              <li class="dropdown"><a href="#"><span>{{username}}</span> <i class="bi bi-chevron-down"></i></a>
-                <ul>
-                  <li><a href="{% url 'account' %}">Account</a></li>
-                  <li><a href="{% url 'logout' %}">Logout</a></li>
-                </ul>
-              </li> 
-            </ul>
-            <i class="bi bi-list mobile-nav-toggle"></i>
-          {% else %} --> 
-            <ul>
-              <!-- <li><a class="nav-link scrollto" href="{% url 'home' %}">Home</a></li> -->
-              <li class="dropdown"><a href="{% url 'financeHome' %}"><span>Tracking</span> <i class="bi bi-chevron-down"></i></a>
-                <ul>
-                  <li><a href="{% url 'balanceSheet_Result' %}">Balance Sheet</a></li>
-                  <li><a href="{% url 'cashFlow_Result' %}">Financial Statement</a></li>
-                </ul>
-              </li>
-              <li class="dropdown"><a class="nav-link scrollto" href="{% url 'growWealth' %}">Report</a>
-              <li class="dropdown"><a class="nav-link scrollto" href="{% url 'form' %}">Housing</a>
-                <!-- <ul>
-                  <li><a href="{% url 'costBreakdown' %}">Housing Report</a></li>
-                </ul> -->
-              </li>
-              <li><a class="nav-link scrollto" href="{% url 'car_search' %}">Car</a></li>
-              <li class="dropdown"><a href="#"><span>{{username}}</span> <i class="bi bi-chevron-down"></i></a>
-                <ul>
-                  <li><a href="{% url 'updateUserInfo' %}">Update User Info</a></li>
-                  <li><a href="{% url 'account' %}">Account</a></li>
-                  <li><a href="{% url 'logout' %}">Logout</a></li>
-                </ul>
-              </li>
-            </ul>
-            <i class="bi bi-list mobile-nav-toggle"></i>
-          <!-- {% endif %} -->
-
+        {% if request.user.is_authenticated %}
+          <ul>
+            <li><a class="nav-link scrollto" href="{% url 'home' %}">Home</a></li>
+            <li class="dropdown"><a class="nav-link scrollto" href="{% url 'form' %}">Housing</a>
+              <!-- <ul>
+                <li><a href="{% url 'costBreakdown' %}">Housing Report</a></li>
+              </ul> -->
+            </li>
+            <li><a class="nav-link scrollto" href="{% url 'car_search' %}">Car</a></li>
+            <li class="dropdown"><a href="#"><span>{{request.user.username}}</span> <i class="bi bi-chevron-down"></i></a>
+              <ul>
+                <li><a href="">Update User Info</a></li>
+                <li><a href="">Account</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+              </ul>
+            </li> 
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle"></i>
         {% endif %}
       </nav><!-- navbar -->
 

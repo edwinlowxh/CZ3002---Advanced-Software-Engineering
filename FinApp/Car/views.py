@@ -1,12 +1,13 @@
+from django.forms import model_to_dict
 from django.shortcuts import render, redirect, reverse
 from django.db.models import Q
+
 from .models import (
     Car,
     Trip,
     UserTrip
 )
-from .carMgr import *
-from .tripMgr import *
+
 from Finance.models import Information
 from Finance.FinanceMgr import *
 
@@ -14,23 +15,20 @@ from Car.helper.CarHelper import(
     calc_cost
 )
 
+from .constants import (
+    CAR_TABLE_HEADER,
+    TRIP_TABLE_HEADER
+)
+
 def search_view(request):
-    if request.session.has_key('username'):
-        username = request.session['username']
-
-        if Information.objects.filter(user = username).exists():
-            firstTime = False
-        else:
-            firstTime = True
-
-        return render(request, 'car/search.html', {"username" : username, "firstTime": firstTime})
+    if request.user.is_authenticated:
+        return render(request, 'car/search.html')
     else:
-        return render(request, 'car/search.html', {})
+        return render(request, 'car/search.html')
 
 
 def results_view(request):
-    if request.session.has_key('username'):
-        username = request.session['username']
+    if request.user.is_authenticated:
 
         query = request.GET.get('search')
         car_list = Car.car_manager.search(query)
@@ -41,18 +39,17 @@ def results_view(request):
         else:
             errors = False
 
-        return render(request, "car/results.html", {"car_list" : car_list, "username" : username, "errors" : errors})
+        return render(request, "car/results.html", {"car_list" : car_list, "errors" : errors})
     else:
         return render(request, 'car/results.html', {})
 
 
 def details_view(request, pk):
-    if request.session.has_key('username'):
-        username = request.session['username']
+    if request.user.is_authenticated:
 
         car = Car.car_manager.get_car(pk)[0]  
-        tripMgr = TripMgr()
-        user = User.user.get(username=username)
+        # tripMgr = TripMgr()
+        user = request.user
         user_trips = UserTrip.user_trip_manager.get_trips(user=user)[0]
         trips = user_trips.trips.all()
         mileage = user_trips.mileage
@@ -60,12 +57,14 @@ def details_view(request, pk):
 
         if request.method == 'POST':  # Add trip
             if 'Add trip' in request.POST:
-                source = request.POST.get('source')
-                destination = request.POST.get('destination')
-                frequency = request.POST.get('frequency')
-                tripMgr.addTrip(source, destination, frequency)
-                tripMgr.addTripDB()
-                tripMgr.addUserTripDB(user)
+                # source = request.POST.get('source')
+                # destination = request.POST.get('destination')
+                # frequency = request.POST.get('frequency')
+                # tripMgr.addTrip(source, destination, frequency)
+                # tripMgr.addTripDB()
+                # tripMgr.addUserTripDB(user)
+
+                # TODO: Take reference from code on top and implement with new TripManager.py
                 return redirect(reverse('car_details', kwargs={'pk': pk}))
             elif 'Update Balance Sheet' in request.POST:
                 financeMgr = FinanceMgr(user)
@@ -87,11 +86,12 @@ def details_view(request, pk):
                 return redirect("/../finance/balanceSheet_Result/")
 
         context={
-            'car':car,
+            'car':model_to_dict(car),
             'trips':trips,
-            'totalMileage':mileage / 1000,
-            'username':username,
-            'totalCost': round(totalCost, 2),
+            'total_mileage':mileage / 1000,
+            'total_cost': round(totalCost, 2),
+            'car_table_header': CAR_TABLE_HEADER,
+            'trip_table_header': TRIP_TABLE_HEADER
         }
 
         return render(request, "car/details.html", context)
@@ -100,24 +100,16 @@ def details_view(request, pk):
 
 
 def trip_delete(request, pk):
-
-    if request.session.has_key('username'):
-        username = request.session['username']
-
-        if Information.objects.filter(user = username).exists():
-            firstTime = False
-        else:
-            firstTime = True
-
+    if request.user.is_authenticated:
         if request.method == 'POST':
             return redirect(reverse('car_details', kwargs={'pk': pk}))
-        tripMgr = TripMgr()
-        user = User.user.get(username=username)
-        trips = tripMgr.getUserTripDB(user)
+        # tripMgr = TripMgr()
+        # trips = tripMgr.getUserTripDB(request.user)
 
-        tripMgr.deleteTrip(-1)
-        tripMgr.addUserTripDB(user)
+        # tripMgr.deleteTrip(-1)
+        # tripMgr.addUserTripDB(request.user)
+        # TODO: Take reference from code on top and implement with new TripManager.py
 
-        return render(request, 'car/trip_delete.html', {"username" : username, "firstTime": firstTime})
+        return render(request, 'car/trip_delete.html')
     else:
-        return render(request, 'car/trip_delete.html', {})
+        return render(request, 'car/trip_delete.html')

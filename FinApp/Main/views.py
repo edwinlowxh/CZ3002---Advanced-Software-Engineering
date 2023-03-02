@@ -104,14 +104,8 @@ def logout_view(request):
 # - Check if user information populated
 
 def home_view(request):
-    if request.session.has_key('username'):
-        username = request.session['username']
-
-        if Information.objects.filter(user = username).exists():
-            return render(request, 'home.html', {"username": username})
-        else:
-            firstTime = True
-            return render(request, 'home.html', {"username": username,"firstTime": firstTime})
+    if request.user.is_authenticated:
+        return render(request, 'home.html')
     else:
         return render(request, 'home.html', {})
 
