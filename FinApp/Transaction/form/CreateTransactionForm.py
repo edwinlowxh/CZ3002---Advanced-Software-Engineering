@@ -25,17 +25,7 @@ class CreateTransactionForm(forms.Form):
     category = forms.CharField(max_length=255, required=False)
     date = forms.DateField(input_formats=['%d/%m/%Y'], required=False)
     description = forms.CharField(max_length=255, required=False)
-    
 
-    def clean_category(self):
-        category = self.cleaned_data['category']
-        user = self.cleaned_data['user']
-        query_set = Category.category_manager.retrieve_category(user=user).filter(name=category)
-
-        if not query_set:
-            raise forms.ValidationError(f"Category {category} does not exist")
-            
-        return query_set[0]
 
     def clean_date(self):
         date = self.cleaned_data['date']
@@ -53,7 +43,14 @@ class CreateTransactionForm(forms.Form):
             if not category:
                 raise forms.ValidationError(f"Please provide a category for expense")
             else:
-                return category
+                category = self.cleaned_data['category']
+                user = self.cleaned_data['user']
+                query_set = Category.category_manager.get_categories(user=user).filter(name=category)
+
+                if not query_set:
+                    raise forms.ValidationError(f"Category {category} does not exist")
+                else:
+                    return query_set[0]          
         else:
             return None
 
