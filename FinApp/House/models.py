@@ -1,7 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 # from Main.models import *
 from Finance.models import *
-from Main.models import *
 from multiselectfield import MultiSelectField
 
 from House.manager import (
