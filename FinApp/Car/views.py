@@ -52,7 +52,6 @@ def details_view(request, pk):
         user = request.user
         user_trips = UserTrip.user_trip_manager.get_trips(user=user)[0]
         trips = user_trips.trips.all()
-        print(trips)
         mileage = user_trips.mileage
         totalCost = calc_cost(car, mileage)
 
