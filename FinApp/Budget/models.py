@@ -34,7 +34,9 @@ class Budget(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     budget_manager = BudgetManager()
     
-
+    def __str__(self):
+        return self.category.name
+    
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['user', 'category' , 'year', 'month'], name='unique_user_budget_by_date'),

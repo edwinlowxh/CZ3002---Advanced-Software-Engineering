@@ -31,7 +31,7 @@ class CreateBudgetForm(forms.Form):
         if not query_set:
             raise forms.ValidationError(f"Category {category} does not exist")
         else:
-            return query_set[0]     
+            return query_set[0]   
         
      
 
