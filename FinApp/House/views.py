@@ -141,36 +141,36 @@ def costBreakdown_view(request):
 
                 # Sort the list of resale properties by price
                 resale_flat_list = sorted(resale_flat_list, key=lambda x: x[2])
-                most_affordable = resale_flat_list[0]
-                max_affordable = resale_flat_list[-1]
-                suggested_properties = []
-                for location, property_type, property_price in [most_affordable, max_affordable]:                
-                    max_LTV = calculate_max_LTV(property_price)
-                    monthly_installment = calculate_monthly_installment(max_LTV=max_LTV, period=LOAN_PERIOD)
-                    down_payment = calculate_down_payment(property_price)
-                    option_fee = calculate_option_fee([property_type])
-                    stamp_duty = calculate_stamp_duty(property_price)
-                    lump_sum_payment = down_payment + option_fee + stamp_duty
+                # most_affordable = resale_flat_list[0]
+                # max_affordable = resale_flat_list[-1]
+                # suggested_properties = []
+                # for location, property_type, property_price in [most_affordable, max_affordable]:                
+                #     max_LTV = calculate_max_LTV(property_price)
+                #     monthly_installment = calculate_monthly_installment(max_LTV=max_LTV, period=LOAN_PERIOD)
+                #     down_payment = calculate_down_payment(property_price)
+                #     option_fee = calculate_option_fee([property_type])
+                #     stamp_duty = calculate_stamp_duty(property_price)
+                #     lump_sum_payment = down_payment + option_fee + stamp_duty
 
-                    suggested_properties.append({
-                        'location' : location,
-                        'type' : property_type,
-                        'price' : property_price,
-                        "maxLTV" : max_LTV,
-                        'period' : 25,
-                        'monthlyInstallment' : round(monthly_installment, 1),
-                        'downPayment' : down_payment,
-                        'buyerStampDuties' : stamp_duty,
-                        'lumpSumPayment' : lump_sum_payment
-                    })
+                #     suggested_properties.append({
+                #         'location' : location,
+                #         'type' : property_type,
+                #         'price' : property_price,
+                #         "maxLTV" : max_LTV,
+                #         'period' : 25,
+                #         'monthlyInstallment' : round(monthly_installment, 1),
+                #         'downPayment' : down_payment,
+                #         'buyerStampDuties' : stamp_duty,
+                #         'lumpSumPayment' : lump_sum_payment
+                #     })
 
-                    # Round values
-                    for key, value in user_housing_financials.items():
-                        if (key != 'loanPeriod'):
-                            user_housing_financials[key] = round(value, 1)
+                #     # Round values
+                #     for key, value in user_housing_financials.items():
+                #         if (key != 'loanPeriod'):
+                #             user_housing_financials[key] = round(value, 1)
 
-                return render(request, "house/costBreakdown.html", {'mostAffordable': suggested_properties[0], 'maxAffordable': suggested_properties[1], 'housingCalculate': user_housing_financials})
-
+                # return render(request, "house/costBreakdown.html", {'mostAffordable': suggested_properties[0], 'maxAffordable': suggested_properties[1], 'housingCalculate': user_housing_financials})
+            return render(request, "house/costBreakdown.html", {'mostAffordable': 1, 'maxAffordable': 1, 'housingCalculate': 1, 'username': 1, "firstTime": 1})
         except Exception as e:
             print(traceback.format_exc())
             return redirect("/house/form/")
