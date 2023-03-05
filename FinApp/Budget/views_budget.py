@@ -8,7 +8,11 @@ from django.http import JsonResponse
 
 from django.db import utils
 
+from django.core import serializers
+
 from FinApp.decorators import basic_auth
+
+import json
 
 from .constants import(
     CATEGORY_NAME_VAR,
@@ -41,7 +45,6 @@ def create_budget(request):
             form = CreateBudgetForm(form_data)
             
             if form.is_valid():
-                print(form.cleaned_data)
                 category = form.cleaned_data["category"]
                 year = form.cleaned_data["year"]
                 month = form.cleaned_data["month"]
@@ -62,7 +65,15 @@ def create_budget(request):
         elif request.method == 'GET':
             query_set = Budget.budget_manager.get_budget(user = request.user)
             context = {'budget_table_header': BUDGET_TABLE_HEADER}
-            context["budgets"] = [model_to_dict(budget) for budget in query_set]
+
+            serialized_data = json.loads(serializers.serialize('json', query_set, use_natural_foreign_keys=True, use_natural_primary_keys=True))
+            for data in serialized_data:
+                budget = data["fields"]
+                del budget["user"]
+                budget.update({"id": data["pk"]})
+
+            context["budgets"] = [budget['fields'] for budget in serialized_data]
+
             return render(request, 'budget.html', context)
             
             
