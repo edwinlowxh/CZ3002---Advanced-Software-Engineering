@@ -70,14 +70,18 @@ def create_transaction(request):
                 new_transaction = Transaction.transaction_manager.create_transaction(
                     **form.cleaned_data
                 )
-                return JsonResponse(model_to_dict(new_transaction))
+                context = model_to_dict(new_transaction)
+                return JsonResponse(context)
+                return render(request, "", context)
             else:
                 return JsonResponse({'message': 'Failed to create transaction', 'errors': form.errors})
             # except Exception as e:
             #     return JsonResponse({'message': 'Failed to create new transaction'})
         elif request.method == 'GET':
             categories = Category.category_manager.get_categories(user=request.user)
-            return JsonResponse({'categories': [model_to_dict(category) for category in categories]})
+            context = {'categories': [model_to_dict(category) for category in categories]}
+            return JsonResponse(context)
+            return render(request, "", context)
 
 @csrf_exempt
 @basic_auth
@@ -121,6 +125,13 @@ def update_transaction(request):
 
             except Exception as e:           
                 return JsonResponse({'message': 'Failed to update transaction'})
+            
+        elif request.method == 'GET':
+            transaction_id = request.POST.get(TRANSACTION_ID_VAR)
+            transaction = Transaction.transaction_manager.retrieve_transaction(user=request.user, id=transaction_id)
+            context = {model_to_dict(transaction)}
+            return JsonResponse(context)
+            return render(request, "", context)
 
 
             
