@@ -2,6 +2,8 @@ from django.contrib.auth import login, logout, authenticate
 
 from django.http import HttpResponse, HttpRequest
 
+from django.core.handlers.wsgi import WSGIRequest
+
 import base64
 
 from typing import Callable
@@ -18,21 +20,19 @@ def basic_auth(view_func: Callable[[HttpRequest], HttpResponse]) -> HttpResponse
             if len(auth) == 2:
                 if auth[0].lower() == "basic":
                     username, password = base64.b64decode(auth[1]).decode('utf-8').split(':')
-                    return (username, password)
+                    return (username, password), True
         else:
-            return None
+            return None, False
 
     def check_basic_auth(request):
-        credentials = get_basic_auth(request)
-
-        if credentials:
+        credentials, is_basic_auth = get_basic_auth(request)
+        if is_basic_auth:
             user = authenticate(username=credentials[0], password=credentials[1])
             if user is not None:
                 if user.is_active:
                     login(request, user)
 
         response = view_func(request)
-        logout(request)
         return response
 
     return check_basic_auth
