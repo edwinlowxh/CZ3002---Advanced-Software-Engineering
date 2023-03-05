@@ -104,7 +104,7 @@ def forget_password(request):
     pass
 
 @csrf_exempt
-@basic_auth
+# @basic_auth
 def update_user_information(request):
     if request.user.is_authenticated:
         if request.method == "POST":
@@ -122,7 +122,12 @@ def update_user_information(request):
             try:
                 query_set = UserInformation.user_information_manager.retrieve_user_information(user = request.user)
                 user_information = query_set.get(user = request.user)
-                return JsonResponse(model_to_dict(user_information))
+                context = model_to_dict(user_information)
+                context['date_of_birth'] = context['date_of_birth'].strftime("%Y-%m-%d")
+                print(context)
+                # return JsonResponse(model_to_dict(user_information))
+                print("rendering")
+                return render(request, 'update_information.html', context)
             except Exception as e:
                 print(e)
                 return JsonResponse({"message": "Failed to retrieve user information"})
