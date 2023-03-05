@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 
 from uuid import uuid4
 
+from datetime import datetime
+
 import time
 
 
@@ -197,8 +199,9 @@ if __name__ == '__main__':
             start += equal_interval
     print(intervals)
 
-    
-    filename = f"./price_list/car_price_{uuid4()}.csv"
+    now = datetime.now()
+    formatted_date = now.strftime("%Y%m%d%H%M%S")
+    filename = f"./price_list/car_price_{formatted_date}.csv"
     f = open(filename, "w")
 
     # Write header
