@@ -71,8 +71,8 @@ def create_transaction(request):
                     **form.cleaned_data
                 )
                 context = model_to_dict(new_transaction)
-                return JsonResponse(context)
-                return render(request, "", context)
+                # return JsonResponse(context)
+                return render(request, 'transaction.html', context)
             else:
                 return JsonResponse({'message': 'Failed to create transaction', 'errors': form.errors})
             # except Exception as e:
@@ -80,8 +80,8 @@ def create_transaction(request):
         elif request.method == 'GET':
             categories = Category.category_manager.get_categories(user=request.user)
             context = {'categories': [model_to_dict(category) for category in categories]}
-            return JsonResponse(context)
-            return render(request, "", context)
+            # return JsonResponse(context)
+            return render(request, 'transaction.html', context)
 
 @csrf_exempt
 @basic_auth

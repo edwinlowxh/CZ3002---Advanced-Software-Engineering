@@ -4,11 +4,11 @@
 
 {% block content %}
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<div class="row d-flex justify-content-center align-items-center h-70">
+<!-- <div class="row d-flex justify-content-center align-items-center h-70"> -->
     <!-- Add Toggle button between income and expenses -->
     <!-- Add add transaction button -->
     
-    <div class="col d-flex justify-content-center align-items-center">
+    <!-- <div class="col d-flex justify-content-center align-items-center">
         <div class="col-md-9 mt-5">
             <table class="table table-light table-striped table-hover rounded-3 overflow-hidden" id="expense-table">
                 <thead class="table-info">
@@ -45,8 +45,51 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> -->
 
     <!-- Add Modal Form which will popup on clicking add transaction button -->
-</div>
+<!-- </div> -->
+
+
+
+<body style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
+    
+    <div style="text-align: center;">
+    <div class="btn-group align-middle" role="group" aria-label="Basic radio toggle button group" style="margin-top: 80px;" >
+        <input type="radio" class="btn-check" name="btnradio" id="expenses" autocomplete="off" checked>
+        <label class="btn btn-outline-secondary btn-lg" for="expenses">Expenses</label>
+      
+        <input type="radio" class="btn-check" name="btnradio" id="income" autocomplete="off">
+        <label class="btn btn-outline-secondary btn-lg" for="income">Income</label>
+      
+      </div>
+      </div>
+      <div id="content">
+        <!-- <p>This is the inital content, set to expenses.</p> -->
+      </div>
+     
+<!-- <div style="text-align: center;">
+    <button type="button" class="btn btn-outline-secondary btn-lg align-middle"><span class="material-icons align-middle" style="margin-right: 5px;">
+        add
+    </span>Add Expense</button>
+</div> -->
+<script>
+    // Get the radio buttons and the content element
+    var expensesBtn = document.getElementById("expenses");
+    var incomeBtn = document.getElementById("income");
+    var contentDiv = document.getElementById("content");
+
+    // // Set the initial content
+    contentDiv.innerHTML = "<center><h1 style='margin-top: 60px;'><u>Expenses</u></h1></center><div class='container d-flex align-items-center justify-content-between'><table class='table table-hover table-dark' id='category-table' style='margin-top: 80px; width:80%; margin:80px auto;border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;'><thead><tr>{% for header in expense_table_header.values %}<th scope='col'>{{ header }}</th>{% endfor %}<th scope='col' style='width: 30%;'></th></tr></thead><tbody>{% for transaction in transactions %}<tr>{% if transaction.type.0 == 'EXPENSE' %}{% for key in expense_table_header %}<td>{{ transaction|get:key }}</th>{% endfor %}<td><a href='#' style='margin-right: 20px;'><span class='material-icons'>delete</span></a><a href='#' style='margin-right: 20px;'><span class='material-icons'>edit</span></a></td>{% endif %}</tr>{% endfor %}</tbody></table></div><div style='text-align: center;'><button type='button' class='btn btn-outline-secondary btn-lg align-middle'><span class='material-icons align-middle' style='margin-right: 5px;'>add</span>Add Expense</button></div>";
+
+    // Add event listeners to the radio buttons
+    expensesBtn.addEventListener("click", function() {
+      contentDiv.innerHTML = "<center><h1 style='margin-top: 60px;'><u>Expenses</u></h1></center><div class='container d-flex align-items-center justify-content-between'><table class='table table-hover table-dark' id='category-table' style='margin-top: 80px; width:80%; margin:80px auto;border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;'><thead><tr>{% for header in expense_table_header.values %}<th scope='col'>{{ header }}</th>{% endfor %}<th scope='col' style='width: 30%;'></th></tr></thead><tbody>{% for transaction in transactions %}<tr>{% if transaction.type.0 == 'EXPENSE' %}{% for key in expense_table_header %}<td>{{ transaction|get:key }}</th>{% endfor %}<td><a href='#' style='margin-right: 20px;'><span class='material-icons'>delete</span></a><a href='#' style='margin-right: 20px;'><span class='material-icons'>edit</span></a></td>{% endif %}</tr>{% endfor %}</tbody></table></div><div style='text-align: center;'><button type='button' class='btn btn-outline-secondary btn-lg align-middle'><span class='material-icons align-middle' style='margin-right: 5px;'>add</span>Add Expense</button></div>";});
+
+    incomeBtn.addEventListener("click", function() {
+        contentDiv.innerHTML = "<center><h1 style='margin-top: 60px;'><u>Income</u></h1></center><div class='container d-flex align-items-center justify-content-between'><table class='table table-hover table-dark' id='category-table' style='margin-top: 80px; width:80%; margin:80px auto;border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;'><thead><tr>{% for header in expense_table_header.values %}<th scope='col'>{{ header }}</th>{% endfor %}<th scope='col' style='width: 30%;'></th></tr></thead><tbody>{% for transaction in transactions %}<tr>{% if transaction.type.0 == 'EXPENSE' %}{% for key in expense_table_header %}<td>{{ transaction|get:key }}</th>{% endfor %}<td><a href='#' style='margin-right: 20px;'><span class='material-icons'>delete</span></a><a href='#' style='margin-right: 20px;'><span class='material-icons'>edit</span></a></td>{% endif %}</tr>{% endfor %}</tbody></table></div><div style='text-align: center;'><button type='button' class='btn btn-outline-secondary btn-lg align-middle'><span class='material-icons align-middle' style='margin-right: 5px;'>add</span>Add Income</button></div>";});
+
+  </script>
+  
+</body>
 {% endblock %}
