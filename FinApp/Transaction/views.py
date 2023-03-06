@@ -61,27 +61,24 @@ def get_transactions(request, start_date: str = None, end_date: str = None):
 def create_transaction(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            form_data = CreateTransactionForm.map_json(request.POST.dict())
-            form_data['user'] = request.user
-            form = CreateTransactionForm(form_data)
+            form_data = CreateTransactionForm.map_fields(request.POST.dict())
+            form = CreateTransactionForm(request.user, **form_data)
 
             if form.is_valid():
-                print(form.cleaned_data)
                 new_transaction = Transaction.transaction_manager.create_transaction(
+                    user=request.user,
                     **form.cleaned_data
                 )
                 context = model_to_dict(new_transaction)
-                return JsonResponse(context)
+                return JsonResponse(context, status=201)
                 return render(request, "", context)
             else:
-                return JsonResponse({'message': 'Failed to create transaction', 'errors': form.errors})
-            # except Exception as e:
-            #     return JsonResponse({'message': 'Failed to create new transaction'})
+                return JsonResponse({'message': 'Failed to create transaction', 'errors': CreateTransactionForm.map_fields(form.errors, reverse=True)}, status=422)
         elif request.method == 'GET':
             categories = Category.category_manager.get_categories(user=request.user)
             context = {'categories': [model_to_dict(category) for category in categories]}
-            return JsonResponse(context)
-            return render(request, "", context)
+            # return JsonResponse(context)
+            return render(request, "transaction.html", context)
 
 @csrf_exempt
 @basic_auth
@@ -104,14 +101,12 @@ def update_transaction(request):
             transaction_id = request.POST.get(TRANSACTION_ID_VAR)
 
             try:
-                form_data = CreateTransactionForm.map_json(request.POST.dict())
-                form_data['user'] = request.user
-                form = CreateTransactionForm(form_data)
-                
+                form_data = CreateTransactionForm.map_fields(request.POST.dict())
+                form = CreateTransactionForm(request.user, form_data)
 
                 if form.is_valid():
-                    print(form.cleaned_data)
                     updated_transaction = Transaction.transaction_manager.update_transaction(
+                        user=request.user,
                         id=transaction_id,
                         **form.cleaned_data
                     )
@@ -121,7 +116,7 @@ def update_transaction(request):
                     else:
                         return JsonResponse(model_to_dict(updated_transaction))
                 else:
-                    return JsonResponse({'message': 'Failed to update transaction', 'errors': form.errors})
+                    return JsonResponse({'message': 'Failed to update transaction', 'errors': CreateTransactionForm.map_fields(form.errors, reverse=True)})
 
             except Exception as e:           
                 return JsonResponse({'message': 'Failed to update transaction'})

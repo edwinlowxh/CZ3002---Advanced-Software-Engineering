@@ -8,8 +8,8 @@
     <!-- Add Toggle button between income and expenses -->
     <!-- Add add transaction button -->
     
-    <div class="col d-flex justify-content-center align-items-center">
-        <div class="col-md-9 mt-5">
+    <div class="col-12 d-flex justify-content-center align-items-center mt-5">
+        <div>
             <table class="table table-light table-striped table-hover rounded-3 overflow-hidden" id="expense-table">
                 <thead class="table-info">
                     <tr>
@@ -47,6 +47,53 @@
         </div>
     </div>
 
-    <!-- Add Modal Form which will popup on clicking add transaction button -->
+    <div class="col d-flex justify-content-center align-items-center">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal">
+        + Add Transaction
+        </button>
+    </div>   
 </div>
+
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="formModalLabel" style="color: black;">Add Transaction</h5>
+            <button type="button" class="btn btn-secondary" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-floating mt-2">
+                    <input type="date" class="form-control" id="transaction_date" min="1900-01-01">
+                    <label for="transaction-amount" style="color:black">Date</label>
+                </div>
+                <div class="form-floating mt-2">
+                    <input type="number" class="form-control" id="transaction_amount">
+                    <label for="transaction-amount" style="color:black">Amount</label>
+                </div>
+
+                <div class="form-floating mt-2">
+                    <select class="form-select" id="transaction_type">
+                        <option value="INCOME" selected>Income</option>
+                        <option value="EXPENSE">Expense</option>
+                    </select>
+                    <label for="transaction-type" style="color:black">Transaction Type</label>
+                </div>
+
+                <div class="form-floating mt-2">
+                    <textarea class="form-control" placeholder="Description" id="transaction_description" style="height: 100px"></textarea>
+                    <label for="floatingTextarea2" style="color:grey">Description</label>
+                </div>
+            </form>
+            <div>
+                table-striped
+                test
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
