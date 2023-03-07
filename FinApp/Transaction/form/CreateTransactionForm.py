@@ -19,13 +19,18 @@ from Budget.constants import(
 from Budget.models import Category
 
 class CreateTransactionForm(forms.Form):
-    user = forms.ModelChoiceField(queryset=User.objects.all())
     type = forms.ChoiceField(choices=[choice for choice in TRANSACTION_TYPE], required=True)
     amount = forms.CharField(required=True)
     category = forms.CharField(max_length=255, required=False)
-    date = forms.DateField(input_formats=['%d/%m/%Y'], required=False)
+    date = forms.DateField(input_formats=['%d/%m/%Y'], required=False, widget=forms.DateInput)
     description = forms.CharField(max_length=255, required=False)
 
+    def __init__(self, user: User = None, **kwargs):
+        if not user:
+            super().__init__(None)
+        else:
+            super().__init__(kwargs)
+        self.user = user
 
     def clean_date(self):
         date = self.cleaned_data['date']
@@ -37,15 +42,14 @@ class CreateTransactionForm(forms.Form):
 
     def clean_category(self):
         category = self.cleaned_data['category']
-        _type = self.cleaned_data['type']
+        _type = self.data.get('type')
 
         if _type == 'EXPENSE':
             if not category:
                 raise forms.ValidationError(f"Please provide a category for expense")
             else:
                 category = self.cleaned_data['category']
-                user = self.cleaned_data['user']
-                query_set = Category.category_manager.get_categories(user=user).filter(name=category)
+                query_set = Category.category_manager.get_categories(user=self.user).filter(name=category)
 
                 if not query_set:
                     raise forms.ValidationError(f"Category {category} does not exist")
@@ -56,14 +60,24 @@ class CreateTransactionForm(forms.Form):
 
 
     @staticmethod
-    def map_json(json_data):
-        mapping = {
-            CATEGORY_NAME_VAR: 'category',
-            TRANSACTION_AMOUNT_VAR: 'amount',
-            TRANSACTION_DATE_VAR: 'date',
-            TRANSCATION_DESCRIPTION_VAR: 'description',
-            TRANSACTION_TYPE_VAR: 'type'
-        }
+    def map_fields(json_data: dict, reverse: bool = False):
+        if not reverse:
+            mapping = {
+                CATEGORY_NAME_VAR: 'category',
+                TRANSACTION_AMOUNT_VAR: 'amount',
+                TRANSACTION_DATE_VAR: 'date',
+                TRANSCATION_DESCRIPTION_VAR: 'description',
+                TRANSACTION_TYPE_VAR: 'type'
+            }
+        elif reverse:
+            mapping = {
+                'category': CATEGORY_NAME_VAR,
+                'amount': TRANSACTION_AMOUNT_VAR,
+                'date': TRANSACTION_DATE_VAR,
+                'description': TRANSCATION_DESCRIPTION_VAR,
+                'type': TRANSACTION_TYPE_VAR
+            }
+
         mapped_data = {}
         for key, value in json_data.items():
             if key in mapping:
