@@ -6,10 +6,16 @@
 <!-- ======= Car Search Section ======= -->
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-  <div class="container">
+<div style="background-image: url('/static/nav/assets/img/car_background.jpeg');
+background-repeat: no-repeat;
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+background-color: rgba(245, 245, 245, 0.5)"> 
+<div class="container" >  <!-- HELP! how to change transparency of background? AND how to make the background fill out the whole page?-->
     <div class="d-flex flex-column justify-content-center align-items-center vh-100">
     <div class="col-12 col-md-9 col-lg-7 col-xl-8">
-      <div class="card bg-dark text-white" style="border-radius: 15px;">
+      <div class="card bg-dark text-white">
         <div class="card-body row no-gutters align-items-center">
 
           <form method="get" class="d-flex row" action="{% url 'car_results' %}">{% csrf_token %}
@@ -30,5 +36,5 @@
     </div>
     </div>
   </div><!-- End Car Search Section -->
-
+</div> 
 {% endblock %}
