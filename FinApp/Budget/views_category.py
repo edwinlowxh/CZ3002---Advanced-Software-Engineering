@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.forms import model_to_dict
 
@@ -22,23 +22,18 @@ from .forms.CreateCategoryForm import CreateCategoryForm
 
 # Create your views here.
 
-@csrf_exempt
-@basic_auth
-def create_category(request):
+def get_category(request):
     if request.user.is_authenticated:
-        if request.method == 'POST':
-            category_name = request.POST.get(CATEGORY_NAME_VAR, default=None)
-            if category_name:
-                try:
-                    new_category = Category.category_manager.create_category(user=request.user, name=request.POST[CATEGORY_NAME_VAR])
-                    return JsonResponse(data=model_to_dict(new_category))
-                except utils.IntegrityError:
-                    return JsonResponse(data={'message': 'Category exists'})
-            else:
-                return JsonResponse(data={'message': 'Please provide a name for your category'})
+        if request.method == 'GET':
+            context = {'category_table_header': CATEGORY_TABLE_HEADER}   
+            query_set = Category.category_manager.get_categories(user = request.user, is_active = True)         
+            context['categories'] = [model_to_dict(category) for category in query_set]
+            print(request.user, context)
+            return render(request, 'categories.html', context)
+    else:
+        return redirect('/profile/login')
 
 @csrf_exempt
-@basic_auth
 def create_category(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -47,26 +42,22 @@ def create_category(request):
             form = CreateCategoryForm(update=False, **form_data)
             
             if form.is_valid():
-                print(form.cleaned_data)
                 new_category = Category.category_manager.create_category(
                     **form.cleaned_data
                 )
-                return JsonResponse(model_to_dict(new_category))
+                context = model_to_dict(new_category)
+                return JsonResponse(context, status = 201)
+                return render(request,"", context)
             else:
-                return JsonResponse({'message': 'Failed to create category', 'errors': form.errors})
-
-            # except Exception as e:
-            #     return JsonResponse({'message': 'Failed to create new transaction'})
-        elif request.method == 'GET':
-            query_set = Category.category_manager.get_categories(user=request.user, is_active = True)
-            context = {'category_table_header': CATEGORY_TABLE_HEADER}
-            context["categories"] = [model_to_dict(transaction) for transaction in query_set]
-            return render(request, 'categories.html', context)
-            #return JsonResponse({'categories': [model_to_dict(category) for category in categories]})
+                return JsonResponse({'message': 'Failed to create category', 'errors': CreateCategoryForm.map_fields(form.errors, reverse=True)}, status=422)
             
-
+        elif request.method == 'GET':
+            context = {'category_table_header': CATEGORY_TABLE_HEADER}  
+            query_set = Category.category_manager.get_categories(user = request.user, is_active = True)         
+            context['categories'] = [model_to_dict(category) for category in query_set]
+            return render(request, "categories.html", context)    
+                        
 @csrf_exempt
-@basic_auth
 def delete_category(request):
      if request.user.is_authenticated:
         if request.method == 'POST':
@@ -78,7 +69,6 @@ def delete_category(request):
                 return JsonResponse({'message': 'Failed to delete category'})
 
 @csrf_exempt
-@basic_auth
 def update_category(request):
      if request.user.is_authenticated:
         if request.method == 'POST':

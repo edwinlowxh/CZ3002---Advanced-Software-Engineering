@@ -74,18 +74,28 @@ from Transaction.views import(
     update_transaction
 )
 
-from Budget.views import(
+from Budget.views_category import(
     create_category,
     delete_category,
-    update_category
+    update_category,
+    get_category
 )
 
 from Budget.views_budget import(
+    get_budget,
     create_budget,
     delete_budget,
     update_budget
 )
 
+from Budget.views_home import (
+    get_budget_home,
+  )
+
+{
+  
+
+}
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('register/', registration_view, name="register"),
@@ -126,14 +136,18 @@ urlpatterns = [
     path('transactions/update', update_transaction, name = 'update_transactions'),
 
     # Path for category
+    path('categories/', get_category, name='get_category'),
     path('budget/create_category', create_category, name='create_category'),
     path('budget/delete_category', delete_category, name='delete_category'),
     path('budget/update_category', update_category, name='update_category'),
 
     # Path for budget
+    path('budgets/', get_budget, name='get_budget'),
     path('budget/create_budget', create_budget, name='create_budget'),
     path('budget/delete_budget', delete_budget, name='delete_budget'),
     path('budget/update_budget', update_budget, name='update_budget'),
+
+     path('budget/get_home_budget', get_budget_home, name='get_budget_home'),
 ]
 
 if settings.DEBUG:
