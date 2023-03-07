@@ -4,9 +4,11 @@
 {% block content %}
 
     <!-- ======= Car Results Section ======= -->
+    <a data-aos="fade-up" data-aos-delay="100" href="{% url 'car_search' %}" class="previous" style="font-size: 60px; margin-left: 50px; color: rgb(255, 255, 255);" >&#8249;</a>
     <div class="container">
-        <div class="section-title pt-5 pb-1" data-aos="fade-up" data-aos-delay="100">
-            <h2>Select a Car</h2>
+        <div class="section-title pb-1" data-aos="fade-up" data-aos-delay="100">
+          
+            <h1>Select a Car</h1>
             {% if errors %}
               <h2 style="color: red; text-align: center;">Car model not found!</h2>
               <a href="{% url 'car_search' %}"><button class="btn btn-outline-dark btn-lg px-5" type="submit">Return to search</button></a>
