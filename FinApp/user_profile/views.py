@@ -42,7 +42,7 @@ def register(request):
         else:
             return JsonResponse({"message": "Failed Registration", "error": form.errors})         
     elif request.method == "GET":
-        return JsonResponse({}) 
+        return render(request, 'accounts/register.html')
 
 @csrf_exempt
 def login(request):
@@ -72,7 +72,7 @@ def logout(request):
         logout(request)
     except:
         pass
-    return JsonResponse({"message": "Logged Out"})
+    return redirect('home')
 
 @csrf_exempt
 @basic_auth
