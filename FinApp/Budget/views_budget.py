@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from django.forms import model_to_dict
 
@@ -8,11 +8,7 @@ from django.http import JsonResponse
 
 from django.db import utils
 
-from django.core import serializers
-
 from FinApp.decorators import basic_auth
-
-import json
 
 from .constants import(
     CATEGORY_NAME_VAR,
@@ -29,10 +25,39 @@ from .models import Category, Budget
 from .forms.CreateBudgetForm import CreateBudgetForm
 
 # Create your views here.
-
-
 @csrf_exempt
 @basic_auth
+def get_budget(request):
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+    
+            user = request.user
+            year = 2023 #request.GET.get(BUDGET_YEAR_VAR)
+            month = 1 #request.GET.get(BUDGET_MONTH_VAR)
+            
+            context = {'budget_table_header': BUDGET_TABLE_HEADER}
+            categories = Category.category_manager.get_categories(user = user, is_active = True)
+            
+            category_list = []
+            for category in categories:
+                category_dict = model_to_dict(category)
+                category_dict["category"] = category.name
+                query = Budget.budget_manager.get_budget(user=user, category = category, year = year, month = month)
+                if query:
+                   category_dict["limit"] = query[0].limit
+                else:
+                   category_dict["limit"] = 0
+                category_list.append(category_dict)
+
+            context['budgets'] =  category_list
+
+            print(request.user, context)
+            return render(request, 'budget.html', context)
+    else:
+        return redirect('/profile/login')
+        
+
+@csrf_exempt
 def create_budget(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -45,6 +70,7 @@ def create_budget(request):
             form = CreateBudgetForm(form_data)
             
             if form.is_valid():
+                print(form.cleaned_data)
                 category = form.cleaned_data["category"]
                 year = form.cleaned_data["year"]
                 month = form.cleaned_data["month"]
@@ -54,32 +80,24 @@ def create_budget(request):
                 else:
                     try: 
                         new_budget = Budget.budget_manager.create_budget(**form.cleaned_data)
-                        return JsonResponse(model_to_dict(new_budget))
+                        context = model_to_dict(new_budget)
+                        return JsonResponse(context, status=201)
                     except Exception as e:
                         return JsonResponse({"Message": "Failed to create a budget",
                                              "Error" :  str(e)})
                 
             else:
-                return JsonResponse({'Message': 'Failed to create budget', 'errors': form.errors})
+                return JsonResponse({'Message': 'Failed to create budget', 'errors': CreateBudgetForm.map_fields(form.errors, reverse=True)})
 
         elif request.method == 'GET':
             query_set = Budget.budget_manager.get_budget(user = request.user)
             context = {'budget_table_header': BUDGET_TABLE_HEADER}
-
-            serialized_data = json.loads(serializers.serialize('json', query_set, use_natural_foreign_keys=True, use_natural_primary_keys=True))
-            for data in serialized_data:
-                budget = data["fields"]
-                del budget["user"]
-                budget.update({"id": data["pk"]})
-
-            context["budgets"] = [budget['fields'] for budget in serialized_data]
-
+            context["budgets"] = [model_to_dict(budget) for budget in query_set]
             return render(request, 'budget.html', context)
             
             
 
 @csrf_exempt
-@basic_auth
 def delete_budget(request):
      if request.user.is_authenticated:
         if request.method == 'POST':
@@ -93,12 +111,10 @@ def delete_budget(request):
                                      "Error" :  str(e)})
 
 @csrf_exempt
-@basic_auth
 def update_budget(request):
      if request.user.is_authenticated:
         if request.method == 'POST':
             budget_id = request.POST.get(BUDGET_ID_VAR)
-
             try:
                 form_data = CreateBudgetForm.map_json(request.POST.dict())
                 form_data['user'] = request.user
