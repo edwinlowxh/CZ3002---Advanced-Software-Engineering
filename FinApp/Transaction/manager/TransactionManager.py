@@ -51,7 +51,16 @@ class TransactionManager(models.Manager):
         return super().get_queryset().filter(
            **filter_kwargs
         ).aggregate(Sum('amount'))
-        
+    
+    def retrieve_top_budget(self, user: User, year: int, month:int)-> models.QuerySet:
+        start_date = datetime(year,month,1)        
+        end_date = datetime(year,month,calendar.monthrange(year, month)[1])
+        return super().get_queryset().filter(
+            user=user,
+            date__range=(start_date, end_date)
+        ).values('category').annotate(total = Sum('amount')).order_by('-amount')
+
+    
     
     def create_transaction(self, user: User, category: Category, amount: float, description: str, type: str, date: datetime) -> Transaction:
         return super().create(

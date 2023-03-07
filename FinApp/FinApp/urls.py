@@ -147,7 +147,7 @@ urlpatterns = [
     path('budget/delete_budget', delete_budget, name='delete_budget'),
     path('budget/update_budget', update_budget, name='update_budget'),
 
-     path('budget/get_home_budget', get_budget_home, name='get_budget_home'),
+     path('budget/home', get_budget_home, name='get_budget_home'),
 ]
 
 if settings.DEBUG:

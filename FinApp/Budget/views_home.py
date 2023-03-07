@@ -21,6 +21,7 @@ from .constants import(
 )
 
 from .models import Category, Budget
+
 from Transaction.models import(
     Transaction
 )
@@ -36,7 +37,7 @@ def get_budget_home(request):
     
             user = request.user
             year = 2023 #request.GET.get(BUDGET_YEAR_VAR)
-            month = 1 #request.GET.get(BUDGET_MONTH_VAR)
+            month = 2 #request.GET.get(BUDGET_MONTH_VAR)
 
             context = {}
             context["total_budget_limit"] = Budget.budget_manager.get_budget_total(user = user, year = year, month = month)["limit__sum"]
@@ -45,19 +46,30 @@ def get_budget_home(request):
             
             budgets = Budget.budget_manager.get_budget(user = user, year = year, month = month)
             budget_list = []
-            if budgets:
-                for budget in budgets:
-                    budget_dict = model_to_dict(budget)
-                    total_spent = Transaction.transaction_manager.retrieve_total_expenses(user = user, year = year, month = month, category = budget.category)["amount__sum"]
-                    budget_dict["spent"] = total_spent
+            # if budgets:
+            #     for budget in budgets:
+            #         budget_dict = model_to_dict(budget)
+            #         total_spent = Transaction.transaction_manager.retrieve_total_expenses(user = user, year = year, month = month, category = budget.category)["amount__sum"]
+            #         budget_dict["spent"] = total_spent
+            #         budget_list.append(budget_dict)
+            # context["budgets"] = budget_list
+
+            category_spending = Transaction.transaction_manager.retrieve_top_budget(user = user, year = year, month = month)
+            for category in category_spending:
+                budget_dict = {}
+                budget = Budget.budget_manager.get_budget(user = user, year = year, month = month, category = category["category"])
+                if budget:
+                    budget_dict["name"] = category["category"]
+                    budget_dict["spent"] = category["total"]
+                    budget_dict["limit"] = budget[0].limit
+                    budget_dict["percentage"] = category["total"] / budget[0].limit 
                     budget_list.append(budget_dict)
             context["budgets"] = budget_list
-            
             print(request.user, context)
+            #return render(request, 'home.html', context)
             return JsonResponse(context)
 
     else:
         return redirect('/profile/login')
         
-
            
