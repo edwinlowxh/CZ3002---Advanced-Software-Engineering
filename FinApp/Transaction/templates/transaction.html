@@ -4,49 +4,6 @@
 
 {% block content %}
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<!-- <div class="row d-flex justify-content-center align-items-center h-70"> -->
-    <!-- Add Toggle button between income and expenses -->
-    <!-- Add add transaction button -->
-    
-
-    <!-- <div class="col d-flex justify-content-center align-items-center">
-        <div class="col-md-9 mt-5">
-            <table class="table table-light table-striped table-hover rounded-3 overflow-hidden" id="expense-table">
-                <thead class="table-info">
-                    <tr>
-                        {% for header in expense_table_header.values %}
-                            <th scope="col">{{ header }}</th>
-                        {% endfor %}
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for transaction in transactions %}
-                        <tr>
-                            {% if transaction.type.0 == "EXPENSE" %}
-                                {% for key in expense_table_header %}
-                                    <td>{{ transaction|get:key }}</th>
-                                {% endfor %}
-                                <td>
-                                    <a href="#">
-                                        <span class="material-icons">
-                                            delete
-                                        </span>
-                                    </a>
-
-                                    <a href="#">
-                                        <span class="material-icons">
-                                            edit
-                                        </span>
-                                    </a>
-                                </td>
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div> -->
 <body style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
     <div style="text-align: center;">
         <div class="btn-group align-middle" role="group" aria-label="Basic radio toggle button group" style="margin-top: 80px;" >
@@ -62,14 +19,7 @@
     <div id="content">
         <!-- <p>This is the inital content, set to expenses.</p> -->
     </div>
-     
-    <div class="col d-flex justify-content-center align-items-center">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal">
-        + Add Transaction
-        </button>
-    </div>
-    
+
     <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content">
@@ -115,14 +65,14 @@
         var contentDiv = document.getElementById("content");
 
         // // Set the initial content
-        contentDiv.innerHTML = "<center><h1 style='margin-top: 60px;'><u>Expenses</u></h1></center><div class='container d-flex align-items-center justify-content-between'><table class='table table-hover table-dark' id='category-table' style='margin-top: 80px; width:80%; margin:80px auto;border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;'><thead><tr>{% for header in expense_table_header.values %}<th scope='col'>{{ header }}</th>{% endfor %}<th scope='col' style='width: 30%;'></th></tr></thead><tbody>{% for transaction in transactions %}<tr>{% if transaction.type.0 == 'EXPENSE' %}{% for key in expense_table_header %}<td>{{ transaction|get:key }}</th>{% endfor %}<td><a href='#' style='margin-right: 20px;'><span class='material-icons'>delete</span></a><a href='#' style='margin-right: 20px;'><span class='material-icons'>edit</span></a></td>{% endif %}</tr>{% endfor %}</tbody></table></div><div style='text-align: center;'><button type='button' class='btn btn-outline-secondary btn-lg align-middle'><span class='material-icons align-middle' style='margin-right: 5px;'>add</span>Add Expense</button></div>";
+        contentDiv.innerHTML = "<center><h1 style='margin-top: 60px;'><u>Expenses</u></h1></center><div class='container d-flex align-items-center justify-content-between'><table class='table table-hover table-dark' id='category-table' style='margin-top: 80px; width:80%; margin:80px auto;border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;'><thead><tr>{% for header in expense_table_header.values %}<th scope='col'>{{ header }}</th>{% endfor %}<th scope='col' style='width: 30%;'></th></tr></thead><tbody>{% for transaction in transactions %}<tr>{% if transaction.type.0 == 'EXPENSE' %}{% for key in expense_table_header %}<td>{{ transaction|get:key }}</th>{% endfor %}<td><a href='#' style='margin-right: 20px;'><span class='material-icons'>delete</span></a><a href='#' style='margin-right: 20px;'><span class='material-icons'>edit</span></a></td>{% endif %}</tr>{% endfor %}</tbody></table></div><div style='text-align: center;'><button type='button' class='btn btn-outline-secondary btn-lg align-middle' data-toggle='modal' data-target='#formModal'><span class='material-icons align-middle' style='margin-right: 5px;'>add</span>Add Expense</button></div>";
 
         // Add event listeners to the radio buttons
         expensesBtn.addEventListener("click", function() {
-        contentDiv.innerHTML = "<center><h1 style='margin-top: 60px;'><u>Expenses</u></h1></center><div class='container d-flex align-items-center justify-content-between'><table class='table table-hover table-dark' id='category-table' style='margin-top: 80px; width:80%; margin:80px auto;border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;'><thead><tr>{% for header in expense_table_header.values %}<th scope='col'>{{ header }}</th>{% endfor %}<th scope='col' style='width: 30%;'></th></tr></thead><tbody>{% for transaction in transactions %}<tr>{% if transaction.type.0 == 'EXPENSE' %}{% for key in expense_table_header %}<td>{{ transaction|get:key }}</th>{% endfor %}<td><a href='#' style='margin-right: 20px;'><span class='material-icons'>delete</span></a><a href='#' style='margin-right: 20px;'><span class='material-icons'>edit</span></a></td>{% endif %}</tr>{% endfor %}</tbody></table></div><div style='text-align: center;'><button type='button' class='btn btn-outline-secondary btn-lg align-middle'><span class='material-icons align-middle' style='margin-right: 5px;'>add</span>Add Expense</button></div>";});
+        contentDiv.innerHTML = "<center><h1 style='margin-top: 60px;'><u>Expenses</u></h1></center><div class='container d-flex align-items-center justify-content-between'><table class='table table-hover table-dark' id='category-table' style='margin-top: 80px; width:80%; margin:80px auto;border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;'><thead><tr>{% for header in expense_table_header.values %}<th scope='col'>{{ header }}</th>{% endfor %}<th scope='col' style='width: 30%;'></th></tr></thead><tbody>{% for transaction in transactions %}<tr>{% if transaction.type.0 == 'INCOME' %}{% for key in expense_table_header %}<td>{{ transaction|get:key }}</th>{% endfor %}<td><a href='#' style='margin-right: 20px;'><span class='material-icons'>delete</span></a><a href='#' style='margin-right: 20px;'><span class='material-icons'>edit</span></a></td>{% endif %}</tr>{% endfor %}</tbody></table></div><div style='text-align: center;'><button type='button' class='btn btn-outline-secondary btn-lg align-middle' data-toggle='modal' data-target='#formModal'><span class='material-icons align-middle' style='margin-right: 5px;'>add</span>Add Expense</button></div>";});
 
         incomeBtn.addEventListener("click", function() {
-            contentDiv.innerHTML = "<center><h1 style='margin-top: 60px;'><u>Income</u></h1></center><div class='container d-flex align-items-center justify-content-between'><table class='table table-hover table-dark' id='category-table' style='margin-top: 80px; width:80%; margin:80px auto;border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;'><thead><tr>{% for header in expense_table_header.values %}<th scope='col'>{{ header }}</th>{% endfor %}<th scope='col' style='width: 30%;'></th></tr></thead><tbody>{% for transaction in transactions %}<tr>{% if transaction.type.0 == 'EXPENSE' %}{% for key in expense_table_header %}<td>{{ transaction|get:key }}</th>{% endfor %}<td><a href='#' style='margin-right: 20px;'><span class='material-icons'>delete</span></a><a href='#' style='margin-right: 20px;'><span class='material-icons'>edit</span></a></td>{% endif %}</tr>{% endfor %}</tbody></table></div><div style='text-align: center;'><button type='button' class='btn btn-outline-secondary btn-lg align-middle'><span class='material-icons align-middle' style='margin-right: 5px;'>add</span>Add Income</button></div>";});
+            contentDiv.innerHTML = "<center><h1 style='margin-top: 60px;'><u>Income</u></h1></center><div class='container d-flex align-items-center justify-content-between'><table class='table table-hover table-dark' id='category-table' style='margin-top: 80px; width:80%; margin:80px auto;border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;'><thead><tr>{% for header in expense_table_header.values %}<th scope='col'>{{ header }}</th>{% endfor %}<th scope='col' style='width: 30%;'></th></tr></thead><tbody>{% for transaction in transactions %}<tr>{% if transaction.type.0 == 'EXPENSE' %}{% for key in expense_table_header %}<td>{{ transaction|get:key }}</th>{% endfor %}<td><a href='#' style='margin-right: 20px;'><span class='material-icons'>delete</span></a><a href='#' style='margin-right: 20px;'><span class='material-icons'>edit</span></a></td>{% endif %}</tr>{% endfor %}</tbody></table></div><div style='text-align: center;'><button type='button' class='btn btn-outline-secondary btn-lg align-middle' data-toggle='modal' data-target='#formModal'><span class='material-icons align-middle' style='margin-right: 5px;'>add</span>Add Income</button></div>";});
 
     </script>
   
