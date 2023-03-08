@@ -40,25 +40,21 @@ class CreateTransactionForm(forms.Form):
         else:
             return date
 
-    def clean_category(self):
+    def clean(self):
+        cleaned_data = super().clean()
         category = self.cleaned_data['category']
-        _type = self.data.get('type')
+        _type = self.cleaned_data['type']
 
         if _type == 'EXPENSE':
             if not category:
-                raise forms.ValidationError(f"Please provide a category for expense")
+                self.add_error('category', f"Please provide a category for expense")
             else:
                 category = self.cleaned_data['category']
                 query_set = Category.category_manager.get_categories(user=self.user).filter(name=category)
 
                 if not query_set:
-                    raise forms.ValidationError(f"Category {category} does not exist")
-                else:
-                    return query_set[0]          
-        else:
-            return None
-
-
+                    self.add_error('category', f"Category {category} does not exist")
+       
     @staticmethod
     def map_fields(json_data: dict, reverse: bool = False):
         if not reverse:
