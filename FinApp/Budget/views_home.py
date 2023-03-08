@@ -54,7 +54,10 @@ def get_budget_home(request):
             #         budget_list.append(budget_dict)
             # context["budgets"] = budget_list
 
+           
             category_spending = Transaction.transaction_manager.retrieve_top_budget(user = user, year = year, month = month)
+            colour_array = ["#d24747","#439a50","#a11adb","#4148d4","#ce8551","#df3eb1"]
+            colour_array_lighter = ["#be7b7b","#83b890","#9f91a7","#7f86a3","#d0b48e","#d19bc7"]
             for category in category_spending:
                 budget_dict = {}
                 budget = Budget.budget_manager.get_budget(user = user, year = year, month = month, category = category["category"])
@@ -62,11 +65,16 @@ def get_budget_home(request):
                     budget_dict["name"] = category["category"]
                     budget_dict["spent"] = category["total"]
                     budget_dict["limit"] = budget[0].limit
-                    budget_dict["percentage"] = category["total"] / budget[0].limit 
+                    budget_dict["percentage"] = (category["total"] / budget[0].limit) * 100
+                    budget_dict["individual"] = (budget_dict["spent"] /  budget_dict["limit"]) * 100
+                    budget_dict["color"] = colour_array.pop(0)
+                    budget_dict["color_gradient"] = "linear-gradient(to top," + budget_dict["color"] + "," + colour_array_lighter.pop(0) +")"
+
                     budget_list.append(budget_dict)
             context["budgets"] = budget_list
             print(request.user, context)
-            #return render(request, 'home.html', context)
+            # context["budgets"] = [{"name": "First", "spent": 312.0, "limit": 3500.0, "percentage": 312/3500}, {"name": "Second", "spent": 500.0, "limit": 3500.0, "percentage": 0.14285714285714285}]
+            return render(request, 'home.html', context)
             return JsonResponse(context)
 
     else:
