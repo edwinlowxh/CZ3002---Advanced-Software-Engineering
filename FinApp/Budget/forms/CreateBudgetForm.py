@@ -12,8 +12,8 @@ from Budget.constants import(
     BUDGET_YEAR_VAR,
     BUDGET_MONTH_VAR
 )
-from Budget.models import Category
-from Budget.models import Budget
+from Budget.models import Category, Budget
+
 
 class CreateBudgetForm(forms.Form):
     user = forms.ModelChoiceField(queryset=User.objects.all())
@@ -33,8 +33,6 @@ class CreateBudgetForm(forms.Form):
         else:
             return query_set[0]   
         
-     
-
 
     @staticmethod
     def map_json(json_data):
