@@ -103,7 +103,8 @@ urlpatterns = [
     # path('login/', login_view, name="login"),
     # path('account/', account_view, name="account"),
     # path('password_change/', password_change_view, name='password_change'),
-    path('', home_view, name="home"), 
+    #path('', home_view, name="home"), 
+    path('', get_budget_home, name='home'),
 
     # Car urls
     path('car/search/', search_view, name="car_search"),
@@ -147,7 +148,7 @@ urlpatterns = [
     path('budget/delete_budget', delete_budget, name='delete_budget'),
     path('budget/update_budget', update_budget, name='update_budget'),
 
-     path('budget/home', get_budget_home, name='get_budget_home'),
+    
 ]
 
 if settings.DEBUG:
