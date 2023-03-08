@@ -1,3 +1,4 @@
+import traceback
 from django.shortcuts import redirect, render
 
 from django.contrib.auth import logout, authenticate, update_session_auth_hash, login as django_login
@@ -26,7 +27,8 @@ from user_profile.forms.UpdateUserInformationForm import UpdateUserInformationFo
 @csrf_exempt
 def register(request):
     if request.method == "POST":
-        form_data = RegisterForm.map_json(request.POST.dict())
+        form_data = RegisterForm.map_fields(request.POST.dict())
+        print(f"Form_Data: {form_data}")
         form = RegisterForm(form_data)
 
         if form.is_valid():
@@ -36,13 +38,20 @@ def register(request):
 
             try:
                 user = User.objects.create_user(username=username, password=password, email=email)
+                return redirect('login')
                 return JsonResponse({"message": "Successful Registration"})
             except IntegrityError:
+                return render(request, 'register.html', {"field_errors": {"username": "Username taken"}}, status=422)
                 return JsonResponse({"message": "Failed Registration", "error": {"username": "Username taken"}})
+            except Exception as e:
+                print(traceback.format_exc())
+                return render(request, 'register.html', {"non_field_errors": ["Failed to register. Contact administrator"]}, status=500)
         else:
+            print(RegisterForm.map_fields(form.errors, reverse=True))
+            return render(request, 'register.html', {"field_errors": RegisterForm.map_fields(form.errors, reverse=True)}, status=422)        
             return JsonResponse({"message": "Failed Registration", "error": form.errors})         
     elif request.method == "GET":
-        return render(request, 'accounts/register.html')
+        return render(request, 'register.html')
 
 @csrf_exempt
 def login(request):
@@ -60,7 +69,7 @@ def login(request):
         else:
             return JsonResponse({"message": "Failed Authentication"})
         
-    return render(request, 'accounts/login.html')
+    return render(request, 'login.html')
 
 @csrf_exempt
 def logout(request):
