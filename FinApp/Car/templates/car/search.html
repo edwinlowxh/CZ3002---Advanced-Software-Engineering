@@ -6,35 +6,47 @@
 <!-- ======= Car Search Section ======= -->
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-<div style="background-image: url('/static/nav/assets/img/car_background.jpeg');
+<body style="background-image: url('/static/nav/assets/img/car_background.jpeg');
 background-repeat: no-repeat;
 background-size: cover;
 background-position: center;
 background-attachment: fixed;
-background-color: rgba(245, 245, 245, 0.5)"> 
-<div class="container" >  <!-- HELP! how to change transparency of background? AND how to make the background fill out the whole page?-->
-    <div class="d-flex flex-column justify-content-center align-items-center vh-100">
+background-color: rgba(245, 245, 245, 0.5);
+overflow:hidden"> 
+
+
+  
+    <!-- <div class="d-flex flex-column justify-content-center align-items-center vh-100">
     <div class="col-12 col-md-9 col-lg-7 col-xl-8">
       <div class="card bg-dark text-white">
-        <div class="card-body row no-gutters align-items-center">
+        <div class="card-body row no-gutters align-items-center"> -->
 
           <form method="get" class="d-flex row" action="{% url 'car_results' %}">{% csrf_token %}
-            <div class="col-auto">
+            <div class="row" style="padding:15% 30% 2% 30%">
+            <!-- <div class="col-auto">
               <i class="fas fa-search h1 text-white"></i>
-            </div>
-            <div class="col">
+            </div> -->
+            
                 <input class="form-control form-control-lg form-control-borderless" type="text" placeholder="Enter your desired car model..." name="search">
-            </div>
+           
 
-            <div class="col-auto">
-                <button class="btn btn-outline-light px-5 btn-lg" type="submit">Search</button>
-            </div>
+           
+          </div> 
+          <div class="row" style="padding:0% 30% 2% 30%">
+          
+            <input class="form-control form-control-lg form-control-borderless" type = "number" step=100 placeholder="Enter your monthly estimated savings..." name="estimatedMonthlySavings">
+        
+      </div>
+
+          <center>
+                <button class="btn btn-outline-light px-5 btn-lg" style="margin-top: 20px;" type="submit">Search</button>
+          </center>
           </form>
 
-        </div>
+        <!-- </div>
       </div>
     </div>
-    </div>
-  </div><!-- End Car Search Section -->
-</div> 
+    </div> -->
+  
+  </body> 
 {% endblock %}
