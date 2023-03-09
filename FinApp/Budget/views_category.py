@@ -31,7 +31,7 @@ def get_category(request):
             print(request.user, context)
             return render(request, 'categories.html', context)
     else:
-        return redirect('/profile/login')
+        return redirect('/login')
 
 @csrf_exempt
 def create_category(request):

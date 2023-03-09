@@ -11,6 +11,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 from FinApp.decorators import basic_auth
 
+import json 
+
+from django.core import serializers
+
 from .constants import (
     START_DATE_QUERY_PARAM,
     END_DATE_QUERY_PARAM,
@@ -50,10 +54,18 @@ def get_transactions(request, start_date: str = None, end_date: str = None):
                 context['range'] = f'From {start_date} to {end_date}'
                 # return JsonResponse({'range': f'From {start_date} to {end_date}', 'transactions': [model_to_dict(transaction) for transaction in query_set]})
                 
-            context['transactions'] = [model_to_dict(transaction) for transaction in query_set]
+            serialized_data = json.loads(serializers.serialize('json', query_set, use_natural_foreign_keys=True, use_natural_primary_keys=True))
+            for data in serialized_data:
+                transaction = data["fields"]
+                del transaction["user"]
+                transaction.update({"id": data["pk"]})
+
+            context['transactions'] = [data["fields"] for data in serialized_data]
+            #context['transactions'] = [model_to_dict(transaction) for transaction in query_set]
+            print(request.user, context)
             return render(request, 'transaction.html', context)
     else:
-        return redirect('/profile/login')
+        return redirect('/login')
 
 @csrf_exempt
 @basic_auth

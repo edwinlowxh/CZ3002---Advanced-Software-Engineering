@@ -31,8 +31,12 @@ def results_view(request):
     if request.user.is_authenticated:
 
         query = request.GET.get('search')
-        car_list = Car.car_manager.search(query)
-        car_list.order_by('model')
+        limit = request.GET.get('estimatedMonthlySavings')
+        if limit == "":
+             car_list = Car.car_manager.search(query, 1000000000)
+        else: 
+             car_list = Car.car_manager.search(query, float(limit))
+        car_list = car_list.order_by('installment')
 
         if not car_list:
             errors = True

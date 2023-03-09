@@ -5,7 +5,7 @@
 {% block content %}
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <body style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
-    <div style="text-align: center;">
+    <!-- <div style="text-align: center;">
         <div class="btn-group align-middle" role="group" aria-label="Basic radio toggle button group" style="margin-top: 80px;" >
             <input type="radio" class="btn-check" name="btnradio" id="expenses" autocomplete="off" checked>
             <label class="btn btn-outline-secondary btn-lg" for="expenses">Expenses</label>
@@ -14,9 +14,35 @@
             <label class="btn btn-outline-secondary btn-lg" for="income">Income</label>
         
         </div>
-    </div>
+    </div> -->
+    <div style="margin-top:180px;" >
+        <div style=" display: inline-block; width:12%; margin-left: 20%;">
+            <div class="btn-group align-middle" role="group" aria-label="Basic radio toggle button group"  >
+                <input type="radio" class="btn-check" name="btnradio" id="expenses" autocomplete="off" checked>
+                <label class="btn btn-outline-secondary btn-lg" for="expenses">Expenses</label>
+            
+                <input type="radio" class="btn-check" name="btnradio" id="income" autocomplete="off">
+                <label class="btn btn-outline-secondary btn-lg" for="income">Income</label>
+            
+            </div>
+            </div>
+
+        <div style=" display: inline-block; width:8%; margin-left: 30%;">
+            <div class="form-floating mt-2">
+                <input type="date" class="form-control" id="transaction_end_date" min="1900-01-01">
+                <label style="color:black; font-size: 12px;">Start Date</label>
+            </div>
+        </div>
+        <div style="margin-left:15px; display: inline-block; width:8%;">
+            <div class="form-floating mt-2">
+                <input type="date" class="form-control" id="transaction_start_date" min="1900-01-01">
+                <label style="color:black; font-size: 12px;">End Date</label>
+            </div>
+            </div>
+        </div>
 
     <div id="content">
+        
         <!-- <p>This is the inital content, set to expenses.</p> -->
     </div>
 

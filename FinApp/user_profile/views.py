@@ -22,6 +22,7 @@ from user_profile.forms.RegisterForm import RegisterForm
 from user_profile.forms.ChangePasswordForm import ChangePasswordForm
 from user_profile.forms.UpdateUserInformationForm import UpdateUserInformationForm
 
+from django.contrib import messages
 
 # Create your views here.
 @csrf_exempt
@@ -37,18 +38,21 @@ def register(request):
 
             try:
                 user = User.objects.create_user(username=username, password=password, email=email)
+                messages.success(request, "Registration successful." )
                 return redirect('login')
                 return JsonResponse({"message": "Successful Registration"})
             except IntegrityError:
+                messages.error(request, "Check fields")
                 return render(request, 'register.html', {"field_errors": {"username": "Username taken"}}, status=422)
                 return JsonResponse({"message": "Failed Registration", "error": {"username": "Username taken"}})
             except Exception as e:
-                print(traceback.format_exc())
-                return render(request, 'register.html', {"non_field_errors": ["Failed to register. Contact administrator"]}, status=500)
+                messages.error(request, "Failed to register. Contact administrator (500)")
+                return render(request, 'register.html', status=500)
         else:
             print(RegisterForm.map_fields(form.errors, reverse=True))
+            messages.error(request, "Check fields")
             return render(request, 'register.html', {"field_errors": RegisterForm.map_fields(form.errors, reverse=True)}, status=422)        
-            return JsonResponse({"message": "Failed Registration", "error": form.errors})         
+            return JsonResponse({"message": "Failed Registration", "error": form.errors})                 
     elif request.method == "GET":
         return render(request, 'register.html')
 
@@ -59,14 +63,14 @@ def login(request):
         password = request.POST.get(PASSWORD_VAR_NAME)
         user = authenticate(username=username, password=password)
 
-        if user is not None:
+        if user:
             django_login(request=request, user=user)
             return redirect('home')
-
-        if user:
-            return JsonResponse({"message": "Logged In"})
+        
         else:
-            return JsonResponse({"message": "Failed Authentication"})
+            messages.error(request, "Wrong username or password! ")
+            return render(request, 'accounts/login.html')
+            #return JsonResponse({"message": "Failed Authentication"})
         
     return render(request, 'login.html')
 
