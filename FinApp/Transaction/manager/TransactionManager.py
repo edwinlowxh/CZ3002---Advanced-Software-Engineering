@@ -25,15 +25,18 @@ class TransactionManager(models.Manager):
             start_date = datetime(1900,1,1)
         else:
             start_date = datetime(int(kwargs['start_date'][2]), int(kwargs['start_date'][1]), int(kwargs['start_date'][0]))
+            kwargs.pop('start_date')
             
         if 'end_date' not in kwargs:
             end_date = datetime.now()
         else:
             end_date = datetime(int(kwargs['end_date'][2]), int(kwargs['end_date'][1]), int(kwargs['end_date'][0]))
+            kwargs.pop('end_date')
 
         return super().get_queryset().filter(
             user=user,
-            date__range=(start_date, end_date)
+            date__range=(start_date, end_date),
+            **kwargs
         )
     
     def retrieve_total_expenses(self,user: User, year: int, month:int, **kwargs)-> models.QuerySet:

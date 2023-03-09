@@ -1,4 +1,4 @@
-async function getTransactionForm(){
+async function getCreateTransactionForm(){
     await fetch("http://127.0.0.1:8000/transactions/create", {"method": "GET"})
     .then(response => response.json())
     .then(data => {
@@ -14,18 +14,7 @@ async function getTransactionForm(){
     .catch(error => console.error(error));
 }
 
-function transactionTypeChange(e){
-    selectedOption = e.options[e.selectedIndex].value;
-
-    if (selectedOption === 'INCOME'){
-        document.getElementById("transaction-category").parentElement.style.display = "none";
-    }
-    else {
-        document.getElementById("transaction-category").parentElement.style.display = "block";
-    }
-}
-
-async function postTransactionForm(event, transactionForm){
+async function postCreateTransactionForm(event, transactionForm){
     event.preventDefault();
     const formData = new FormData(transactionForm);
     for (let [key, value] of formData.entries()){
@@ -44,7 +33,6 @@ async function postTransactionForm(event, transactionForm){
         return response.json();
     })
     .then(data => {
-        console.log(data);  
     })
     .catch(error => {
         error.then(data => {
@@ -73,3 +61,29 @@ async function postTransactionForm(event, transactionForm){
     }  
     )
 }
+
+async function getUpdateTransactionForm(element){
+    const transaction_id = element.closest('tr').id;
+    
+    await fetch(`http://127.0.0.1:8000/transactions/update?transaction_id=${transaction_id}`, {
+        "method": "GET"
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => console.error(error));
+}
+
+function transactionTypeChange(e){
+    selectedOption = e.options[e.selectedIndex].value;
+
+    if (selectedOption === 'INCOME'){
+        document.getElementById("transaction-category").parentElement.style.display = "none";
+    }
+    else {
+        document.getElementById("transaction-category").parentElement.style.display = "block";
+    }
+}
+
+

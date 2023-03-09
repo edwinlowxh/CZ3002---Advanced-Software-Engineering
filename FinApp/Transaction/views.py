@@ -106,7 +106,7 @@ def delete_transaction(request):
 
 @csrf_exempt
 @basic_auth
-def update_transaction(request):
+def update_transaction(request, id: str=None):
      if request.user.is_authenticated:
         if request.method == 'POST':
             transaction_id = request.POST.get(TRANSACTION_ID_VAR)
@@ -133,10 +133,15 @@ def update_transaction(request):
                 return JsonResponse({'message': 'Failed to update transaction'})
             
         elif request.method == 'GET':
-            transaction_id = request.POST.get(TRANSACTION_ID_VAR)
-            transaction = Transaction.transaction_manager.retrieve_transaction(user=request.user, id=transaction_id)
-            context = {model_to_dict(transaction)}
-            return JsonResponse(context)
+            transaction_id = request.GET.get(TRANSACTION_ID_VAR)
+            query_set = Transaction.transaction_manager.retrieve_transaction(user=request.user, id=transaction_id)
+            serialized_data = json.loads(serializers.serialize('json', query_set, use_natural_foreign_keys=True, use_natural_primary_keys=True))
+            for data in serialized_data:
+                transaction = data["fields"]
+                del transaction["user"]
+                transaction.update({"id": data["pk"]})
+            print(serialized_data[0]['fields'])
+            return JsonResponse(serialized_data[0]['fields'], status=201)
             return render(request, "", context)
 
 
