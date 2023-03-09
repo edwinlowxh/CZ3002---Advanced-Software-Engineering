@@ -65,14 +65,12 @@ def create_transaction(request):
 
             if form.is_valid():
                 print(form.cleaned_data)
-                # new_transaction = Transaction.transaction_manager.create_transaction(
-                #     user=request.user,
-                #     **form.cleaned_data
-                # )
-                # context = model_to_dict(new_transaction)
-                context = {'field_errors': {'transaction_date':['date error', 'date error 2'], 'transaction_type': 'type error',
-                                            'transaction_category': 'category error', 'transaction_description': 'description error'}}
-                return JsonResponse(context, status=422, )
+                new_transaction = Transaction.transaction_manager.create_transaction(
+                    user=request.user,
+                    **form.cleaned_data
+                )
+                context = model_to_dict(new_transaction)
+                return JsonResponse(context, status=201)
             else:
                 return JsonResponse({'message': 'Failed to create transaction', 'field_errors': CreateTransactionForm.map_fields(form.errors, reverse=True)}, status=422)
         elif request.method == 'GET':
