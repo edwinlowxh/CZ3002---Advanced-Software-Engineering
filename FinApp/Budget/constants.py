@@ -5,8 +5,8 @@ CATEGORY_ID_VAR = 'category_id'
 #Budget constants
 BUDGET_ID_VAR = 'budget_id'
 BUDGET_LIMIT_VAR = 'budget_limit'
-BUDGET_YEAR_VAR = 'budget_year'
-BUDGET_MONTH_VAR = 'budget_month'
+BUDGET_YEAR_VAR = 'year'
+BUDGET_MONTH_VAR = 'month'
 
 CATEGORY_TABLE_HEADER = {
     'name': 'Name'

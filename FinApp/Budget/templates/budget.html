@@ -3,8 +3,6 @@
 {% load template_tags %}
 
 {% block content %}
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
 <body style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
     <span>
         <center>
@@ -79,4 +77,35 @@
             </span>Add Budget </button>
     </div>
 </body>
+
+<script>
+    function getMonthNumberFromName(monthName) {
+         return new Date(`${monthName} 1, 2022`).getMonth() + 1;
+    }
+
+    const yearDropdown = document.getElementById('inputYear');
+    const monthDropdown = document.getElementById('inputMonth');
+
+    yearDropdown.addEventListener('change', update);
+    monthDropdown.addEventListener('change', update);
+
+    
+
+    function update() {
+        const year = yearDropdown.value;
+        const month = getMonthNumberFromName(monthDropdown.value);
+
+        console.log(year)
+        console.log(month)
+
+        fetch(`?year=${year}&month=${month}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update the frontend interface with the retrieved data
+            })
+            .catch(error => {
+                // console.error('Error:', error);
+            });
+    }
+</script>
 {% endblock %}
