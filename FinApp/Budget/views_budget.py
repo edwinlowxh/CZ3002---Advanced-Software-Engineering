@@ -54,7 +54,7 @@ def get_budget(request):
             print(request.user, context)
             return render(request, 'budget.html', context)
     else:
-        return redirect('/profile/login')
+        return redirect('/')
         
 
 @csrf_exempt
