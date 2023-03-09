@@ -20,10 +20,10 @@ from Budget.models import Category
 
 class CreateTransactionForm(forms.Form):
     type = forms.ChoiceField(choices=[choice for choice in TRANSACTION_TYPE], required=True)
-    amount = forms.CharField(required=True)
-    category = forms.CharField(max_length=255, required=False)
+    amount = forms.FloatField(required=True)
+    category = forms.CharField(max_length=255, required=False, empty_value=None)
     date = forms.DateField(input_formats=['%d/%m/%Y'], required=False, widget=forms.DateInput)
-    description = forms.CharField(max_length=255, required=False)
+    description = forms.CharField(max_length=255, required=False, empty_value=None)
 
     def __init__(self, user: User = None, **kwargs):
         if not user:
@@ -42,18 +42,20 @@ class CreateTransactionForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        category = self.cleaned_data['category']
-        _type = self.cleaned_data['type']
+        print(cleaned_data)
+        category = cleaned_data['category']
+        _type = cleaned_data['type']
 
         if _type == 'EXPENSE':
             if not category:
-                self.add_error('category', f"Please provide a category for expense")
+                self.add_error('category', f"Category cannot be empty for expense")
             else:
                 category = self.cleaned_data['category']
                 query_set = Category.category_manager.get_categories(user=self.user).filter(name=category)
 
                 if not query_set:
                     self.add_error('category', f"Category {category} does not exist")
+                self.data['category'] = query_set[0]
        
     @staticmethod
     def map_fields(json_data: dict, reverse: bool = False):
