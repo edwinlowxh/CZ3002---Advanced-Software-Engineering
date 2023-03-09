@@ -13,11 +13,13 @@ class CarManager(models.Manager):
     def get_model_spec(self, make: str, model: str) -> models.QuerySet:
         return self.filter(make = make, model = model).values_list('spec', flat=True).distinct()
 
-    def search(self, search: str) -> models.QuerySet:
+    def search(self, search: str, limit: float) -> models.QuerySet:
+        
         return self.get_queryset().filter(
-            models.Q(make__icontains=search) |
+            (models.Q(make__icontains=search) |
             models.Q(model__icontains=search) |
-            models.Q(spec__icontains=search)
+            models.Q(spec__icontains=search)) &
+            models.Q(installment__lte=limit)
         )
 
                 
