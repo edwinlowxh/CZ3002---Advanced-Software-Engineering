@@ -4,85 +4,47 @@
 
 {% block content %}
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<!-- <div class="row d-flex justify-content-center align-items-center h-70"> -->
-    <!-- Add Toggle button between income and expenses -->
-    <!-- Add add transaction button -->
-    
-    <!-- <div class="col d-flex justify-content-center align-items-center">
-        <div class="col-md-9">
-            <table class="table" id="category-table">
-                <thead>
-                    <tr>
-                        {% for header in category_table_header.values %}
-                            <th scope="col">{{ header }}</th>
-                        {% endfor %}
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for category in categories %}
-                        <tr>
-                                {% for key in category_table_header %}
-                                    <td>{{ category|get:key }}</th>
-                                {% endfor %}
-                                <td>
-                                    <a href="#">
-                                        <span class="material-icons">
-                                            delete
-                                        </span>
-                                    </a>
-                                </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div> -->
-
-    <!-- Add Modal Form which will popup on clicking add transaction button -->
-<!-- </div> -->
-
 
 <body style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
-    <center><h1 style="margin-top: 200px;"><u>Categories</u></h1></center>
+    <center>
+        <h1 style="margin-top: 200px;"><u>Categories</u></h1>
+    </center>
     <div class="container d-flex align-items-center justify-content-between">
 
-    <table class="table table-hover table-dark" id="category-table" style="margin-top: 80px; width:80%; margin:80px auto; border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;">
-        <thead>
-            <tr>
-                {% for header in category_table_header.values %}
-                            <th scope="col">{{ header }}</th>
-                        {% endfor %}
-                <th scope="col" style="width: 30%;"></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for category in categories %}
-                        <tr>
-                                {% for key in category_table_header %}
-                                    <td>{{ category|get:key }}</th>
-                                {% endfor %}
-                                <td>
-                                    <a href="#" style="margin-right: 20px;">
-                                <span class="material-icons">
-                                    delete
-                                </span>
-                            </a>
-                            <a href="#" style="margin-right: 20px;">
-                                <span class="material-icons">
-                                    edit
-                                </span>
-                            </a>
-                        </td>
+        <table class="table table-hover table-dark" id="category-table"
+            style="margin-top: 80px; width:60%; margin:80px auto; border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;">
+            <thead>
+                <tr>
+                    {% for header in category_table_header.values %}
+                    <th scope="col">{{ header }}</th>
+                    {% endfor %}
+                    <th scope="col" style="width: 15%;"></th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-<div style="text-align: center;">
-    <button type="button" class="btn btn-outline-secondary btn-lg align-middle"><span class="material-icons align-middle" style="margin-right: 5px;">
-        add
-    </span>Add A Category </button>
-</div>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                <tr>
+                    {% for key in category_table_header %}
+                    <td>{{ category|get:key }}</th>
+                        {% endfor %}
+                    <td>
+                        <a href="#" style="margin-right: 20px;">
+                            <span class='material-icons'>edit</span>
+                        </a>
+                        <a href='#' style='margin-right: 20px;'>
+                            <span class='material-icons'>delete</span>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div style="text-align: center;">
+        <button type="button" class="btn btn-outline-secondary btn-lg align-middle">
+            <span class="material-icons align-middle" style="margin-right: 5px;">add</span>
+            Add A Category 
+        </button>
+    </div>
 </body>
 {% endblock %}
