@@ -21,12 +21,14 @@ from user_profile.forms.RegisterForm import RegisterForm
 from user_profile.forms.ChangePasswordForm import ChangePasswordForm
 from user_profile.forms.UpdateUserInformationForm import UpdateUserInformationForm
 
+from django.contrib import messages
 
 # Create your views here.
 @csrf_exempt
 def register(request):
     if request.method == "POST":
         form_data = RegisterForm.map_json(request.POST.dict())
+        print(form_data)
         form = RegisterForm(form_data)
 
         if form.is_valid():
@@ -36,11 +38,17 @@ def register(request):
 
             try:
                 user = User.objects.create_user(username=username, password=password, email=email)
-                return JsonResponse({"message": "Successful Registration"})
+                #return JsonResponse({"message": "Successful Registration"})
+                messages.success(request, "Registration successful." )
+                return redirect('/login/')
             except IntegrityError:
-                return JsonResponse({"message": "Failed Registration", "error": {"username": "Username taken"}})
+                messages.error(request, "Username taken! ")
+                return render(request, 'accounts/register.html', {'form': form})
+                #return JsonResponse({"message": "Failed Registration", "error": {"username": "Username taken"}})
         else:
-            return JsonResponse({"message": "Failed Registration", "error": form.errors})         
+            messages.error(request, form.errors)
+            return render(request, 'accounts/register.html', {'form': form})
+            #return JsonResponse({"message": "Failed Registration", "error": form.errors})         
     elif request.method == "GET":
         return render(request, 'accounts/register.html')
 
@@ -51,14 +59,14 @@ def login(request):
         password = request.POST.get(PASSWORD_VAR_NAME)
         user = authenticate(username=username, password=password)
 
-        if user is not None:
+        if user:
             django_login(request=request, user=user)
             return redirect('home')
-
-        if user:
-            return JsonResponse({"message": "Logged In"})
+        
         else:
-            return JsonResponse({"message": "Failed Authentication"})
+            messages.error(request, "Wrong username or password! ")
+            return render(request, 'accounts/login.html')
+            #return JsonResponse({"message": "Failed Authentication"})
         
     return render(request, 'accounts/login.html')
 
