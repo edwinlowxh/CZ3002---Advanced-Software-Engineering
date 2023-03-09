@@ -28,7 +28,6 @@ from user_profile.forms.UpdateUserInformationForm import UpdateUserInformationFo
 def register(request):
     if request.method == "POST":
         form_data = RegisterForm.map_fields(request.POST.dict())
-        print(f"Form_Data: {form_data}")
         form = RegisterForm(form_data)
 
         if form.is_valid():
