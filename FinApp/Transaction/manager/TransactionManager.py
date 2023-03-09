@@ -62,7 +62,7 @@ class TransactionManager(models.Manager):
 
     
     
-    def create_transaction(self, user: User, category: Category, amount: float, description: str, type: str, date: datetime) -> Transaction:
+    def create_transaction(self, user: User, amount: float, description: str, type: str, date: datetime, category: Category = None) -> Transaction:
         return super().create(
             user=user,
             category=category,

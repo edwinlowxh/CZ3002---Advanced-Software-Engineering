@@ -51,7 +51,6 @@ def get_transactions(request, start_date: str = None, end_date: str = None):
                 # return JsonResponse({'range': f'From {start_date} to {end_date}', 'transactions': [model_to_dict(transaction) for transaction in query_set]})
                 
             context['transactions'] = [model_to_dict(transaction) for transaction in query_set]
-            print(request.user, context)
             return render(request, 'transaction.html', context)
     else:
         return redirect('/profile/login')
@@ -65,20 +64,22 @@ def create_transaction(request):
             form = CreateTransactionForm(request.user, **form_data)
 
             if form.is_valid():
-                new_transaction = Transaction.transaction_manager.create_transaction(
-                    user=request.user,
-                    **form.cleaned_data
-                )
-                context = model_to_dict(new_transaction)
-                return JsonResponse(context, status=201)
-                return render(request, "", context)
+                print(form.cleaned_data)
+                # new_transaction = Transaction.transaction_manager.create_transaction(
+                #     user=request.user,
+                #     **form.cleaned_data
+                # )
+                # context = model_to_dict(new_transaction)
+                context = {'field_errors': {'transaction_date':['date error', 'date error 2'], 'transaction_type': 'type error',
+                                            'transaction_category': 'category error', 'transaction_description': 'description error'}}
+                return JsonResponse(context, status=422, )
             else:
-                return JsonResponse({'message': 'Failed to create transaction', 'errors': CreateTransactionForm.map_fields(form.errors, reverse=True)}, status=422)
+                return JsonResponse({'message': 'Failed to create transaction', 'field_errors': CreateTransactionForm.map_fields(form.errors, reverse=True)}, status=422)
         elif request.method == 'GET':
             categories = Category.category_manager.get_categories(user=request.user)
-            context = {'categories': [model_to_dict(category) for category in categories]}
-            # return JsonResponse(context)
-            return render(request, "transaction.html", context)
+            context = {'categories': [model_to_dict(category)['name'] for category in categories]}
+            print(context)
+            return JsonResponse(context)
 
 @csrf_exempt
 @basic_auth
