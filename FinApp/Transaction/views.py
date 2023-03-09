@@ -65,7 +65,7 @@ def get_transactions(request, start_date: str = None, end_date: str = None):
             print(request.user, context)
             return render(request, 'transaction.html', context)
     else:
-        return redirect('/profile/login')
+        return redirect('/login')
 
 @csrf_exempt
 @basic_auth

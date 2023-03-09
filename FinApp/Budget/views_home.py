@@ -51,7 +51,7 @@ def get_budget_home(request):
 
 
     else:
-        return redirect('/profile/login')
+        return redirect('/login')
 
         
            
