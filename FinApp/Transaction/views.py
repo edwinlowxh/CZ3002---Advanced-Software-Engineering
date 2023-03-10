@@ -106,7 +106,7 @@ def get_transactions(request, start_date: str = None, end_date: str = None):
             context['transactions'] = [data["fields"] for data in serialized_data]
             #context['transactions'] = [model_to_dict(transaction) for transaction in query_set]
             # print(request.user, context)
-            return JsonResponse(context, status=200)
+            return JsonResponse(context, status=201)
             return render(request, 'transaction.html', context)
     else:
         return redirect('/login')
