@@ -11,7 +11,7 @@ export async function replaceTable(){
         existingTable.replaceWith(newTable);
     }
     else{
-        document.querySelector('#table-div').innerHTML = existingTable;
+        document.querySelector('#table-div').appendChild(newTable);
     }
 }
 

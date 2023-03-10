@@ -29,30 +29,31 @@ from .forms.CreateBudgetForm import CreateBudgetForm
 @basic_auth
 def get_budget(request):
     if request.user.is_authenticated:
-        if request.method == 'GET':
-    
-            user = request.user
-            year = 2023 #request.GET.get(BUDGET_YEAR_VAR)
-            month = 1 #request.GET.get(BUDGET_MONTH_VAR)
+        year = request.GET.get(BUDGET_YEAR_VAR)
+        month = request.GET.get(BUDGET_MONTH_VAR)
+        print(year)
+        print(month)
             
-            context = {'budget_table_header': BUDGET_TABLE_HEADER}
-            categories = Category.category_manager.get_categories(user = user, is_active = True)
-            
-            category_list = []
-            for category in categories:
-                category_dict = model_to_dict(category)
-                category_dict["category"] = category.name
-                query = Budget.budget_manager.get_budget(user=user, category = category, year = year, month = month)
-                if query:
-                   category_dict["limit"] = query[0].limit
-                else:
-                   category_dict["limit"] = 0
-                category_list.append(category_dict)
+        # if request.method == 'GET':
+        user = request.user
+        context = {'budget_table_header': BUDGET_TABLE_HEADER}
+        categories = Category.category_manager.get_categories(user = user, is_active = True)
+        
+        category_list = []
+        for category in categories:
+            category_dict = model_to_dict(category)
+            category_dict["category"] = category.name
+            query = Budget.budget_manager.get_budget(user=user, category = category, year = year, month = month)
+            if query:
+                category_dict["limit"] = query[0].limit
+            else:
+                category_dict["limit"] = 0
+            category_list.append(category_dict)
 
-            context['budgets'] =  category_list
+        context['budgets'] =  category_list
 
-            print(request.user, context)
-            return render(request, 'budget.html', context)
+        print(request.user, context)
+        return render(request, 'budget.html', context)
     else:
         return redirect('/')
         

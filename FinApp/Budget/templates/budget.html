@@ -3,113 +3,109 @@
 {% load template_tags %}
 
 {% block content %}
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<!-- <div class="row d-flex justify-content-center align-items-center h-70" style="margin-top: 500x;"> -->
-    <!-- Add Toggle button between income and expenses -->
-    <!-- Add add transaction button -->
-    
-    <!-- <div class="col d-flex justify-content-center align-items-center">
-        <div class="col-md-9" style="margin-top: 500x;">
-            <table class="table" id="category-table">
-                <thead>
-                    <tr>
-                        {% for header in budget_table_header.values %}
-                            <th scope="col">{{ header }}</th>
-                        {% endfor %}
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for budget in budgets %}
-                        <tr>
-                                {% for key in budget_table_header %}
-                                    <td>{{ budget|get:key }}</th>
-                                {% endfor %}
-                                <td>
-                                    <a href="#">
-                                        <span class="material-icons">
-                                            delete
-                                        </span>
-                                    </a>
-                                </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div> -->
-
-    <!-- Add Modal Form which will popup on clicking add transaction button -->
-<!-- </div> -->
-
 <body style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
-    <span><center><h1 style="margin-top: 200px;"><u>Budget</u></h1></center>
+    <span>
+        <center>
+            <h1 style="margin-top: 200px;"><u>Budget</u></h1>
+        </center>
         <div style="text-align:right; margin-right:400px; margin-top:30px;">
-        <div style=" display: inline-block; width:12%; margin-left: auto; margin-right: 20px;">
-        <select id="inputMonth" class="form-select" style="margin-right: 10px;">
-          <option selected>January</option>
-          <option>Feburary</option>
-          <option>March</option>
-          <option>April</option>
-          <option>May</option>
-          <option>June</option>
-          <option>July</option>
-          <option>August</option>
-          <option>September</option>
-          <option>October</option>
-          <option>November</option>
-          <option>December</option>
-        </select>
-        </div>
-        <div style=" display: inline-block; width:9%;">
-            <select id="inputYear" class="form-select">
-              <option selected>2023</option>
-              <option>2022</option>
-              <option>2021</option>
-            </select>
+            <div style=" display: inline-block; width:12%; margin-left: auto; margin-right: 20px;">
+                <select id="inputMonth" class="form-select" style="margin-right: 10px;">
+                    <option selected>January</option>
+                    <option>Feburary</option>
+                    <option>March</option>
+                    <option>April</option>
+                    <option>May</option>
+                    <option>June</option>
+                    <option>July</option>
+                    <option>August</option>
+                    <option>September</option>
+                    <option>October</option>
+                    <option>November</option>
+                    <option>December</option>
+                </select>
+            </div>
+            <div style=" display: inline-block; width:9%;">
+                <select id="inputYear" class="form-select">
+                    <option selected>2023</option>
+                    <option>2022</option>
+                    <option>2021</option>
+                </select>
             </div>
         </div>
-</span>
+    </span>
     <div class="container d-flex align-items-center justify-content-between">
 
-    <table class="table table-hover table-dark" id="category-table" style="margin-top: 80px; width:80%; margin:80px auto;  border-collapse: collapse;
+        <table class="table table-hover table-dark" id="category-table" style="margin-top: 80px; width:80%; margin:80px auto;  border-collapse: collapse;
     border-radius: 1em;
     overflow: hidden; padding: 5px;">
-        <thead>
-            <tr>
-                {% for header in budget_table_header.values %}
-                    <th scope="col">{{ header }}</th>
-                {% endfor %}
-                <th scope="col" style="width: 30%;"></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for budget in budgets %}
+            <thead>
                 <tr>
-                        {% for key in budget_table_header %}
-                            <td>{{ budget|get:key }}</th>
-                        {% endfor %}
-                        <td style="text-align:right;">
-                            <a href="#" style="margin-right: 20px;">
-                                <span class="material-icons">
-                                    delete
-                                </span>
-                            </a>
-                            <a href="#" style="margin-right: 20px;">
-                                <span class="material-icons">
-                                    edit
-                                </span>
-                            </a>
-                        </td>
+                    {% for header in budget_table_header.values %}
+                    <th scope="col">{{ header }}</th>
+                    {% endfor %}
+                    <th scope="col" style="width: 30%;"></th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-<div style="text-align: center;">
-    <button type="button" class="btn btn-outline-secondary btn-lg align-middle"><span class="material-icons align-middle" style="margin-right: 5px;">
-        add
-    </span>Add Budget </button>
-</div>
+            </thead>
+            <tbody>
+                {% for budget in budgets %}
+                <tr>
+                    {% for key in budget_table_header %}
+                    <td>{{ budget|get:key }}</th>
+                        {% endfor %}
+                    <td style="text-align:right;">
+                        <a href="#" style="margin-right: 20px;">
+                            <span class="material-icons">
+                                delete
+                            </span>
+                        </a>
+                        <a href="#" style="margin-right: 20px;">
+                            <span class="material-icons">
+                                edit
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div style="text-align: center;">
+        <button type="button" class="btn btn-outline-secondary btn-lg align-middle"><span
+                class="material-icons align-middle" style="margin-right: 5px;">
+                add
+            </span>Add Budget </button>
+    </div>
 </body>
+
+<script>
+    function getMonthNumberFromName(monthName) {
+         return new Date(`${monthName} 1, 2022`).getMonth() + 1;
+    }
+
+    const yearDropdown = document.getElementById('inputYear');
+    const monthDropdown = document.getElementById('inputMonth');
+
+    yearDropdown.addEventListener('change', update);
+    monthDropdown.addEventListener('change', update);
+
+    
+
+    function update() {
+        const year = yearDropdown.value;
+        const month = getMonthNumberFromName(monthDropdown.value);
+
+        console.log(year)
+        console.log(month)
+
+        fetch(`?year=${year}&month=${month}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update the frontend interface with the retrieved data
+            })
+            .catch(error => {
+                // console.error('Error:', error);
+            });
+    }
+</script>
 {% endblock %}

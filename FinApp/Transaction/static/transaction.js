@@ -1,8 +1,9 @@
 import { replaceTable } from './table.js';
 
-window.addEventListener("DomContentLoaded", async (event) => {
+window.addEventListener("DOMContentLoaded", async (event) => {
     sessionStorage.setItem("transactionTableType", "EXPENSE");
-    replaceTable(table);
+    console.log("Loaded")
+    await replaceTable();
 })
 
 export function transactionFormTypeChange(element){

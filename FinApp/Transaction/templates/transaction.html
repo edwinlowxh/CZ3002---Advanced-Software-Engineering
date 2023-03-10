@@ -4,18 +4,10 @@
 
 {% block content %}
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
 <body style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
-    <!-- <div style="text-align: center;">
-        <div class="btn-group align-middle" role="group" aria-label="Basic radio toggle button group" style="margin-top: 80px;" >
-            <input type="radio" class="btn-check" name="btnradio" id="expenses" autocomplete="off" checked>
-            <label class="btn btn-outline-secondary btn-lg" for="expenses">Expenses</label>
-        
-            <input type="radio" class="btn-check" name="btnradio" id="income" autocomplete="off">
-            <label class="btn btn-outline-secondary btn-lg" for="income">Income</label>
-        
-        </div>
-    </div> -->
-    <div style="margin-top:180px;" >
+
+    <div style="margin-top:180px;">
         <div style=" display: inline-block; width:12%; margin-left: 20%;">
             <div id="transaction-type-radio-group" class="btn-group align-middle" role="group" aria-label="Basic radio toggle button group"  >
                 <input type="radio" class="btn-check" name="btnradio" id="expense" autocomplete="off" checked>
@@ -37,42 +29,13 @@
                 <input type="date" class="form-control" id="transaction-end-date" min="1900-01-01">
                 <label style="color:black; font-size: 12px;">End Date</label>
             </div>
-            </div>
         </div>
     <div id="content">
         <center>
             <h1 style='margin-top: 60px;' id="table-title"><u>EXPENSE</u></h1>
         </center>
         <div class='container d-flex align-items-center justify-content-between' id="table-div">
-            <table class='table table-hover table-dark' id='transaction-table' style='margin-top: 80px; width:80%; margin:80px auto;border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;'>
-                <thead>
-                    <tr>
-                        {% for header in expense_table_header.values %}
-                            <th scope='col'>{{ header }}</th>
-                        {% endfor %}
-                        <th scope='col' style='width: 30%;'></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for transaction in transactions %}
-                        {% if transaction.type == 'EXPENSE' %}
-                            <tr id='{{transaction.id}}'>
-                                {% for key in expense_table_header %}
-                                    <td>{{ transaction|get:key }}</td>
-                                {% endfor %}
-                                <td>
-                                    <a href='#' style='margin-right: 20px;'>
-                                        <span class='material-icons' onclick='deleteTransaction(event, this)'>delete</span>
-                                    </a>
-                                    <a href='#' style='margin-right: 20px;'>
-                                        <span class='material-icons' data-toggle='modal' data-target='#updateTransactionFormModal' onclick='getUpdateTransactionForm(this)'>edit</span>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
+
         </div>
         <div style='text-align: center;'>
             <button type='button' class='btn btn-outline-secondary btn-lg align-middle' data-toggle='modal' data-target='#createTransactionFormModal' onclick='getCreateTransactionForm()'>
@@ -87,7 +50,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="formModalLabel" style="color: black;">Add Transaction</h5>
-                    <button type="button" class="btn btn-secondary" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-secondary" class="close" data-dismiss="modal"
+                        aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -107,7 +71,7 @@
 
                             </div>
                         </div>
-    
+
                         <div class="form-floating mt-2">
                             <select class="form-select" id="transaction-type" name="transaction_type" required>
                                 <option value="INCOME" selected>Income</option>
@@ -128,7 +92,7 @@
 
                             </div>
                         </div>
-    
+
                         <div class="form-floating mt-2">
                             <textarea class="form-control" placeholder="Description" id="transaction-description" name="transaction_description" style="height: 100px"></textarea>
                             <label for="floatingTextarea2" style="color:grey">Description</label>
