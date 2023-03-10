@@ -22,7 +22,7 @@ class CreateTransactionForm(forms.Form):
     type = forms.ChoiceField(choices=[choice for choice in TRANSACTION_TYPE], required=True)
     amount = forms.FloatField(required=True)
     category = forms.CharField(max_length=255, required=False, empty_value=None)
-    date = forms.DateField(input_formats=['%d/%m/%Y'], required=False, widget=forms.DateInput)
+    date = forms.DateField(input_formats=['%Y-%m-%d'], required=False)
     description = forms.CharField(max_length=255, required=False, empty_value=None)
 
     def __init__(self, user: User = None, **kwargs):
@@ -42,7 +42,6 @@ class CreateTransactionForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        print(cleaned_data)
         category = cleaned_data['category']
         _type = cleaned_data['type']
 
@@ -55,7 +54,9 @@ class CreateTransactionForm(forms.Form):
 
                 if not query_set:
                     self.add_error('category', f"Category {category} does not exist")
-                self.data['category'] = query_set[0]
+                cleaned_data['category'] = query_set[0]
+        else:
+            cleaned_data['category'] = None
        
     @staticmethod
     def map_fields(json_data: dict, reverse: bool = False):
