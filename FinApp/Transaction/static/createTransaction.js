@@ -31,11 +31,11 @@ async function postCreateTransactionForm(event, createTransactionForm){
         return response.json();
     })
     .then(async (data) => {
+        document.querySelector('#createTransactionFormModal .close').click();   
         await replaceTable();
     })
-    .catch(error => {
+    .catch((error) => {
         error.then(data => {
-            console.log(data)
             if ('field_errors' in data){
                 const field_errors = data['field_errors'];
                 displayFormErrors('create-transaction-form', field_errors);

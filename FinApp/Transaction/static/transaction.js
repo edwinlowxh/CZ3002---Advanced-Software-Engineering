@@ -2,7 +2,6 @@ import { replaceTable } from './table.js';
 
 window.addEventListener("DOMContentLoaded", async (event) => {
     sessionStorage.setItem("transactionTableType", "EXPENSE");
-    console.log("Loaded")
     await replaceTable();
 })
 

@@ -9,7 +9,12 @@ export async function getUpdateTransactionForm(element){
     await fetch(`http://127.0.0.1:8000/transactions/update?transaction_id=${transaction_id}`, {
         "method": "GET"
     })
-    .then(response => response.json())
+    .then(response => {
+        if ( !response.ok ){
+            throw response.json();
+        }
+        return response.json()
+    })
     .then(data => {
         const transaction = data['transaction']
         for (let key in transaction){
@@ -31,7 +36,15 @@ export async function getUpdateTransactionForm(element){
             postUpdateTransactionForm(event, document.getElementById("update-transaction-form"), transaction_id)
         };
     })
-    .catch(error => console.error(error));
+    .catch((error) => {
+        error.then(data => {
+            if ('field_errors' in data){
+                const field_errors = data['field_errors'];
+                displayFormErrors('create-transaction-form', field_errors);
+            }
+        });
+    }  
+    );
 }
 
 export async function postUpdateTransactionForm(event, updateTransactionForm, transaction_id){
