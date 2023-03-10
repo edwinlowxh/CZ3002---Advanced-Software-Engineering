@@ -71,6 +71,7 @@ from Transaction.views import(
     get_transactions,
     create_transaction,
     delete_transaction,
+    transaction_view,
     update_transaction
 )
 
@@ -131,7 +132,8 @@ urlpatterns = [
     path('profile/update_information/', update_user_information, name="update_user_information"),
 
     # Path for transactions
-    path('transactions/', get_transactions, name = 'get_transactions'),
+    path('transactions/', transaction_view, name = 'get_transactions'),
+    path('transactions/get', get_transactions, name = 'get_transactions'),
     path('transactions/create', create_transaction, name = 'create_transactions'),
     path('transactions/delete', delete_transaction, name = 'delete_transactions'),
     path('transactions/update', update_transaction, name = 'update_transactions'),

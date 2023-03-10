@@ -1,4 +1,5 @@
 from __future__ import annotations
+from datetime import timedelta
 
 from typing import TYPE_CHECKING
 
@@ -24,16 +25,19 @@ class TransactionManager(models.Manager):
         if 'start_date' not in kwargs:
             start_date = datetime(1900,1,1)
         else:
-            start_date = datetime(int(kwargs['start_date'][2]), int(kwargs['start_date'][1]), int(kwargs['start_date'][0]))
+            start_date = datetime(int(kwargs['start_date'][0]), int(kwargs['start_date'][1]), int(kwargs['start_date'][2]))
+            kwargs.pop('start_date')
             
         if 'end_date' not in kwargs:
-            end_date = datetime.now()
+            end_date = datetime.now() + timedelta(days=1)
         else:
-            end_date = datetime(int(kwargs['end_date'][2]), int(kwargs['end_date'][1]), int(kwargs['end_date'][0]))
+            end_date = datetime(int(kwargs['end_date'][0]), int(kwargs['end_date'][1]), int(kwargs['end_date'][2])) + timedelta(days=1)
+            kwargs.pop('end_date')
 
         return super().get_queryset().filter(
             user=user,
-            date__range=(start_date, end_date)
+            date__range=(start_date, end_date),
+            **kwargs
         )
     
     def retrieve_total_expenses(self,user: User, year: int, month:int, **kwargs)-> models.QuerySet:
@@ -62,7 +66,7 @@ class TransactionManager(models.Manager):
 
     
     
-    def create_transaction(self, user: User, category: Category, amount: float, description: str, type: str, date: datetime) -> Transaction:
+    def create_transaction(self, user: User, amount: float, description: str, type: str, date: datetime, category: Category = None) -> Transaction:
         return super().create(
             user=user,
             category=category,

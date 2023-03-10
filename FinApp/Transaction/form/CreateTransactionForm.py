@@ -20,10 +20,10 @@ from Budget.models import Category
 
 class CreateTransactionForm(forms.Form):
     type = forms.ChoiceField(choices=[choice for choice in TRANSACTION_TYPE], required=True)
-    amount = forms.CharField(required=True)
-    category = forms.CharField(max_length=255, required=False)
-    date = forms.DateField(input_formats=['%d/%m/%Y'], required=False, widget=forms.DateInput)
-    description = forms.CharField(max_length=255, required=False)
+    amount = forms.FloatField(required=True)
+    category = forms.CharField(max_length=255, required=False, empty_value=None)
+    date = forms.DateField(input_formats=['%Y-%m-%d'], required=False)
+    description = forms.CharField(max_length=255, required=False, empty_value=None)
 
     def __init__(self, user: User = None, **kwargs):
         if not user:
@@ -40,25 +40,24 @@ class CreateTransactionForm(forms.Form):
         else:
             return date
 
-    def clean_category(self):
-        category = self.cleaned_data['category']
-        _type = self.data.get('type')
+    def clean(self):
+        cleaned_data = super().clean()
+        category = cleaned_data['category']
+        _type = cleaned_data['type']
 
         if _type == 'EXPENSE':
             if not category:
-                raise forms.ValidationError(f"Please provide a category for expense")
+                self.add_error('category', f"Category cannot be empty for expense")
             else:
                 category = self.cleaned_data['category']
                 query_set = Category.category_manager.get_categories(user=self.user).filter(name=category)
 
                 if not query_set:
-                    raise forms.ValidationError(f"Category {category} does not exist")
-                else:
-                    return query_set[0]          
+                    self.add_error('category', f"Category {category} does not exist")
+                cleaned_data['category'] = query_set[0]
         else:
-            return None
-
-
+            cleaned_data['category'] = None
+       
     @staticmethod
     def map_fields(json_data: dict, reverse: bool = False):
         if not reverse:

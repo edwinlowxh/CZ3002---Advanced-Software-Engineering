@@ -1,3 +1,4 @@
+import traceback
 from django.shortcuts import redirect, render
 
 from django.contrib.auth import logout, authenticate, update_session_auth_hash, login as django_login
@@ -27,8 +28,7 @@ from django.contrib import messages
 @csrf_exempt
 def register(request):
     if request.method == "POST":
-        form_data = RegisterForm.map_json(request.POST.dict())
-        print(form_data)
+        form_data = RegisterForm.map_fields(request.POST.dict())
         form = RegisterForm(form_data)
 
         if form.is_valid():
@@ -38,19 +38,23 @@ def register(request):
 
             try:
                 user = User.objects.create_user(username=username, password=password, email=email)
-                #return JsonResponse({"message": "Successful Registration"})
                 messages.success(request, "Registration successful." )
-                return redirect('/login/')
+                return redirect('login')
+                return JsonResponse({"message": "Successful Registration"})
             except IntegrityError:
-                messages.error(request, "Username taken! ")
-                return render(request, 'accounts/register.html', {'form': form})
-                #return JsonResponse({"message": "Failed Registration", "error": {"username": "Username taken"}})
+                messages.error(request, "Check fields")
+                return render(request, 'register.html', {"field_errors": {"username": "Username taken"}}, status=422)
+                return JsonResponse({"message": "Failed Registration", "error": {"username": "Username taken"}})
+            except Exception as e:
+                messages.error(request, "Failed to register. Contact administrator (500)")
+                return render(request, 'register.html', status=500)
         else:
-            messages.error(request, form.errors)
-            return render(request, 'accounts/register.html', {'form': form})
-            #return JsonResponse({"message": "Failed Registration", "error": form.errors})         
+            print(RegisterForm.map_fields(form.errors, reverse=True))
+            messages.error(request, "Check fields")
+            return render(request, 'register.html', {"field_errors": RegisterForm.map_fields(form.errors, reverse=True)}, status=422)        
+            return JsonResponse({"message": "Failed Registration", "error": form.errors})                 
     elif request.method == "GET":
-        return render(request, 'accounts/register.html')
+        return render(request, 'register.html')
 
 @csrf_exempt
 def login(request):
@@ -68,7 +72,7 @@ def login(request):
             return render(request, 'accounts/login.html')
             #return JsonResponse({"message": "Failed Authentication"})
         
-    return render(request, 'accounts/login.html')
+    return render(request, 'login.html')
 
 @csrf_exempt
 def logout(request):

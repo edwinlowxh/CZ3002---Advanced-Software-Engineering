@@ -1,3 +1,5 @@
+from time import sleep
+import traceback
 from django.forms import model_to_dict
 from django.shortcuts import redirect, render
 
@@ -27,9 +29,50 @@ from Budget.models import(
     Category
 )
 
+from django.contrib import messages
+
 # Create your views here.
+
+def transaction_view(request):
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            start_date = request.GET.get(START_DATE_QUERY_PARAM, None)
+            end_date = request.GET.get(END_DATE_QUERY_PARAM, None)
+            context = {'income_table_header': INCOME_TABLE_HEADER, 'expense_table_header': EXPENSE_TABLE_HEADER}            
+
+            if not start_date and not end_date:
+                query_set = Transaction.transaction_manager.retrieve_transaction(user=request.user)
+                context['range'] = 'Any'
+                # return JsonResponse({'range': 'Any', 'transactions': [model_to_dict(transaction) for transaction in query_set]})
+            elif not start_date:
+                query_set = Transaction.transaction_manager.retrieve_transaction(user=request.user, end_date=tuple(end_date.split('-')))
+                context['range'] = f'Before {end_date}'
+                # return JsonResponse({'range': f'Before {end_date}', 'transactions': [model_to_dict(transaction) for transaction in query_set]})
+            elif not end_date:
+                query_set = Transaction.transaction_manager.retrieve_transaction(user=request.user, start_date=tuple(start_date.split('-')))
+                context['range'] = f'After {start_date}'
+                # return JsonResponse({'range': f'After {start_date}', 'transactions': [model_to_dict(transaction) for transaction in query_set]})
+            else:
+                query_set = Transaction.transaction_manager.retrieve_transaction(user=request.user, start_date=tuple(start_date.split('-')), end_date=tuple(end_date.split('-')))
+                context['range'] = f'From {start_date} to {end_date}'
+                # return JsonResponse({'range': f'From {start_date} to {end_date}', 'transactions': [model_to_dict(transaction) for transaction in query_set]})
+                
+            serialized_data = json.loads(serializers.serialize('json', query_set, use_natural_foreign_keys=True, use_natural_primary_keys=True))
+            for data in serialized_data:
+                transaction = data["fields"]
+                del transaction["user"]
+                transaction.update({"id": data["pk"]})
+
+            context['transactions'] = [data["fields"] for data in serialized_data]
+            #context['transactions'] = [model_to_dict(transaction) for transaction in query_set]
+            # print(request.user, context)
+            return render(request, 'transaction.html', context)
+    else:
+        return redirect('/login')
+
+
 @csrf_exempt
-# @basic_auth
+@basic_auth
 def get_transactions(request, start_date: str = None, end_date: str = None):
     if request.user.is_authenticated:
         if request.method == 'GET':
@@ -62,7 +105,8 @@ def get_transactions(request, start_date: str = None, end_date: str = None):
 
             context['transactions'] = [data["fields"] for data in serialized_data]
             #context['transactions'] = [model_to_dict(transaction) for transaction in query_set]
-            print(request.user, context)
+            # print(request.user, context)
+            return JsonResponse(context, status=200)
             return render(request, 'transaction.html', context)
     else:
         return redirect('/login')
@@ -82,38 +126,40 @@ def create_transaction(request):
                 )
                 context = model_to_dict(new_transaction)
                 return JsonResponse(context, status=201)
-                return render(request, "", context)
             else:
-                return JsonResponse({'message': 'Failed to create transaction', 'errors': CreateTransactionForm.map_fields(form.errors, reverse=True)}, status=422)
+                return JsonResponse({'message': 'Failed to create transaction', 'field_errors': CreateTransactionForm.map_fields(form.errors, reverse=True)}, status=422)
         elif request.method == 'GET':
             categories = Category.category_manager.get_categories(user=request.user)
-            context = {'categories': [model_to_dict(category) for category in categories]}
-            # return JsonResponse(context)
-            return render(request, "transaction.html", context)
+            context = {'categories': [model_to_dict(category)['name'] for category in categories]}
+            return JsonResponse(context, status=201)
+    else:
+        return redirect('login')
 
 @csrf_exempt
 @basic_auth
 def delete_transaction(request):
-     if request.user.is_authenticated:
+    if request.user.is_authenticated:
         if request.method == 'POST':
             id = request.POST.get(TRANSACTION_ID_VAR)
 
             try:
                 Transaction.transaction_manager.delete_transaction(user=request.user, id=id)
-                return JsonResponse({'message': 'Transaction deleted'})
+                return JsonResponse({},status=201)
             except Exception as e:                
-                return JsonResponse({'message': 'Failed to delete transaction'})
+                return JsonResponse({'non_field_errors': 'Failed to delete transaction'}, status=422)
+    else:
+        return redirect('login')
 
 @csrf_exempt
 @basic_auth
-def update_transaction(request):
-     if request.user.is_authenticated:
+def update_transaction(request, id: str=None):
+    if request.user.is_authenticated:
         if request.method == 'POST':
             transaction_id = request.POST.get(TRANSACTION_ID_VAR)
 
             try:
                 form_data = CreateTransactionForm.map_fields(request.POST.dict())
-                form = CreateTransactionForm(request.user, form_data)
+                form = CreateTransactionForm(request.user, **form_data)
 
                 if form.is_valid():
                     updated_transaction = Transaction.transaction_manager.update_transaction(
@@ -123,21 +169,37 @@ def update_transaction(request):
                     )
 
                     if not updated_transaction:
-                        return JsonResponse({'message': 'Failed to update transaction', 'errors': 'Transaction do not exist'})
+                        return JsonResponse({'non_field_errors': 'Invalid Transaction'}, status=422)
                     else:
-                        return JsonResponse(model_to_dict(updated_transaction))
+                        return JsonResponse(model_to_dict(updated_transaction), status=201)
                 else:
-                    return JsonResponse({'message': 'Failed to update transaction', 'errors': CreateTransactionForm.map_fields(form.errors, reverse=True)})
+                    return JsonResponse({'field_errors': CreateTransactionForm.map_fields(form.errors, reverse=True)}, status=422)
 
-            except Exception as e:           
-                return JsonResponse({'message': 'Failed to update transaction'})
+            except Exception as e:
+                print(traceback.format_exc())           
+                return JsonResponse({'non_field_errors': 'Failed to update transaction. Contact Administrator'}, status=500)
             
         elif request.method == 'GET':
-            transaction_id = request.POST.get(TRANSACTION_ID_VAR)
-            transaction = Transaction.transaction_manager.retrieve_transaction(user=request.user, id=transaction_id)
-            context = {model_to_dict(transaction)}
-            return JsonResponse(context)
+            transaction_id = request.GET.get(TRANSACTION_ID_VAR)
+            query_set = Transaction.transaction_manager.retrieve_transaction(user=request.user, id=transaction_id)
+            serialized_data = json.loads(serializers.serialize('json', query_set, use_natural_foreign_keys=True, use_natural_primary_keys=True))
+
+            for data in serialized_data:
+                transaction = data["fields"]
+                del transaction["user"]
+                transaction.update({"id": data["pk"]})
+
+            categories = Category.category_manager.get_categories(user=request.user)
+
+            context = {
+                'transaction': CreateTransactionForm.map_fields(serialized_data[0]['fields'], reverse=True),
+                'categories': [model_to_dict(category)['name'] for category in categories]
+            }
+
+            return JsonResponse(context, status=200)
             return render(request, "", context)
+    else:
+        return redirect('login')
 
 
             

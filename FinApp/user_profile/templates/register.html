@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <!-- ======= Register Section ======= -->
+
+    <section class="bg-image">
+      <a href="{% url 'home' %}" class="previous" style="font-size: 60px; margin-left: 50px; color: aliceblue;" >&#8249;</a>
+
+        <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+            <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                <div class="card bg-dark text-white" style="border-radius: 15px; ">
+                    <div class="card-body p-5">
+                    <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+
+
+                    <form method="post" class="form-group">
+                        {% csrf_token %}
+                        <div class="form-outline mb-5">
+                          {% if 'username' in field_errors %}
+                            <input type="text" class="form-control is-invalid" name="username" id="username" class="form-control form-control-lg" placeholder="Username" required/>
+                          {% else %}
+                          <input type="text" class="form-control" name="username" id="username" class="form-control form-control-lg" placeholder="Username" required/>
+                          {% endif %}
+                          <div class="invalid-feedback">
+                            {{ field_errors.username }}
+                          </div>                          
+                        </div>
+
+                        <div class="form-outline mb-5">
+                          {% if 'email' in field_errors %}
+                            <input type="email" name="email" class="form-control is_invalid" id="email" class="form-control form-control-lg" placeholder="Email address" required/>
+                          {% else %}
+                            <input type="email" name="email" class="form-control" id="email" class="form-control form-control-lg" placeholder="Email address" required/>
+                          {% endif %}
+                          
+                          <div class="invalid-feedback">
+                            {{ field_errors.email }}
+                          </div>   
+                        </div>
+
+                        <div class="form-outline mb-5">
+                            {% if 'password' in field_errors %}
+                              <input class="form-control is-invalid" type="password" name="password" id="password" class="form-control form-control-lg" placeholder="Password" required/>
+                            {% else %}
+                              <input class="form-control" type="password" name="password" id="password" class="form-control form-control-lg" placeholder="Password" required/>
+                            {% endif %}
+                            <div class="invalid-feedback">
+                              {{ field_errors.password }}
+                            </div>
+                        </div>
+
+                        <div class="form-outline mb-5">
+                          {% if 'confirm_password' in field_errors %}
+                            <input type="password" class="form-control is_invalid" name="confirm_password" id="confirm_password" class="form-control form-control-lg" placeholder="Confirm Password" required/>
+                          {% else %}
+                            <input type="password" class="form-control" name="confirm_password" id="confirm_password" class="form-control form-control-lg" placeholder="Confirm Password" required/>
+                          {% endif %}
+                          
+                          <div class="invalid-feedback">
+                            {{ field_errors.confirm_password }}
+                          </div>                            
+                        </div>
+
+                        {% if non_field_errors %}
+                            {% for error in non_field_errors %}
+                              <div style="color:red;">
+                                <p>error</p>
+                              </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <p style="color: red;" id="errors"></p>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" id="submit" class="btn btn-lg btn-outline-light">Register</button>
+                        </div>
+
+                        <p class="text-center mt-5 mb-0 text-white">Already have an account? <a href="{% url 'login' %}" class="fw-bold text-white"><u>Login here</u></a></p>
+
+                    </form>
+
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section><!-- Register Section -->
+{% endblock %}
