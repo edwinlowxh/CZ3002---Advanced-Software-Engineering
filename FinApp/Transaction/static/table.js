@@ -3,7 +3,16 @@ import { getTransaction } from "./getTransaction.js";
 import { deleteTransaction } from "./deleteTransaction.js";
 
 export async function replaceTable(){
-    const data = await getTransaction();
+    try{
+        var data = await getTransaction();
+    }
+    catch(error){
+        error.then(data => {
+            // Display Error
+        })
+        return;
+    }
+
     const newTable = generateTransactionTable(data);
     const existingTable = document.querySelector('#transaction-table');
 
