@@ -20,21 +20,18 @@
       </form>
       <div class="row">
         <div class="col-6">
-          <canvas id="salesChart"></canvas>
+          <canvas id="piechart"></canvas>
         </div>
         <div class="col-6">
-          <canvas id="paymentSuccessChart"></canvas>
+          <canvas id="year_line_chart"></canvas>
         </div>
         <div class="col-6">
-          <canvas id="spendPerCustomerChart"></canvas>
-        </div>
-        <div class="col-6">
-          <canvas id="paymentMethodChart"></canvas>
+          <canvas id="month_line_chart"></canvas>
         </div>
       </div>
       <script>
-        let paymentSuccessCtx = document.getElementById("paymentSuccessChart").getContext("2d");
-        let paymentSuccessChart = new Chart(paymentSuccessCtx, {
+        let piechartCtx = document.getElementById("piechart").getContext("2d");
+        let piechart = new Chart(piechartCtx, {
           type: "pie",
           options: {
             responsive: true,
@@ -49,8 +46,16 @@
           }
         });
          
-        let linechart = document.getElementById("spendPerCustomerChart").getContext("2d");
-        let spendPerCustomerChart = new Chart(linechart, {
+        let linechartCtx = document.getElementById("year_line_chart").getContext("2d");
+        let year_line_chart = new Chart(linechartCtx, {
+          type: "line",
+          options: {
+            responsive: true,
+          }
+        });
+
+        let monthlylineCtx = document.getElementById("month_line_chart").getContext("2d");
+        let month_line_chart = new Chart(monthlylineCtx, {
           type: "line",
           options: {
             responsive: true,
@@ -123,7 +128,8 @@
   }
   
   function loadAllCharts(year,month) {
-    loadChart(paymentSuccessChart, `pie/${year}/${month}`);
-    loadChart(spendPerCustomerChart, `line/${year}`);
+    loadChart(piechart, `pie/${year}/${month}`);
+    loadChart(year_line_chart, `line/${year}`);
+    loadChart(month_line_chart, `monthly_expense/${year}/${month}`);
   }
   </script>
