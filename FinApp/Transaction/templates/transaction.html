@@ -6,7 +6,7 @@
 
 <body style="min-height:100%; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
 
-    <div style="margin-top:180px;">
+    <div style="margin-top:150px;">
         <div style=" display: inline-block; width:12%; margin-left: 20%;">
             <div id="transaction-type-radio-group" class="btn-group align-middle" role="group"
                 aria-label="Basic radio toggle button group">
@@ -32,7 +32,7 @@
         </div>
         <div id="content">
             <center>
-                <h1 style='margin-top: 60px;' id="table-title"><u>EXPENSE</u></h1>
+                <h1 style='margin-top: 60px;' id="table-title">EXPENSE</h1>
             </center>
             <div class='container d-flex align-items-center justify-content-between' id="table-div">
 
@@ -41,9 +41,15 @@
                 <div style=" display: inline-block; width:30%; margin-left: 10%;">
                     <form method="POST" enctype="multipart/form-data" style="display:flex;">
                         {% csrf_token %}
-                        <input type="file" name="myfile" class="form-control" style="width: 50%;">
-                        <button type='button' class='btn btn-outline-secondary btn-sm' style="margin-left: 20px;">Upload</button>
+                        <div class="x_panel" style="width: 100%;">
+                            <div class="x_title"></div>
+                            <div class="x_content" style="width: 100%; display:flex;">
+                                <input type="file" name="myfile" class="form-control" style="width: 50%;">
+                                <button type='submit' class='btn btn-outline-secondary btn-sm' style="margin-left: 20px;">Upload</button>
 
+                            </div>
+                        </div>
+                        
 
                     </form>
 
