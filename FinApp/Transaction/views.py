@@ -237,34 +237,6 @@ def update_transaction(request, id: str=None):
         return redirect('login')
 
 
-def Import_Excel(request):
-    if request.method == 'POST':
-        if 'myfile' in request.FILES:     
-            fs = FileSystemStorage() 
-            user = request.user
-            myfile = request.FILES['myfile']
-            filename = fs.save(myfile.name, myfile)
-            file_path = os.path.join(BASE_DIR, fs.url(filename)[1:])
-            data = pd.read_csv(file_path, header = 0)    
-            data_dict = data.to_dict(orient='records')
-            
-            for row in data_dict:
-              form = UploadTransactionForm(request.user, **row)
-              if form.is_valid():
-                new_transaction = Transaction.transaction_manager.create_transaction(
-                    user=request.user,
-                    **form.cleaned_data
-                )
-              else:
-                messages.error(request, form.errors)
-                return render(request, 'import_excel_db.html', {}) 
-            
-            messages.success(request, "Upload Successful!" )
-            return redirect("transactions/")
-            #return render(request, 'import_excel_db.html', {}) 
-            #return redirect("transactions/")
-           
-    return render(request, 'import_excel_db.html',{})
 
 
 

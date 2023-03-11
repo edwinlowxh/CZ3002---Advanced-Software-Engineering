@@ -73,7 +73,6 @@ from Transaction.views import(
     delete_transaction,
     transaction_view,
     update_transaction,
-    Import_Excel,
 )
 
 from Budget.views_category import(
@@ -94,6 +93,11 @@ from Budget.views_home import (
     get_budget_home,
   )
 
+from Transaction.views_stats import (
+     get_filter_options,
+     get_category_spending,
+     get_income_expense_year,
+     statistics_view,)
 
 {
   
@@ -139,7 +143,7 @@ urlpatterns = [
     path('transactions/create', create_transaction, name = 'create_transactions'),
     path('transactions/delete', delete_transaction, name = 'delete_transactions'),
     path('transactions/update', update_transaction, name = 'update_transactions'),
-    path('transaction/upload',Import_Excel, name = 'excel'),
+    
 
     # Path for category
     path('categories/', get_category, name='get_category'),
@@ -152,9 +156,12 @@ urlpatterns = [
     path('budget/create_budget', create_budget, name='create_budget'),
     path('budget/delete_budget', delete_budget, name='delete_budget'),
     path('budget/update_budget', update_budget, name='update_budget'),
-
-
-    path('excel',Import_Excel, name = 'excel'),
+   
+    path('pie/<int:year>/<int:month>', get_category_spending, name='get_category_spending'),
+    path('stats',  statistics_view, name='stats'),
+    path('chart/filter-options/', get_filter_options, name='chart-filter-options'),
+    path('line/<int:year>/', get_income_expense_year, name='get_income_expense_year'),
+    
 
     
 ]
