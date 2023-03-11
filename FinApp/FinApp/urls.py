@@ -72,7 +72,8 @@ from Transaction.views import(
     create_transaction,
     delete_transaction,
     transaction_view,
-    update_transaction
+    update_transaction,
+    Import_Excel,
 )
 
 from Budget.views_category import(
@@ -93,9 +94,6 @@ from Budget.views_home import (
     get_budget_home,
   )
 
-from Transaction.views_excel import (
-    Import_Excel
-  )
 
 {
   
@@ -141,6 +139,7 @@ urlpatterns = [
     path('transactions/create', create_transaction, name = 'create_transactions'),
     path('transactions/delete', delete_transaction, name = 'delete_transactions'),
     path('transactions/update', update_transaction, name = 'update_transactions'),
+    path('transaction/upload',Import_Excel, name = 'excel'),
 
     # Path for category
     path('categories/', get_category, name='get_category'),
