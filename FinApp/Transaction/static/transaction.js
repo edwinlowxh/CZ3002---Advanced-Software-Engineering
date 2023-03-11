@@ -1,4 +1,4 @@
-import { replaceTable } from './table.js';
+import { replaceTable } from './transactionTable.js';
 
 window.addEventListener("DOMContentLoaded", async (event) => {
     sessionStorage.setItem("transactionTableType", "EXPENSE");

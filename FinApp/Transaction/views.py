@@ -191,6 +191,7 @@ def update_transaction(request, id: str=None):
     if request.user.is_authenticated:
         if request.method == 'POST':
             transaction_id = request.POST.get(TRANSACTION_ID_VAR)
+            print(f"post: {transaction_id}")
 
             try:
                 form_data = CreateTransactionForm.map_fields(request.POST.dict())
@@ -216,6 +217,7 @@ def update_transaction(request, id: str=None):
             
         elif request.method == 'GET':
             transaction_id = request.GET.get(TRANSACTION_ID_VAR)
+            print(f"get: {transaction_id}")
             query_set = Transaction.transaction_manager.retrieve_transaction(user=request.user, id=transaction_id)
             serialized_data = json.loads(serializers.serialize('json', query_set, use_natural_foreign_keys=True, use_natural_primary_keys=True))
 
