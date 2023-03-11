@@ -74,7 +74,7 @@
                   <li><strong>Downpayment</strong>: ${{ mostAffordable.downPayment }}</li>
                   <li><strong>Buyer's Stamp Duties</strong>: ${{ mostAffordable.buyerStampDuties }}</li>
                   <li><strong>Lump Sum Payment</strong>: ${{ mostAffordable.lumpSumPayment }}</li>
-                  <li><input class = "button" type="button" value="Add/Update Balance Sheet" onclick="addToDebt(1)"></li>
+                  <li><input class = "button" type="button" value="Update Expenses" onclick="addToDebt(1)"></li>
                 </ul>
                 <form id = "regForm1" action="", method="POST"> {% csrf_token %}
                   <input name = "price" type = "hidden" value = {{ mostAffordable.price }} >
@@ -100,7 +100,7 @@
                   <li><strong>Downpayment</strong>: ${{ maxAffordable.downPayment }}</li>
                   <li><strong>Buyer's Stamp Duties</strong>: ${{ maxAffordable.buyerStampDuties }}</li>
                   <li><strong>Lump Sum Payment</strong>: ${{ maxAffordable.lumpSumPayment }}</li>
-                  <li><input class = "button" type="button" value="Add/Update Balance Sheet" onclick="addToDebt(2)"></li>
+                  <li><input class = "button" type="button" value="Update Expenses" onclick="addToDebt(2)"></li>
                 </ul>
                 <form id = "regForm2" action="", method="POST"> {% csrf_token %}
                   <input name = "price" type = "hidden" value = {{ maxAffordable.price }} >
