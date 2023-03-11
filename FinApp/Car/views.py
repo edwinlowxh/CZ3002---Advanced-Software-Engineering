@@ -97,16 +97,20 @@ def details_view(request, pk):
             
             elif 'Update Balance Sheet' in request.POST:
                 # Create category
-                car_category = Category.category_manager.create_category(user, name = car.model + car.spec)
+                car_category = Category.category_manager.get_categories(user = user, name = "Car Mortage")
 
-                #create Transaction
+                if not car_category:
+                     category = Category.category_manager.create_category(user=user, name = "Car Mortage")
+                else:
+                     category = car_category[0]
+
                 car_transaction = Transaction.transaction_manager.create_transaction(user = user, 
-                                                                                     amount = totalCost, 
-                                                                                     description= "rent for " + car_category.name,
+                                                                                     amount = round(totalCost,2), 
+                                                                                     description= "rent for " + car.model + car.spec,
                                                                                      type = "EXPENSE",
-                                                                                     category= car_category,
+                                                                                     category= category,
                                                                                      date = now().today())
-                
+
                 messages.success(request, "Car Expense sucessfully copied!" )
                 return redirect("/transactions/")
 

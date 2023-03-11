@@ -124,19 +124,23 @@ def costBreakdown_view(request):
                 #     return redirect("/finance/balanceSheet_Result/")
                 # except:
                 #     return redirect("/finance/questionaire/")
+                
+                house_category = Category.category_manager.get_categories(user = user, name = "House Mortage")
 
-                # Create category
-                house_category = Category.category_manager.create_category(user, name = "House 2")
+                if not house_category:
+                     category = Category.category_manager.create_category(user=user, name = "House Mortage")
+                else:
+                     category = house_category[0]
 
                 #create Transaction
                 house_transaction = Transaction.transaction_manager.create_transaction(user = user, 
                                                                                      amount = request.POST.get("repayment"), 
                                                                                      description= "Monthly Rent For House",
                                                                                      type = "EXPENSE",
-                                                                                     category= house_category,
+                                                                                     category= category,
                                                                                      date = now().today())
                 
-                messages.success(request, "House Expense sucessfully copied!" )
+                messages.success(request, "House Mortage sucessfully copied!" )
                 return redirect("/transactions/")
 
             else:
