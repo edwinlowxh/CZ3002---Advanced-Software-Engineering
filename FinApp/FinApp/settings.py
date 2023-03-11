@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'user_profile',
     'Budget',
     'Transaction',
+    'chartjs'
+
         
 ]
 

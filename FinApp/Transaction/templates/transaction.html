@@ -3,16 +3,15 @@
 {% load template_tags %}
 
 {% block content %}
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-<body style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
+<body style="min-height:100%; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
 
-    <div style="margin-top:180px;">
+    <div style="margin-top:150px;">
         <div style=" display: inline-block; width:12%; margin-left: 20%;">
-            <div id="transaction-type-radio-group" class="btn-group align-middle" role="group" aria-label="Basic radio toggle button group"  >
+            <div id="transaction-type-radio-group" class="btn-group align-middle" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="btnradio" id="expense" autocomplete="off" checked>
                 <label class="btn btn-outline-secondary btn-lg" for="expense">Expense</label>
-            
+
                 <input type="radio" class="btn-check" name="btnradio" id="income" autocomplete="off">
                 <label class="btn btn-outline-secondary btn-lg" for="income">Income</label>
             </div>
@@ -30,155 +29,176 @@
                 <label style="color:black; font-size: 12px;">End Date</label>
             </div>
         </div>
-    <div id="content">
-        <center>
-            <h1 style='margin-top: 60px;' id="table-title"><u>EXPENSE</u></h1>
-        </center>
-        <div class='container d-flex align-items-center justify-content-between' id="table-div">
+        <div id="content">
+            <center>
+                <h1 style='margin-top: 60px;' id="table-title">EXPENSE</h1>
+            </center>
+            <div class='container d-flex align-items-center justify-content-between' id="table-div">
 
-        </div>
-        <div style='text-align: center;'>
-            <button type='button' class='btn btn-outline-secondary btn-lg align-middle' data-toggle='modal' data-target='#createTransactionFormModal' onclick='getCreateTransactionForm()'>
-                <span class='material-icons align-middle' style='margin-right: 5px;'>add</span>
-                Add Expense
-            </button>
-        </div>
-    </div>
-
-    <div class="modal fade" id="createTransactionFormModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formModalLabel" style="color: black;">Add Transaction</h5>
-                    <button type="button" class="btn btn-secondary close" data-dismiss="modal"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="create-transaction-form" >
-                        <div class="form-floating mt-2">
-                            <input type="date" class="form-control" id="transaction-date" min="1900-01-01" name="transaction_date">
-                            <label for="transaction-amount" style="color:black">Date</label>
-                            <div class="invalid-feedback">
-
-                            </div>  
-                        </div>
-                        <div class="form-floating mt-2">
-                            <input type="number" class="form-control" id="transaction-amount" name="transaction_amount" required>  
-                            <label for="transaction-amount" style="color:black">Amount</label>
-                            <div class="invalid-feedback">
+            </div>
+            <div style="margin-top:30px;">
+                <div style=" display: inline-block; width:30%; margin-left: 10%;">
+                    <form method="POST" enctype="multipart/form-data" style="display:flex;">
+                        {% csrf_token %}
+                        <div class="x_panel" style="width: 100%;">
+                            <div class="x_title"></div>
+                            <div class="x_content" style="width: 100%; display:flex;">
+                                <input type="file" name="myfile" class="form-control" style="width: 50%;">
+                                <button type='submit' class='btn btn-outline-secondary btn-sm' style="margin-left: 20px;">Upload</button>
 
                             </div>
                         </div>
+                        
 
-                        <div class="form-floating mt-2">
-                            <select class="form-select" id="transaction-type" name="transaction_type" required>
-                                <option value="INCOME" selected>Income</option>
-                                <option value="EXPENSE">Expense</option>
-                            </select>
-                            <label for="transaction-type" style="color:black">Transaction Type</label>
-                            <div class="invalid-feedback">
-
-                            </div>
-                        </div>
-
-                        <div class="form-floating mt-2" style="display: none">
-                            <select class="form-select" id="category-name" name="category_name" required>
-                                
-                            </select>
-                            <label for="transaction-type" style="color:black">Category</label>
-                            <div class="invalid-feedback">
-
-                            </div>
-                        </div>
-
-                        <div class="form-floating mt-2">
-                            <textarea class="form-control" placeholder="Description" id="transaction-description" name="transaction_description" style="height: 100px"></textarea>
-                            <label for="floatingTextarea2" style="color:grey">Description</label>
-                            <div class="invalid-feedback">
-
-                            </div>
-                        </div>
-                        <div class="d-flex mt-2">
-                            <button type="submit" class="btn btn-primary" style="margin-left: auto;">Add</button>
-                        </div>
                     </form>
+
+                </div>
+                <div style=" display: inline-block; width:12%; margin-left: 20%;"></div>
+                <button type='button' class='btn btn-outline-secondary btn-lg' data-toggle='modal' data-target='#createTransactionFormModal' onclick='getCreateTransactionForm()'>
+                    <span class='material-icons align-middle' style='margin-right: 5px;'>add</span>
+                    Add Transaction
+                </button>
+            </div>
+            <br><br><br><br><br><br>
+        </div>
+        
+
+        <div class="modal fade" id="createTransactionFormModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formModalLabel" style="color: black;">Add Transaction</h5>
+                        <button type="button" class="btn btn-secondary close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="create-transaction-form">
+                            <div class="form-floating mt-2">
+                                <input type="date" class="form-control" id="transaction-date" min="1900-01-01" name="transaction_date">
+                                <label for="transaction-amount" style="color:black">Date</label>
+                                <div class="invalid-feedback">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mt-2">
+                                <input type="number" class="form-control" id="transaction-amount" name="transaction_amount" required>
+                                <label for="transaction-amount" style="color:black">Amount</label>
+                                <div class="invalid-feedback">
+
+                                </div>
+                            </div>
+
+                            <div class="form-floating mt-2">
+                                <select class="form-select" id="transaction-type" name="transaction_type" required>
+                                    <option value="INCOME" selected>Income</option>
+                                    <option value="EXPENSE">Expense</option>
+                                </select>
+                                <label for="transaction-type" style="color:black">Transaction Type</label>
+                                <div class="invalid-feedback">
+
+                                </div>
+                            </div>
+
+                            <div class="form-floating mt-2" style="display: none">
+                                <select class="form-select" id="category-name" name="category_name" required>
+
+                                </select>
+                                <label for="transaction-type" style="color:black">Category</label>
+                                <div class="invalid-feedback">
+
+                                </div>
+                            </div>
+
+                            <div class="form-floating mt-2">
+                                <textarea class="form-control" placeholder="Description" id="transaction-description"
+                                    name="transaction_description" style="height: 100px"></textarea>
+                                <label for="floatingTextarea2" style="color:grey">Description</label>
+                                <div class="invalid-feedback">
+
+                                </div>
+                            </div>
+                            <div class="d-flex mt-2">
+                                <button type="submit" class="btn btn-primary" style="margin-left: auto;">Add</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="modal fade" id="updateTransactionFormModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formModalLabel" style="color: black;">Update Transaction</h5>
-                    <button type="button" class="btn btn-secondary close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="update-transaction-form">
-                        <div class="form-floating mt-2">
-                            <input type="date" class="form-control" id="transaction-date" min="1900-01-01" name="transaction_date">
-                            <label for="transaction-amount" style="color:black">Date</label>
-                            <div class="invalid-feedback">
+        <div class="modal fade" id="updateTransactionFormModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formModalLabel" style="color: black;">Update Transaction</h5>
+                        <button type="button" class="btn btn-secondary close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="update-transaction-form">
+                            <div class="form-floating mt-2">
+                                <input type="date" class="form-control" id="transaction-date" min="1900-01-01" name="transaction_date">
+                                <label for="transaction-amount" style="color:black">Date</label>
+                                <div class="invalid-feedback">
 
-                            </div>  
-                        </div>
-                        <div class="form-floating mt-2">
-                            <input type="number" class="form-control" id="transaction-amount" name="transaction_amount" required>  
-                            <label for="transaction-amount" style="color:black">Amount</label>
-                            <div class="invalid-feedback">
-
+                                </div>
                             </div>
-                        </div>
-    
-                        <div class="form-floating mt-2">
-                            <select class="form-select" id="transaction-type" name="transaction_type" required>
-                                <option value="INCOME" selected>Income</option>
-                                <option value="EXPENSE">Expense</option>
-                            </select>
-                            <label for="transaction-type" style="color:black">Transaction Type</label>
-                            <div class="invalid-feedback">
+                            <div class="form-floating mt-2">
+                                <input type="number" class="form-control" id="transaction-amount"
+                                    name="transaction_amount" required>
+                                <label for="transaction-amount" style="color:black">Amount</label>
+                                <div class="invalid-feedback">
 
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-floating mt-2" style="display: none">
-                            <select class="form-select" id="category-name" name="category_name" required>
-                                
-                            </select>
-                            <label for="transaction-type" style="color:black">Category</label>
-                            <div class="invalid-feedback">
+                            <div class="form-floating mt-2">
+                                <select class="form-select" id="transaction-type" name="transaction_type" required>
+                                    <option value="INCOME" selected>Income</option>
+                                    <option value="EXPENSE">Expense</option>
+                                </select>
+                                <label for="transaction-type" style="color:black">Transaction Type</label>
+                                <div class="invalid-feedback">
 
+                                </div>
                             </div>
-                        </div>
-    
-                        <div class="form-floating mt-2">
-                            <textarea class="form-control" placeholder="Description" id="transaction-description" name="transaction_description" style="height: 100px"></textarea>
-                            <label for="floatingTextarea2" style="color:grey">Description</label>
-                            <div class="invalid-feedback">
 
+                            <div class="form-floating mt-2" style="display: none">
+                                <select class="form-select" id="category-name" name="category_name" required>
+
+                                </select>
+                                <label for="transaction-type" style="color:black">Category</label>
+                                <div class="invalid-feedback">
+
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex mt-2">
-                            <button type="submit" class="btn btn-primary" style="margin-left: auto;">Save</button>
-                        </div>
-                    </form>
+
+                            <div class="form-floating mt-2">
+                                <textarea class="form-control" placeholder="Description" id="transaction-description"
+                                    name="transaction_description" style="height: 100px"></textarea>
+                                <label for="floatingTextarea2" style="color:grey">Description</label>
+                                <div class="invalid-feedback">
+
+                                </div>
+                            </div>
+                            <div class="d-flex mt-2">
+                                <button type="submit" class="btn btn-primary" style="margin-left: auto;">Save</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-</div>
-    
-<script type="module" src="{% static 'transactionTable.js' %}"></script>
-<script type="module" src="{% static 'createTransaction.js' %}"></script>
-<script type="module" src="{% static 'deleteTransaction.js' %}"></script>
-<script type="module" src="{% static 'updateTransaction.js' %}"></script>
-<script type="module" src="{% static 'transaction.js' %}"></script>
-<script type="module" src="{% static 'getTransaction.js' %}"></script>
-  
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script type="module" src="{% static 'transactionTable.js' %}"></script>
+    <script type="module" src="{% static 'createTransaction.js' %}"></script>
+    <script type="module" src="{% static 'deleteTransaction.js' %}"></script>
+    <script type="module" src="{% static 'updateTransaction.js' %}"></script>
+    <script type="module" src="{% static 'transaction.js' %}"></script>
+    <script type="module" src="{% static 'getTransaction.js' %}"></script>
 </body>
 
 {% endblock %}

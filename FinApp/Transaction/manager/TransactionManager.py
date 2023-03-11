@@ -52,6 +52,9 @@ class TransactionManager(models.Manager):
         if 'category' in kwargs and kwargs['category']:
             filter_kwargs['category'] = kwargs['category']
 
+        if 'type' in kwargs and kwargs['type']:
+            filter_kwargs['type__contains'] = kwargs['type']
+
         return super().get_queryset().filter(
            **filter_kwargs
         ).aggregate(Sum('amount'))

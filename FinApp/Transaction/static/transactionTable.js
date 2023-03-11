@@ -37,7 +37,7 @@ export function generateTransactionTable(data){
     const table = document.createElement("table");
     table.id = "transaction-table";
     table.classList.add("table", "table-hover", "table-dark");
-    table.style = "margin-top: 80px; width:80%; margin:80px auto;border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;";
+    table.style = "margin-top: 80px; width:100%; margin:80px auto;border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;";
 
     const thead = document.createElement("thead");
     table.appendChild(thead);
@@ -68,8 +68,9 @@ export function generateTransactionTable(data){
                 })
                 
                 const lastTd = document.createElement("td");
-                lastTd.appendChild(deleteIcon());
                 lastTd.appendChild(editIcon());
+                lastTd.appendChild(deleteIcon());
+                
     
                 tr.append(lastTd);
                 tbody.append(tr);
@@ -90,6 +91,18 @@ function deleteIcon(){
     span.addEventListener("click", (event) => {
         deleteTransaction(event, event.target);
     })
+    span.addEventListener("mouseover", func, false);
+    span.addEventListener("mouseout", func1, false);
+
+    function func()
+    {  
+    span.setAttribute("style", "color:#3AEDCC;")
+    }
+
+    function func1()
+    {  
+    span.setAttribute("style", "color:white;")
+    }
     span.textContent = "delete";
     attribute.appendChild(
         span
@@ -108,6 +121,18 @@ function editIcon(){
     span.addEventListener("click", (event) => {
         getUpdateTransactionForm(event.target);
     })
+    span.addEventListener("mouseover", func, false);
+    span.addEventListener("mouseout", func1, false);
+
+    function func()
+    {  
+    span.setAttribute("style", "color:#3AEDCC;")
+    }
+
+    function func1()
+    {  
+    span.setAttribute("style", "color:white;")
+    }
     span.textContent = "edit";
     attribute.appendChild(
         span
