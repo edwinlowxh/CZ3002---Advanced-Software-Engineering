@@ -97,6 +97,7 @@ from Transaction.views_stats import (
      get_filter_options,
      get_category_spending,
      get_income_expense_year,
+     get_expense_monthly,
      statistics_view,)
 
 {
@@ -161,6 +162,7 @@ urlpatterns = [
     path('stats',  statistics_view, name='stats'),
     path('chart/filter-options/', get_filter_options, name='chart-filter-options'),
     path('line/<int:year>/', get_income_expense_year, name='get_income_expense_year'),
+    path('monthly_expense/<int:year>/<int:month>', get_expense_monthly, name='get_expense_monthly'),
     
 
     

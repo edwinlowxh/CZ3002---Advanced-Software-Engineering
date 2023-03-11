@@ -5,6 +5,8 @@ from Budget.models import Category
 from django.http import JsonResponse
 from django.shortcuts import render
 
+from calendar import monthrange
+
 
 def get_filter_options(request):
     options = [2020,2021,2022,2023]
@@ -54,7 +56,7 @@ def get_income_expense_year(request, year):
         'data': {
             'labels': months,
             'datasets': [{
-                'label': ["Expense"],
+                'label': "Expense",
                 #'backgroundColor': "#55efc4",
                 'borderColor': colorPrimary,
                 'data': expense,
@@ -65,6 +67,28 @@ def get_income_expense_year(request, year):
                 'borderColor': colorPrimary,
                 'data': income,
             }]
+        },
+    })
+
+def get_expense_monthly(request, year, month):
+    user = request.user
+    
+    days = [x for x in range(1,monthrange(year, month)[1])]
+    expense = []
+
+    for day in days:
+        expense.append(Transaction.transaction_manager.retrieve_total_expenses(user=user, year=year, month = month, date = day, type= "EXPENSE")["amount__sum"] or 0)
+
+    return JsonResponse({
+        'title': f'Expense for {months[month-1]}, {year}',
+        'data': {
+            'labels': days,
+            'datasets': [{
+                'label': "Expense",
+                #'backgroundColor': "#55efc4",
+                'borderColor': colorPrimary,
+                'data': expense,
+            },]
         },
     })
 

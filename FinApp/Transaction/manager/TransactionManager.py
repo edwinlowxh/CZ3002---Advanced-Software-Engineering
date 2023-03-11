@@ -40,14 +40,19 @@ class TransactionManager(models.Manager):
             **kwargs
         )
     
-    def retrieve_total_expenses(self,user: User, year: int, month:int, **kwargs)-> models.QuerySet:
+    def retrieve_total_expenses(self,user: User, year:int, month:int, **kwargs)-> models.QuerySet:
         filter_kwargs = {}
         filter_kwargs['user'] = user
-
-        start_date = datetime(year,month,1)
         
-        end_date = datetime(year,month,calendar.monthrange(year, month)[1])
-        filter_kwargs["date__range"] = (start_date, end_date)
+        if 'year' in kwargs and kwargs['year'] and 'month' in kwargs and kwargs['month']:
+            year, month = kwargs["year"], kwargs["month"]
+            start_date = datetime(year,month,1)
+            end_date = datetime(year,month,calendar.monthrange(year, month)[1])
+            filter_kwargs["date__range"] = (start_date, end_date)
+
+        if 'day' in kwargs and kwargs['day']:
+            date = datetime(year,month,kwargs["day"])
+            filter_kwargs["date__range"] = (date, date)
 
         if 'category' in kwargs and kwargs['category']:
             filter_kwargs['category'] = kwargs['category']
@@ -67,8 +72,7 @@ class TransactionManager(models.Manager):
             date__range=(start_date, end_date)
         ).values('category').annotate(total = Sum('amount')).order_by('-amount')
 
-    
-    
+
     def create_transaction(self, user: User, amount: float, description: str, type: str, date: datetime, category: Category = None) -> Transaction:
         return super().create(
             user=user,
