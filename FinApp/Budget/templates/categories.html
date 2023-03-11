@@ -15,23 +15,23 @@
             style="margin-top: 80px; width:60%; margin:80px auto; border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;">
             <thead>
                 <tr>
-                    {% for header in category_table_header.values %}
-                    <th scope="col">{{ header }}</th>
+                    {% for key, header in category_table_header.items %}
+                    <th scope="col" id="{{ key }}">{{ header }}</th>
                     {% endfor %}
                     <th scope="col" style="width: 15%;"></th>
                 </tr>
             </thead>
             <tbody>
                 {% for category in categories %}
-                <tr>
+                <tr id="{{ category|get:'id' }}">
                     {% for key in category_table_header %}
                     <td>{{ category|get:key }}</th>
                         {% endfor %}
                     <td>
                         <a href="#" style="margin-right: 20px;">
-                            <span class='material-icons'>edit</span>
+                            <span class='material-icons' onclick="getUpdateCategoryForm(event)" data-toggle='modal' data-target='#updateCategoryFormModal'>edit</span>
                         </a>
-                        <a href='#' style='margin-right: 20px;'>
+                        <a href='#' style='margin-right: 20px;' onclick="deleteCategory(event)">
                             <span class='material-icons'>delete</span>
                         </a>
                     </td>
@@ -41,10 +41,74 @@
         </table>
     </div>
     <div style="text-align: center;">
-        <button type="button" class="btn btn-outline-secondary btn-lg align-middle">
+        <button type="button" class="btn btn-outline-secondary btn-lg align-middle" data-toggle='modal' data-target='#createCategoryFormModal'>
             <span class="material-icons align-middle" style="margin-right: 5px;">add</span>
             Add A Category 
         </button>
     </div>
+
+    <div class="modal fade" id="createCategoryFormModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formModalLabel" style="color: black;">Add Category</h5>
+                    <button type="button" class="btn btn-secondary close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="create-category-form" >
+                        <div class="form-floating mt-2">
+                            <input type="text" class="form-control" placeholder="Name" id="category-name" name="category_name"></input>
+                            <label for="category-name" style="color:grey">Category Name</label>
+                            <div class="invalid-feedback">
+
+                            </div>
+                        </div>
+                        <div class="d-flex mt-2">
+                            <button type="submit" class="btn btn-primary" style="margin-left: auto;">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="updateCategoryFormModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formModalLabel" style="color: black;">Update Category</h5>
+                    <button type="button" class="btn btn-secondary close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="update-category-form" >
+                        <div class="form-floating mt-2">
+                            <input type="text" class="form-control" placeholder="Name" id="category-name" name="category_name"></input>
+                            <label for="category-name" style="color:grey">Category Name</label>
+                            <div class="invalid-feedback">
+
+                            </div>
+                        </div>
+                        <div class="d-flex mt-2">
+                            <button type="submit" class="btn btn-primary" style="margin-left: auto;">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
+<script type="module" src="{% static 'form.js' %}"></script>
+<script type="module" src="{% static 'table.js' %}"></script>
+<script type="module" src="{% static 'createCategory.js' %}"></script>
+<script type="module" src="{% static 'deleteCategory.js' %}"></script>
+<script type="module" src="{% static 'updateCategory.js' %}"></script>
+<script type="module" src="{% static 'static/error.js' %}"></script>
+
 {% endblock %}

@@ -142,6 +142,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'),
+    os.path.join(BASE_DIR, 'assets/static'),
 )
 
 # MEDIA_ROOT: Absolute filesystem path to the directory for user-uploaded files
