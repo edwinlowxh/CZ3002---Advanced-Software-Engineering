@@ -1,4 +1,4 @@
-import { replaceTable } from './table.js';
+import { replaceTable } from './transactionTable.js';
 import { loadFormCategories, displayFormErrors } from './transaction.js';
 
 

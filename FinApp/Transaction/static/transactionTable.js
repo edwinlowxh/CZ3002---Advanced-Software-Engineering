@@ -42,8 +42,10 @@ export function generateTransactionTable(data){
     const thead = document.createElement("thead");
     table.appendChild(thead);
     const theadTr = document.createElement("tr");
-    Object.values(tableHeader).forEach((header) => {
+    Object.entries(tableHeader).forEach(([id, header]) => {
+        console.log(id, header);
         const th = document.createElement("th");
+        th.id = id;
         th.textContent = header;
         theadTr.appendChild(th);
     })
