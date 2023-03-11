@@ -11,6 +11,9 @@ from .models import (
 from Finance.models import Information
 from Finance.FinanceMgr import *
 
+from Budget.models import *
+from Transaction.models import *
+
 from Car.helper.CarHelper import(
     calc_cost
 )
@@ -19,6 +22,9 @@ from .constants import (
     CAR_TABLE_HEADER,
     TRIP_TABLE_HEADER
 )
+
+from django.utils.timezone import now
+from django.contrib import messages
 
 def search_view(request):
     if request.user.is_authenticated:
@@ -70,24 +76,41 @@ def details_view(request, pk):
 
                 # TODO: Take reference from code on top and implement with new TripManager.py
                 return redirect(reverse('car_details', kwargs={'pk': pk}))
+            # elif 'Update Balance Sheet' in request.POST:
+            #     financeMgr = FinanceMgr(user)
+
+            #     if(user.information.debt_set.all().filter(debtName="Car").exists()):
+            #         financeMgr.updateDebt(user.information.debt_set.all().filter(debtName="Car")[0].id,
+            #                               "Car",  car.currentPrice, totalCost, 0.0)
+            #     else:
+            #         financeMgr.createDebt("Car", car.currentPrice,
+            #                               totalCost, 0.0)
+
+            #     if(user.information.asset_set.all().filter(assetName="Car").exists()):
+            #         financeMgr.updateAsset(user.information.asset_set.all().filter(assetName="Car")[0].id,
+            #                                "Car", car.currentPrice, -0.10)
+            #     else:
+            #         financeMgr.createAsset(
+            #             "Car", car.currentPrice, -0.10)
+            #     #Redirect
+            #     return redirect("/../finance/balanceSheet_Result/")
+            
             elif 'Update Balance Sheet' in request.POST:
-                financeMgr = FinanceMgr(user)
+                # Create category
+                car_category = Category.category_manager.create_category(user, name = car.model + car.spec)
 
-                if(user.information.debt_set.all().filter(debtName="Car").exists()):
-                    financeMgr.updateDebt(user.information.debt_set.all().filter(debtName="Car")[0].id,
-                                          "Car",  car.currentPrice, totalCost, 0.0)
-                else:
-                    financeMgr.createDebt("Car", car.currentPrice,
-                                          totalCost, 0.0)
+                #create Transaction
+                car_transaction = Transaction.transaction_manager.create_transaction(user = user, 
+                                                                                     amount = totalCost, 
+                                                                                     description= "rent for " + car_category.name,
+                                                                                     type = "EXPENSE",
+                                                                                     category= car_category,
+                                                                                     date = now().today())
+                
+                messages.success(request, "Car Expense sucessfully copied!" )
+                return redirect("/transactions/")
 
-                if(user.information.asset_set.all().filter(assetName="Car").exists()):
-                    financeMgr.updateAsset(user.information.asset_set.all().filter(assetName="Car")[0].id,
-                                           "Car", car.currentPrice, -0.10)
-                else:
-                    financeMgr.createAsset(
-                        "Car", car.currentPrice, -0.10)
-                #Redirect
-                return redirect("/../finance/balanceSheet_Result/")
+                
 
         context={
             'car':model_to_dict(car),

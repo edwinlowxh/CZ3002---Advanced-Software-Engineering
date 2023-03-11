@@ -8,6 +8,9 @@ from .models import *
 from Finance.models import *
 from Finance.FinanceMgr import *
 
+from Budget.models import *
+from Transaction.models import *
+
 from .constants import (
     HDB_DOWN_PAYMENT_RATE,
     LOAN_PERIOD,
@@ -23,6 +26,9 @@ from .pricing_helper import (
     calculate_stamp_duty,
     calculate_max_LTV
 )
+
+from django.utils.timezone import now
+from django.contrib import messages
 
 def form_view(request):
     if request.user.is_authenticated:
@@ -97,26 +103,41 @@ def costBreakdown_view(request):
         user = request.user
         try:
             # will give error if housinguserdata does not exist yet
-            financeMgr = FinanceMgr(user)
-            if(request.POST):
-                try:
-                    user.information
-                    financeMgr = FinanceMgr(user)
-                    if(user.information.debt_set.all().filter(debtName="House").exists()):
-                        financeMgr.updateDebt(user.information.debt_set.all().filter(debtName="House")[0].id,
-                                              "House",  request.POST.get("price"), request.POST.get("repayment"), 0.026)
-                    else:
-                        financeMgr.createDebt("House", request.POST.get("price"),
-                                              request.POST.get("repayment"), 0.026)
-                    if(user.information.asset_set.all().filter(assetName="House").exists()):
-                        financeMgr.updateAsset(user.information.asset_set.all().filter(assetName="House")[0].id,
-                                               "House", request.POST.get("price"), 0)
-                    else:
-                        financeMgr.createAsset(
-                            "House", request.POST.get("price"), 0)
-                    return redirect("/finance/balanceSheet_Result/")
-                except:
-                    return redirect("/finance/questionaire/")
+            #financeMgr = FinanceMgr(user)
+            if request.method == "POST":
+              if(request.POST):
+                # try:
+                #     user.information
+                #     financeMgr = FinanceMgr(user)
+                #     if(user.information.debt_set.all().filter(debtName="House").exists()):
+                #         financeMgr.updateDebt(user.information.debt_set.all().filter(debtName="House")[0].id,
+                #                               "House",  request.POST.get("price"), request.POST.get("repayment"), 0.026)
+                #     else:
+                #         financeMgr.createDebt("House", request.POST.get("price"),
+                #                               request.POST.get("repayment"), 0.026)
+                #     if(user.information.asset_set.all().filter(assetName="House").exists()):
+                #         financeMgr.updateAsset(user.information.asset_set.all().filter(assetName="House")[0].id,
+                #                                "House", request.POST.get("price"), 0)
+                #     else:
+                #         financeMgr.createAsset(
+                #             "House", request.POST.get("price"), 0)
+                #     return redirect("/finance/balanceSheet_Result/")
+                # except:
+                #     return redirect("/finance/questionaire/")
+
+                # Create category
+                house_category = Category.category_manager.create_category(user, name = "House 2")
+
+                #create Transaction
+                house_transaction = Transaction.transaction_manager.create_transaction(user = user, 
+                                                                                     amount = request.POST.get("repayment"), 
+                                                                                     description= "Monthly Rent For House",
+                                                                                     type = "EXPENSE",
+                                                                                     category= house_category,
+                                                                                     date = now().today())
+                
+                messages.success(request, "House Expense sucessfully copied!" )
+                return redirect("/transactions/")
 
             else:
                 user_housing_preferences = json.loads(request.session['user_housing_preferences'])
