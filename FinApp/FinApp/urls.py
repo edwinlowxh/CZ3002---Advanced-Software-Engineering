@@ -93,6 +93,10 @@ from Budget.views_home import (
     get_budget_home,
   )
 
+from Transaction.views_excel import (
+    Import_Excel
+  )
+
 {
   
 
@@ -149,6 +153,9 @@ urlpatterns = [
     path('budget/create_budget', create_budget, name='create_budget'),
     path('budget/delete_budget', delete_budget, name='delete_budget'),
     path('budget/update_budget', update_budget, name='update_budget'),
+
+
+    path('excel',Import_Excel, name = 'excel'),
 
     
 ]
