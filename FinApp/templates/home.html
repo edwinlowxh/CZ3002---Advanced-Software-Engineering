@@ -157,9 +157,18 @@
 
   <center><h1 data-aos="fade-up" data-aos-delay="100" style="margin-top: 250px;"><u><span id='date'></span></u></h1></center>
 
+  {% if total_budget_limit == 0 %}
+  <center>
+    <h3 data-aos="fade-up" data-aos-delay="100" style="margin-top: 100px;">You have spent ${{total_spent}}.</h3>
+  </center>
+  {% else %}
   <center>
     <h3 data-aos="fade-up" data-aos-delay="100" style="margin-top: 100px;">You have spent ${{total_spent}} out of ${{total_budget_limit}}.</h3>
   </center>
+  {% endif %}
+
+
+
   <div data-aos="fade-up" data-aos-delay="100" class="container d-flex align-items-center justify-content-between">
 
 
@@ -196,24 +205,38 @@
   </div>
 
 
- <center><h1 data-aos="fade-up" data-aos-delay="100" style="margin-top: 400px;">Take a closer at your spending for this month.</h1></center>
+ <center><h1 data-aos="fade-up" data-aos-delay="100" style="margin-top: 300px;">Take a closer at your spending for this month.</h1></center>
   <div class="container" data-aos="fade-up" data-aos-delay="100" style=" width: 60%;
       height: 500px;
       display: flex;
       justify-content: center;
-      ">
+      margin-top: 50px;">
    
     <div class="progress-bar__container align-items-center justify-content-between">
 
       
       {% for budget in budgets %}
+      
+
+      {% if budget.individual > 100 %}
       <div class="progress-bar__wrap" style=" width: 200px; margin-top:50px; margin-left: 25px; margin-right: 25px;">
-       
-        <div class="bar-value" data-toggle="tooltip" data-placement="top" title="{{budget.spent}}"
-          style="height:{{budget.individual}}%; background: {{budget.color_gradient}};" >
-        </div>
-        <center>  <p style="color: #151515; font-size: 30px;">{{budget.name}}</p> </center>
-      </div>
+          
+         <center>  <p style="color: #151515; font-size: 20px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 1;">{{budget.name}}</p> </center>
+         <div class="bar-value" data-toggle="tooltip" data-placement="top" title="{{budget.spent}}"
+           style="height:100%; background: {{budget.color_gradient}}; border-style: solid; border-color:red; border-width:5px; border-radius: 12px 12px 12px 12px;" > 
+         </div> 
+         <h5 style="font-size: 20px; color:rgb(255, 94, 94); text-align: center; position: absolute; top: -10%; left: 50%; transform: translateX(-50%); z-index: 1; white-space: nowrap;"> Exceeded by {{budget.exceeded}}!</h5> 
+       </div>
+      {% else %}
+
+      <div class="progress-bar__wrap" style=" width: 200px; margin-top:50px; margin-left: 25px; margin-right: 25px;">
+        <center>  <p style="color: #151515; font-size: 20px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 1;">{{budget.name}}</p> </center>
+         <div class="bar-value" data-toggle="tooltip" data-placement="top" title="{{budget.spent}}"
+           style="height:{{budget.individual}}%; background: {{budget.color_gradient}};" > 
+         </div>
+         
+       </div>
+      {% endif %}
  
       {% endfor %}
     

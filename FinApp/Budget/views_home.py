@@ -42,11 +42,13 @@ def get_budget_home(request):
                 budget_dict["individual"] = (budget_dict["spent"] / budget_dict["limit"]) * 100
                 budget_dict["color"] = colour_array.pop(0)
                 budget_dict["color_gradient"] = "linear-gradient(to top," + budget_dict["color"] + "," + colour_array_lighter.pop(0) +")"
+                budget_dict["exceeded"] = budget_dict["spent"] - budget_dict["limit"]
                 budget_list.append(budget_dict)
 
                    
             context["budgets"] = budget_list
             print(request.user, context)
+            # context = {'total_budget_limit': 2001.0, 'total_spent': 6682.9, 'budgets': [{'name': 'EDWIN', 'spent': 1020.0, 'limit': 1000.0, 'percentage': 0.050974512743628186, 'individual': 102.0, 'color': '#a11adb', 'color_gradient': 'linear-gradient(to top,#a11adb,#9f91a7)','exceeded': 4300.0}, {'name': 'SHANNEN', 'spent': 300.0, 'limit': 1000.0, 'percentage': 0.2648675662168915, 'individual': 20.0, 'color': '#d24747', 'color_gradient': 'linear-gradient(to top,#d24747,#be7b7b)'}]}
             return render(request, 'home.html', context)
 
 

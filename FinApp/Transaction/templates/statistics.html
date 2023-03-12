@@ -13,6 +13,18 @@
     display: none;
   }
 }
+ /* Set the container element to a grid */
+ .fourcontainer {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* grid-template-rows: 0.5fr; */
+        height: 40vh;
+      }
+      /* Style the grid items */
+      /* .item {
+        border: 1px solid black;
+      } */
+
 </style>
 
 <head>
@@ -27,7 +39,7 @@
     <h1 style="margin-top: 180px;"><u>Statistics</u></h1>
   </center> -->
 
-  <div id="hidePrint" style="text-align:left; margin-top: 150px; display: flex;">
+  <div id="hidePrint" style="text-align:left; margin-top: 120px; display: flex;">
     <form id="filterForm" style=" display: flex;  margin-left: 10%; margin-right: 10px;">
     <div style="margin-right: 10px;" >
       <select id="month" class="form-select" style="margin-right: 10px;">
@@ -63,8 +75,20 @@
     </form>
   </div>
 
+  <div class="fourcontainer" style="justify-content: center;">
+    <div class="item" style="padding: 5%; width: 80%; display: flex; margin-left: 60px;"> 
 
-  <div id="dvContents" class="container" style="justify-content: center; margin-top: 2%;">
+      <canvas id="year_line_chart"></canvas>
+    </div>
+    <div class="item" style="padding: 5%; width: 80%; display: flex; margin-left: 60px;"> 
+
+      <canvas id="month_line_chart"></canvas>
+    </div>
+
+  </div>
+
+
+  <div id="dvContents" class="container" style="justify-content: center; ">
     <!-- <form id="filterForm">
         <label for="year">Choose a year:</label>
         <select name="year" id="year"></select>
@@ -76,15 +100,9 @@
 
 
 
-    <div class="row" style="margin-top: 50px;">
-
-      <canvas id="year_line_chart"></canvas>
-    </div>
-    <div class="row" style="margin-top: 150px;">
-
-      <canvas id="month_line_chart"></canvas>
-    </div>
-    <div class="row" style="margin-top: 150px;">
+   
+   
+    <div class="row" style="margin-top: 20px; width: 70%; margin-left: 90px;">
 
       <canvas id="piechart"></canvas>
 
@@ -106,7 +124,7 @@
           },
           title: {
             display: true,
-            fontSize: 30,
+            fontSize: 20,
             fontColor: 'white',
             padding: 60,
             fontFamily: 'Montserrat',
@@ -131,11 +149,13 @@
           responsive: true,
           title: {
             display: true,
-            fontSize: 30,
+            fontSize: 20,
             fontColor: 'white',
             padding: 30,
             fontFamily: 'Montserrat',
           },
+          legend: {
+            position: 'bottom',}
         }
       });
 
@@ -147,13 +167,17 @@
           responsive: true,
           title: {
             display: true,
-            fontSize: 30,
+            fontSize: 20,
             fontColor: 'white',
-            padding: 60,
+            padding: 30,
             fontFamily: 'Montserrat',
           },
+          legend: {
+            position: 'bottom',
+          }
         }
-      });
+        }
+      );
 
     </script>
     
