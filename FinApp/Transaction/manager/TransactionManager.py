@@ -12,6 +12,7 @@ from django.utils.timezone import datetime
 from django.db.models import Sum
 
 import calendar
+from datetime import datetime
 
 
 if TYPE_CHECKING:
@@ -23,31 +24,36 @@ class TransactionManager(models.Manager):
     def retrieve_transaction(self, user: User, **kwargs) -> models.QuerySet:
         
         if 'start_date' not in kwargs:
-            start_date = datetime(1900,1,1)
+            #start_date = datetime(1900,1,1)
+            today = datetime.today()
+            start_date = datetime(today.year, today.month, 1)
         else:
             start_date = datetime(int(kwargs['start_date'][0]), int(kwargs['start_date'][1]), int(kwargs['start_date'][2]))
             kwargs.pop('start_date')
             
         if 'end_date' not in kwargs:
-            end_date = datetime.now() + timedelta(days=1)
+            end_date = datetime.now() #+ timedelta(days=1)
         else:
-            end_date = datetime(int(kwargs['end_date'][0]), int(kwargs['end_date'][1]), int(kwargs['end_date'][2])) + timedelta(days=1)
+            end_date = datetime(int(kwargs['end_date'][0]), int(kwargs['end_date'][1]), int(kwargs['end_date'][2])) #+ timedelta(days=1)
             kwargs.pop('end_date')
 
         return super().get_queryset().filter(
             user=user,
             date__range=(start_date, end_date),
             **kwargs
-        )
+        ).order_by('-date')
     
-    def retrieve_total_expenses(self,user: User, year: int, month:int, **kwargs)-> models.QuerySet:
+    def retrieve_total_expenses(self,user: User, year:int, month:int, **kwargs)-> models.QuerySet:
         filter_kwargs = {}
         filter_kwargs['user'] = user
-
-        start_date = datetime(year,month,1)
-        
-        end_date = datetime(year,month,calendar.monthrange(year, month)[1])
-        filter_kwargs["date__range"] = (start_date, end_date)
+            
+        if 'day' in kwargs and kwargs['day']:
+            date = datetime(year,month,kwargs["day"])
+            filter_kwargs["date"] = date
+        else:
+            start_date = datetime(year,month,1)
+            end_date = datetime(year,month,calendar.monthrange(year, month)[1])
+            filter_kwargs["date__range"] = (start_date, end_date)
 
         if 'category' in kwargs and kwargs['category']:
             filter_kwargs['category'] = kwargs['category']
@@ -67,8 +73,7 @@ class TransactionManager(models.Manager):
             date__range=(start_date, end_date)
         ).values('category').annotate(total = Sum('amount')).order_by('-amount')
 
-    
-    
+
     def create_transaction(self, user: User, amount: float, description: str, type: str, date: datetime, category: Category = None) -> Transaction:
         return super().create(
             user=user,

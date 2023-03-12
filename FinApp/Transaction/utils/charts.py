@@ -5,7 +5,7 @@ months = [
     'May', 'June', 'July', 'August',
     'September', 'October', 'November', 'December'
 ]
-colorPalette = ['#55efc4', '#81ecec', '#a29bfe', '#ffeaa7', '#fab1a0', '#ff7675', '#fd79a8', '#D1D3C4' , '2E0F15']
+colorPalette = ['#D1D3C4' ,'#fab1a0', '#55efc4', '#81ecec', '#a29bfe', '#ffeaa7', '#ff7675', '#fd79a8',  '2E0F15']
 colorPrimary, colorSuccess, colorDanger = '#79aec8', colorPalette[0], colorPalette[5]
 
 
@@ -24,8 +24,18 @@ def generate_color_palette(amount):
     i = 0
     while i < len(colorPalette) and len(palette) < amount:
         palette.append(colorPalette[i])
-        i += 1
+        print("COLOR" + colorPalette[i])
+        
         if i == len(colorPalette) and len(palette) < amount:
             i = 0
-
+        i += 1
     return palette
+
+def generate_color_palette_2(i):
+
+    if i < len(colorPalette):
+       return colorPalette[i]
+    
+    else:
+       return colorPalette[i%len(colorPalette)]
+    
