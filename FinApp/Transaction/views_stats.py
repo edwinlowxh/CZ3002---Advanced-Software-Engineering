@@ -35,8 +35,9 @@ def get_category_spending(request, year, month):
             'datasets': [{
                 'label': 'Amount ($)',
                 'backgroundColor': generate_color_palette(len(labels)),
-                'borderColor': generate_color_palette(len(labels)),
+                'borderColor': 'white',
                 'data': data,
+                # 'hoverOffset': '4'
             }]
         },
     })
@@ -57,14 +58,14 @@ def get_income_expense_year(request, year):
             'labels': months,
             'datasets': [{
                 'label': "Expense",
-                #'backgroundColor': "#55efc4",
-                'borderColor': colorPrimary,
+                # 'backgroundColor': "#55efc4",
+                'borderColor': '#79aec8',
                 'data': expense,
             },
             {
                 'label': "Income",
-                #'backgroundColor': '#a29bfe',
-                'borderColor': colorPrimary,
+                # 'backgroundColor': '#a29bfe',
+                'borderColor':' #a29bfe',
                 'data': income,
             }]
         },

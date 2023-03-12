@@ -24,8 +24,9 @@ def generate_color_palette(amount):
     i = 0
     while i < len(colorPalette) and len(palette) < amount:
         palette.append(colorPalette[i])
-        i += 1
+        print("COLOR" + colorPalette[i])
+        
         if i == len(colorPalette) and len(palette) < amount:
             i = 0
-
+        i += 1
     return palette
