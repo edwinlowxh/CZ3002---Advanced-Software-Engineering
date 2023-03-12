@@ -8,11 +8,15 @@ window.addEventListener("DOMContentLoaded", async (event) => {
 export function transactionFormTypeChange(element){
     const selectedOption = element.options[element.selectedIndex].value;
     const categoryInput = document.querySelector(`#${element.closest('form').id} #category-name`);
+    console.log("HELLLOOO")
+    console.log(selectedOption)
     if (selectedOption === 'INCOME'){
         categoryInput.parentElement.style.display = "none";
+        document.querySelector("body").style.backgroundImage = url('/static/nav/assets/img/income.jpeg')
     }
     else {
         categoryInput.parentElement.style.display = "block";
+        document.querySelector("body").style.backgroundImage = url('/static/nav/assets/img/expenses.jpeg')
     }
 }
 

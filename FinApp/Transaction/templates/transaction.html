@@ -4,7 +4,13 @@
 
 {% block content %}
 
-<body style="min-height:100%; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
+<body style="background-image: url('/static/nav/assets/img/expenses2.jpeg');
+background-repeat: no-repeat;
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+background-color: rgba(245, 245, 245, 0.5);
+overflow:hidden">
 
     <div style="margin-top:150px;">
         <div style=" display: inline-block; width:12%; margin-left: 20%;">
@@ -59,7 +65,7 @@
                     Add Transaction
                 </button>
             </div>
-            <br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br>
         </div>
         
 
@@ -191,7 +197,6 @@
                 </div>
             </div>
         </div>
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script type="module" src="{% static 'transactionTable.js' %}"></script>
     <script type="module" src="{% static 'createTransaction.js' %}"></script>
