@@ -166,6 +166,9 @@ def costBreakdown_view(request):
 
                 # Sort the list of resale properties by price
                 resale_flat_list = sorted(resale_flat_list, key=lambda x: x[2])
+                if len(resale_flat_list) == 0:
+                    messages.error(request, "No properties that meet your preferred location or prices found. Please try again!" )
+                    redirect("/house/form/")
                 most_affordable = resale_flat_list[0]
                 max_affordable = resale_flat_list[-1]
                 suggested_properties = []

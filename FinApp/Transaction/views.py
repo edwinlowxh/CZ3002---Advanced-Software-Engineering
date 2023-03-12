@@ -86,8 +86,20 @@ def transaction_view(request):
                     filename = fs.save(myfile.name, myfile)
                     file_path = os.path.join(BASE_DIR, fs.url(filename)[1:])
                     data = pd.read_csv(file_path, header = 0)    
-                    data_dict = data.to_dict(orient='records')
+
+                    #Checking for correct headers
+                    required_headers = ["category", "type", "amount", "description", "date"]
+                    actual_headers = data.columns.values.tolist()
+                    missing_headers = list(set(required_headers).difference(set(actual_headers)))
+                    error_headers = list(set(actual_headers).difference(set(required_headers)))
+                    if len(missing_headers) > 0:
+                        messages.error(request, "Missing columns are: {}".format(missing_headers))
+                    if len(error_headers) > 0:
+                        messages.error(request, "Columns: {}, do not exist for Transacation Model!".format(error_headers))
+                        return redirect("/transactions/")
                     
+                    data_dict = data.to_dict(orient='records')
+                    i = 0
                     for row in data_dict:
                         form = UploadTransactionForm(request.user, **row)
                         if form.is_valid():
@@ -96,8 +108,10 @@ def transaction_view(request):
                                 **form.cleaned_data
                             )
                         else:
+                            messages.error(request, "Row {} has some errors! ".format(i))
                             messages.error(request, form.errors)
                             return redirect("/transactions/")
+                        i+=1
                     
                     messages.success(request, "Upload Successful!" )
                     return redirect("/transactions/")
