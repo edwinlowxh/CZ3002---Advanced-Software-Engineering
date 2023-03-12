@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import redirect, render
 
 from django.forms import model_to_dict
@@ -24,38 +25,47 @@ from .models import Category, Budget
 
 from .forms.CreateBudgetForm import CreateBudgetForm
 
+from django.core import serializers
+
+
 # Create your views here.
+@csrf_exempt
+@basic_auth
+def budget_view(request):
+    if request.user.is_authenticated:
+        return render(request, 'budget.html')
+    else:
+        return redirect('login')
+        
 @csrf_exempt
 @basic_auth
 def get_budget(request):
     if request.user.is_authenticated:
-        year = request.GET.get(BUDGET_YEAR_VAR)
-        month = request.GET.get(BUDGET_MONTH_VAR)
-        print(year)
-        print(month)
+        if request.method == 'POST':
+            year = request.POST.get(BUDGET_YEAR_VAR)
+            month = request.POST.get(BUDGET_MONTH_VAR)
+                
+            user = request.user
+            context = {'budget_table_header': BUDGET_TABLE_HEADER}
+            categories = Category.category_manager.get_categories(user = user, is_active = True)
             
-        # if request.method == 'GET':
-        user = request.user
-        context = {'budget_table_header': BUDGET_TABLE_HEADER}
-        categories = Category.category_manager.get_categories(user = user, is_active = True)
-        
-        category_list = []
-        for category in categories:
-            category_dict = model_to_dict(category)
-            category_dict["category"] = category.name
-            query = Budget.budget_manager.get_budget(user=user, category = category, year = year, month = month)
-            if query:
-                category_dict["limit"] = query[0].limit
-            else:
-                category_dict["limit"] = 0
-            category_list.append(category_dict)
+            category_list = []
+            for category in categories:
+                category_dict = model_to_dict(category)
+                category_dict["category"] = category.name
+                query = Budget.budget_manager.get_budget(user=user, category = category, year = year, month = month)
 
-        context['budgets'] =  category_list
+                if query:
+                    category_dict["limit"] = query[0].limit
+                else:
+                    category_dict["limit"] = 0
 
-        print(request.user, context)
-        return render(request, 'budget.html', context)
-    else:
-        return redirect('/')
+                category_list.append(category_dict)
+
+            context['budgets'] =  category_list
+
+            print(request.user, context)
+            return JsonResponse(context, status=201)
         
 
 @csrf_exempt
@@ -113,28 +123,29 @@ def delete_budget(request):
 
 @csrf_exempt
 def update_budget(request):
-     if request.user.is_authenticated:
+    if request.user.is_authenticated:
         if request.method == 'POST':
-            budget_id = request.POST.get(BUDGET_ID_VAR)
             try:
-                form_data = CreateBudgetForm.map_json(request.POST.dict())
+                form_data = CreateBudgetForm.map_fields(request.POST.dict(), reverse=False)
                 form_data['user'] = request.user
-                form_data['year'] = request.POST.get(BUDGET_YEAR_VAR)
-                form_data['month'] = request.POST.get(BUDGET_MONTH_VAR)
                 form = CreateBudgetForm(form_data)
                 
                 if form.is_valid():
-                    print(form.cleaned_data)
-                    updated_budget = Budget.budget_manager.update_budget(id = budget_id, **form.cleaned_data)
+                    updated_budget = Budget.budget_manager.update_budget(**form.cleaned_data)
 
                     if not updated_budget:
-                        return JsonResponse({'message': 'Failed to update budget', 'errors': 'Budget does not exist'})
-                    else:
-                        return JsonResponse(model_to_dict(updated_budget))
+                        updated_budget = Budget.budget_manager.create_budget(**form.cleaned_data)
+
+                    context = {'id': updated_budget.category.id}
+                    serialized_data = json.loads(serializers.serialize('json', [updated_budget], use_natural_foreign_keys=True, use_natural_primary_keys=True))[0]
+                    context.update(serialized_data['fields'])
+                    return JsonResponse(context, status=201)
                 else:
-                    return JsonResponse({'message': 'Failed to update budget', 'errors': form.errors})
+                    print(form.errors)
+                    return JsonResponse({'message': 'Failed to update budget', 'field_errors': CreateBudgetForm.map_fields(form.errors, reverse=True)}, status=422)
 
             except Exception as e:           
                 return JsonResponse({"Message": "Failed to update a budget",
-                                     "Error" :  str(e)})
+                                     "non_field_errors" :  str(e)}, status=500)
+
            
