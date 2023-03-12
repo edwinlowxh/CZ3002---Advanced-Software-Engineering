@@ -1,6 +1,6 @@
-export function displayFormErrors(formId, fieldErrors){
+export function displayFormErrors(formSelector, fieldErrors){
     for (const key in fieldErrors){
-        const inputElement = document.querySelector(`#${formId} [name="${key}"]`);
+        const inputElement = document.querySelector(`${formSelector} [name="${key}"]`);
         inputElement.classList.add("is-invalid");
         if (Array.isArray(fieldErrors[key])){
             const ulElement = document.createElement('ul');
@@ -9,6 +9,7 @@ export function displayFormErrors(formId, fieldErrors){
                 liElement.innerHTML = e;
                 ulElement.appendChild(liElement);
             });
+            inputElement.parentNode.querySelector(".invalid-feedback").innerHTML = '';
             inputElement.parentNode.querySelector(".invalid-feedback").appendChild(ulElement);
         }
         else{

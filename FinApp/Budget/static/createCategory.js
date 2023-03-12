@@ -29,7 +29,7 @@ async function postCreateCategoryForm(event){
         error.then(data => {
             if ('field_errors' in data){
                 const field_errors = data['field_errors'];
-                displayFormErrors('create-category-form', field_errors);
+                displayFormErrors('#create-category-form', field_errors);
             }
         });
     }  

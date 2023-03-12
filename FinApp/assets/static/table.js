@@ -1,5 +1,26 @@
-export function newTableRow(tableId, data, deleteCallback, updateCallback, updateFormModal){
-    const table = document.querySelector(`${tableId}`);
+export function newTableHeader(headers, extraCol){
+    const thead = document.createElement("thead");
+
+    const tr = document.createElement("tr");
+    Object.entries(headers).forEach(([key, header]) => {
+        const td = document.createElement("td");
+        td.innerText = header;
+        td.id = key;
+        tr.appendChild(td);
+    })
+
+    if (extraCol){
+        const td = document.createElement("td");
+        td.style = "width: 30%;";
+        tr.appendChild(document.createElement("td"));
+    }
+
+    thead.appendChild(tr);
+    return thead;
+}
+
+export function newTableRow(tableSelector, data, deleteCallback, updateCallback, updateFormModalSelector){
+    const table = document.querySelector(`${tableSelector}`);
     const tableHeader = table.querySelector('thead tr');
     const columnOrder = Array.from(tableHeader.children).map((th) => th.id);
     columnOrder.pop();
@@ -18,7 +39,7 @@ export function newTableRow(tableId, data, deleteCallback, updateCallback, updat
 
     const lastCol = document.createElement('td');
     if (updateCallback){
-        lastCol.appendChild(editIcon(updateCallback, updateFormModal));
+        lastCol.appendChild(editIcon(updateCallback, updateFormModalSelector));
     }
 
     if (deleteCallback){
@@ -48,13 +69,13 @@ function deleteIcon(deleteCallback){
     return attribute;
 }
 
-function editIcon(updateCallback, updateFormModal){
+function editIcon(updateCallback, updateFormModalSelector){
     const attribute = document.createElement("a");
     attribute.style = "margin-right: 20px;";
     const span = document.createElement("span");
     span.classList.add("material-icons");
     span.setAttribute("data-toggle", "modal");
-    span.setAttribute("data-target", `${updateFormModal}`);
+    span.setAttribute("data-target", `${updateFormModalSelector}`);
     span.addEventListener("click", (event) => {
         updateCallback(event);
     })
