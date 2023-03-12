@@ -83,6 +83,7 @@ from Budget.views_category import(
 )
 
 from Budget.views_budget import(
+    budget_view,
     get_budget,
     create_budget,
     delete_budget,
@@ -152,10 +153,11 @@ urlpatterns = [
     path('budget/update_category', update_category, name='update_category'),
 
     # Path for budget
-    path('budgets/', get_budget, name='get_budget'),
-    path('budget/create_budget', create_budget, name='create_budget'),
-    path('budget/delete_budget', delete_budget, name='delete_budget'),
-    path('budget/update_budget', update_budget, name='update_budget'),
+    path('budgets/', budget_view, name='budget'),
+    path("budgets/get", get_budget, name="get_budget"),
+    # path('budget/create_budget', create_budget, name='create_budget'),
+    # path('budget/delete_budget', delete_budget, name='delete_budget'),
+    path('budgets/update_budget', update_budget, name='update_budget'),
    
     path('pie/<int:year>/<int:month>', get_category_spending, name='get_category_spending'),
     path('stats',  statistics_view, name='stats'),

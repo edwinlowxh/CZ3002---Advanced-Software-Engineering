@@ -28,7 +28,7 @@ export async function getUpdateCategoryForm(event){
         error.then(data => {
             if ('field_errors' in data){
                 const field_errors = data['field_errors'];
-                displayFormErrors('update-category-form', field_errors);
+                displayFormErrors('#update-category-form', field_errors);
             }
         });
     }  
@@ -63,7 +63,7 @@ export async function postUpdateCategoryForm(event, category_id){
             console.log(data)
             if ('field_errors' in data){
                 const field_errors = data['field_errors'];
-                displayFormErrors('update-transaction-form', field_errors);
+                displayFormErrors('#update-transaction-form', field_errors);
             }
         });
     }  
