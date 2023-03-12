@@ -35,14 +35,24 @@ class CreateBudgetForm(forms.Form):
         
 
     @staticmethod
-    def map_json(json_data):
-        mapping = {
-            CATEGORY_NAME_VAR: 'category',
-            BUDGET_ID_VAR: 'id',
-            BUDGET_LIMIT_VAR: 'limit',
-            BUDGET_YEAR_VAR: 'year',
-            BUDGET_MONTH_VAR: 'month'
-        }
+    def map_fields(json_data, reverse=False):
+        if not reverse:
+            mapping = {
+                CATEGORY_NAME_VAR: 'category',
+                BUDGET_ID_VAR: 'id',
+                BUDGET_LIMIT_VAR: 'limit',
+                BUDGET_YEAR_VAR: 'year',
+                BUDGET_MONTH_VAR: 'month'
+            }
+        else:
+            mapping = {
+                'category': CATEGORY_NAME_VAR, 
+                'id': BUDGET_ID_VAR, 
+                'limit': BUDGET_LIMIT_VAR, 
+                'year': BUDGET_YEAR_VAR, 
+                'month': BUDGET_MONTH_VAR, 
+            }
+
         mapped_data = {}
         for key, value in json_data.items():
             if key in mapping:

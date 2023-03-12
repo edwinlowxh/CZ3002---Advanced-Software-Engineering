@@ -50,8 +50,9 @@ class BudgetManager(models.Manager):
         ).delete()
 
 
-    def update_budget(self, user: User, id: int, **kwargs) -> Budget:
-        query_set = self.get_budget(user=user, id=id)
+    def update_budget(self, user: User, **kwargs) -> Budget:
+        query_set = self.get_budget(user=user, **kwargs)
+    
         if not query_set:
             return None
         else:
