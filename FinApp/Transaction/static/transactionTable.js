@@ -72,6 +72,7 @@ export function generateTransactionTable(data){
                 })
                 
                 const lastTd = document.createElement("td");
+                lastTd.style = "text-align:right;";
                 lastTd.appendChild(editIcon());
                 lastTd.appendChild(deleteIcon());
                 

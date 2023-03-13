@@ -38,6 +38,7 @@ export function newTableRow(tableSelector, data, deleteCallback, updateCallback,
     }
 
     const lastCol = document.createElement('td');
+    lastCol.style = "text-align:right;";
     if (updateCallback){
         lastCol.appendChild(editIcon(updateCallback, updateFormModalSelector));
     }
