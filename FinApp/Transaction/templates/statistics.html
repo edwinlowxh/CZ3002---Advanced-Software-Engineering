@@ -17,13 +17,13 @@
  .fourcontainer {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        /* grid-template-rows: 0.5fr; */
-        height: 40vh;
+        grid-template-rows: 1fr 1fr; 
+        height: 90vh;
       }
       /* Style the grid items */
-      /* .item {
-        border: 1px solid black;
-      } */
+      .item {
+        border: 1px solid rgb(59, 59, 59);
+      }
 
 </style>
 
@@ -75,20 +75,28 @@
     </form>
   </div>
 
-  <div class="fourcontainer" style="justify-content: center;">
-    <div class="item" style="padding: 5%; width: 80%; display: flex; margin-left: 60px;"> 
+  <div class="fourcontainer" style="margin-top: 20px">
+    <div class="item" style="padding: 5%; "> 
 
       <canvas id="year_line_chart"></canvas>
     </div>
-    <div class="item" style="padding: 5%; width: 80%; display: flex; margin-left: 60px;"> 
+    <div class="item" style="padding: 5%; "> 
 
       <canvas id="month_line_chart"></canvas>
     </div>
 
+    <div class="item" style="padding: 5%; overflow: auto; "> 
+      <div id="expense-table-div"></div>
+    </div>
+    <div class="item" style="padding: 5%; overflow: auto; "> 
+
+      <div id="income-table-div"></div>
+    </div>
+
+
   </div>
 
 
-  <div id="dvContents" class="container" style="justify-content: center; ">
     <!-- <form id="filterForm">
         <label for="year">Choose a year:</label>
         <select name="year" id="year"></select>
@@ -101,13 +109,12 @@
 
 
    
-   
-    <div class="row" style="margin-top: 20px; width: 70%; margin-left: 90px;">
-
-      <canvas id="piechart"></canvas>
-
+   <div class="container" style="margin-top: 5%;  justify-content: center;">
+      <div class="row" style="margin-top: 5%; width: 90%;  display: block; margin: 0 auto;">
+        <canvas id="piechart" style="display: block; margin: 0 auto;"></canvas>
+      </div>
     </div>
-    <br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br>
     <script>
       let piechartCtx = document.getElementById("piechart").getContext("2d");
       let piechart = new Chart(piechartCtx, {
@@ -118,20 +125,21 @@
             padding: {
               left: 0,
               right: 0,
-              top: 0,
-              bottom: 25
+              top: 20,
+              bottom: 0
             },
           },
           title: {
             display: true,
             fontSize: 20,
+            padding: 30,
             fontColor: 'white',
-            padding: 60,
             fontFamily: 'Montserrat',
           },
 
           legend: {
-            position: 'right',
+            position: 'chartArea',
+            align: 'end',
             labels: {
               fontSize: 14,
               fontColor: '#CCCCCC',
@@ -187,7 +195,14 @@
 </html>
 
 
-
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<!-- <script type="module" src="{% static 'transactionTable.js' %}"></script> -->
+<script type="module" src="{% static 'statisticsExpenseTable.js' %}"></script>
+<script type="module" src="{% static 'statisticsIncomeTable.js' %}"></script>
+<script type="module" src="{% static 'expense.js' %}"></script>
+    <script type="module" src="{% static 'getExpense.js' %}"></script>
+    <script type="module" src="{% static 'income.js' %}"></script>
+    <script type="module" src="{% static 'getIncome.js' %}"></script>
 
 <script>
   $(document).ready(function () {
