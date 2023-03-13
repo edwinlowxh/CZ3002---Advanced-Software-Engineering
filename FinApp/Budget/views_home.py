@@ -38,7 +38,7 @@ def get_budget_home(request):
                 budget_dict["name"] = budget.category.name
                 budget_dict["spent"] = (Transaction.transaction_manager.retrieve_total_expenses(user=user, year = year, month=month, category = budget.category)["amount__sum"] or 0)
                 budget_dict["limit"] = budget.limit
-                budget_dict["percentage"] = (budget_dict["spent"] / budget_dict["limit"] / context["total_budget_limit"]) * 100
+                budget_dict["percentage"] = (budget_dict["spent"] / context["total_budget_limit"]) * 100
                 budget_dict["individual"] = (budget_dict["spent"] / budget_dict["limit"]) * 100
                 budget_dict["color"] = colour_array.pop(0)
                 budget_dict["color_gradient"] = "linear-gradient(to top," + budget_dict["color"] + "," + colour_array_lighter.pop(0) +")"
