@@ -3,7 +3,14 @@
 {% load template_tags %}
 
 {% block content %}
-<body style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
+<body id="body" style="background-image: url('/static/nav/assets/img/budget.jpeg');
+background-repeat: no-repeat;
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+background-color: rgba(245, 245, 245, 0.5);
+overflow:auto">
+
     <span>
         <center>
             <h1 style="margin-top: 200px;"><u>Budget</u></h1>
@@ -36,7 +43,7 @@
     </span>
     <div class="container d-flex align-items-center justify-content-between">
 
-        <table class="table table-hover table-dark" id="budget-table" style="margin-top: 80px; width:80%; margin:80px auto;  border-collapse: collapse;
+        <table class="table table-hover table-dark" id="budget-table" style="margin-top: 80px; width:60%; margin:80px auto;  border-collapse: collapse;
     border-radius: 1em;
     overflow: hidden; padding: 5px;">
 

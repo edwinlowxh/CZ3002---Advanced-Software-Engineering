@@ -27,11 +27,15 @@ export async function replaceTable(){
 export function generateTransactionTable(data){
     const transactionType = sessionStorage.getItem('transactionTableType');
 
+    console.log("HELLLOOO")
+    console.log(transactionType)
     if (transactionType === 'INCOME'){
         var tableHeader = data['income_table_header'];
+        document.querySelector("body").style.backgroundImage = "url('/static/nav/assets/img/income.jpeg')";
     }
     else{
         var tableHeader = data['expense_table_header'];
+        document.querySelector("body").style.backgroundImage = "url('/static/nav/assets/img/expenses2.jpeg')";
     }
 
     const table = document.createElement("table");
@@ -43,7 +47,7 @@ export function generateTransactionTable(data){
     table.appendChild(thead);
     const theadTr = document.createElement("tr");
     Object.entries(tableHeader).forEach(([id, header]) => {
-        console.log(id, header);
+        console.log("hello");
         const th = document.createElement("th");
         th.id = id;
         th.textContent = header;
@@ -68,6 +72,7 @@ export function generateTransactionTable(data){
                 })
                 
                 const lastTd = document.createElement("td");
+                lastTd.style = "text-align:right;";
                 lastTd.appendChild(editIcon());
                 lastTd.appendChild(deleteIcon());
                 
@@ -96,7 +101,7 @@ function deleteIcon(){
 
     function func()
     {  
-    span.setAttribute("style", "color:#3AEDCC;")
+    span.setAttribute("style", "color:red;")
     }
 
     function func1()
@@ -126,7 +131,7 @@ function editIcon(){
 
     function func()
     {  
-    span.setAttribute("style", "color:#3AEDCC;")
+    span.setAttribute("style", "color:#f6b26b;")
     }
 
     function func1()
