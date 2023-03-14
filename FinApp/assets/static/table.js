@@ -62,6 +62,18 @@ function deleteIcon(deleteCallback){
     span.addEventListener("click", (event) => {
         deleteCallback(event);
     })
+    span.addEventListener("mouseover", func, false);
+    span.addEventListener("mouseout", func1, false);
+
+    function func()
+    {  
+    span.setAttribute("style", "color:red;")
+    }
+
+    function func1()
+    {  
+    span.setAttribute("style", "color:white;")
+    }
     span.textContent = "delete";
     attribute.appendChild(
         span
@@ -80,6 +92,18 @@ function editIcon(updateCallback, updateFormModalSelector){
     span.addEventListener("click", (event) => {
         updateCallback(event);
     })
+    span.addEventListener("mouseover", func, false);
+    span.addEventListener("mouseout", func1, false);
+
+    function func()
+    {  
+    span.setAttribute("style", "color:#f6b26b;")
+    }
+
+    function func1()
+    {  
+    span.setAttribute("style", "color:white;")
+    }
     span.textContent = "edit";
     attribute.appendChild(
         span

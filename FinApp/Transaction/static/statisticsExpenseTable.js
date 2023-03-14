@@ -30,7 +30,7 @@ export function generateTransactionTable(data){
     
     const table = document.createElement("table");
     table.id = "expense-table";
-    table.classList.add("table", "table-hover", "table-dark");
+    table.classList.add("table", "table-hover", "table-danger", "table-striped","table-bordered");
     table.style = "width:100%; border-collapse: collapse; border-radius: 1em; overflow: hidden; padding: 5px;";
 
     const thead = document.createElement("thead");
@@ -39,6 +39,7 @@ export function generateTransactionTable(data){
     Object.entries(tableHeader).forEach(([id, header]) => {
         console.log("hello");
         const th = document.createElement("th");
+        th.style.backgroundColor="#FA8072";
         th.id = id;
         th.textContent = header;
         theadTr.appendChild(th);
