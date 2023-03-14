@@ -114,7 +114,7 @@ urlpatterns = [
     # path('login/', login_view, name="login"),
     # path('account/', account_view, name="account"),
     # path('password_change/', password_change_view, name='password_change'),
-    #path('', home_view, name="home"), 
+    # path('', home_view, name="home"), 
     path('', get_budget_home, name='home'),
 
     # Car urls
