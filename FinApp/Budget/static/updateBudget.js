@@ -1,10 +1,12 @@
 import { newTableRow } from "./table.js";
 import { displayFormErrors } from "./error.js"
 
-export async function postUpdateBudgetForm(event, budget_id, category_name){
+export async function postUpdateBudgetForm(event){
     event.preventDefault();
     const month = document.querySelector("#inputMonth").selectedIndex;
     const year = document.querySelector("#inputYear").value;
+    const category_name = event.target.getAttribute("category-name")
+    const budget_id = event.target.getAttribute("budget-id")
 
     const formData = new FormData(event.target);
     formData.append('year', year);
@@ -39,10 +41,12 @@ export async function postUpdateBudgetForm(event, budget_id, category_name){
 
 export async function getUpdateBudgetForm(event){
     const budget_id = event.target.closest('tr').id;
-    const budget_name = event.target.closest('tr').querySelector('td').textContent;
+    const category_name = event.target.closest('tr').querySelector('td').textContent;
     
-    document.querySelector("#updateBudgetFormModal .modal-title").textContent = `Update ${budget_name}'s limit`
+    document.querySelector("#updateBudgetFormModal .modal-title").textContent = `Update ${category_name}'s limit`
+    document.querySelector("#update-budget-form").setAttribute("category-name", category_name);
+    document.querySelector("#update-budget-form").setAttribute("budget-id", budget_id);
     document.querySelector("#update-budget-form").addEventListener("submit", async (event) => {
-        await postUpdateBudgetForm(event, budget_id, budget_name);
+        await postUpdateBudgetForm(event);
     })
 }
