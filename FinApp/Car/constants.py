@@ -15,3 +15,8 @@ TRIP_TABLE_HEADER = {
     'distance': 'Distance',
     'frequency': 'Frequency'
 }
+
+TRIP_ID_VAR = 'trip_id'
+SOURCE_VAR = 'source'
+DESTINATION_VAR = 'destination'
+FREQUENCY_VAR = 'frequency'
