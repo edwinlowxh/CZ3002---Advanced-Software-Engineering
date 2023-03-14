@@ -101,7 +101,7 @@ function deleteIcon(){
 
     function func()
     {  
-    span.setAttribute("style", "color:#3AEDCC;")
+    span.setAttribute("style", "color:red;")
     }
 
     function func1()
@@ -131,7 +131,7 @@ function editIcon(){
 
     function func()
     {  
-    span.setAttribute("style", "color:#3AEDCC;")
+    span.setAttribute("style", "color:#f6b26b;")
     }
 
     function func1()
