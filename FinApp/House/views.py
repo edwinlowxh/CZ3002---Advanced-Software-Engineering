@@ -105,26 +105,7 @@ def costBreakdown_view(request):
             # will give error if housinguserdata does not exist yet
             #financeMgr = FinanceMgr(user)
             if request.method == "POST":
-              if(request.POST):
-                # try:
-                #     user.information
-                #     financeMgr = FinanceMgr(user)
-                #     if(user.information.debt_set.all().filter(debtName="House").exists()):
-                #         financeMgr.updateDebt(user.information.debt_set.all().filter(debtName="House")[0].id,
-                #                               "House",  request.POST.get("price"), request.POST.get("repayment"), 0.026)
-                #     else:
-                #         financeMgr.createDebt("House", request.POST.get("price"),
-                #                               request.POST.get("repayment"), 0.026)
-                #     if(user.information.asset_set.all().filter(assetName="House").exists()):
-                #         financeMgr.updateAsset(user.information.asset_set.all().filter(assetName="House")[0].id,
-                #                                "House", request.POST.get("price"), 0)
-                #     else:
-                #         financeMgr.createAsset(
-                #             "House", request.POST.get("price"), 0)
-                #     return redirect("/finance/balanceSheet_Result/")
-                # except:
-                #     return redirect("/finance/questionaire/")
-                
+              if(request.POST):                
                 house_category = Category.category_manager.get_categories(user = user, name = "House Mortage")
 
                 if not house_category:
