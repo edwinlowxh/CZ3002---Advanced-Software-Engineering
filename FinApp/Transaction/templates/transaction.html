@@ -4,26 +4,32 @@
 
 {% block content %}
 
-<body style="min-height:100%; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
+<body style="background-image: url('/static/nav/assets/img/expenses2.jpeg');
+background-repeat: no-repeat;
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+background-color: rgba(245, 245, 245, 0.5);
+overflow:auto">
 
     <div style="margin-top:150px;">
         <div style=" display: inline-block; width:12%; margin-left: 20%;">
             <div id="transaction-type-radio-group" class="btn-group align-middle" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="btnradio" id="expense" autocomplete="off" checked>
-                <label class="btn btn-outline-secondary btn-lg" for="expense">Expense</label>
+                <label class="btn btn-outline-secondary btn-lg" for="expense" style="color: white;">Expense</label>
 
                 <input type="radio" class="btn-check" name="btnradio" id="income" autocomplete="off">
-                <label class="btn btn-outline-secondary btn-lg" for="income">Income</label>
+                <label class="btn btn-outline-secondary btn-lg" for="income" style="color: white;">Income</label>
             </div>
         </div>
 
-        <div style="display: inline-block; width:8%; margin-left: 30%;">
+        <div style="display: inline-block; width:10%; margin-left: 30%;">
             <div class="form-floating mt-2 date-filter">
                 <input type="date" class="form-control" id="transaction-start-date" min="1900-01-01">
                 <label style="color:black; font-size: 12px;">Start Date</label>
             </div>
         </div>
-        <div style="margin-left:15px; display: inline-block; width:8%;">
+        <div style="margin-left:15px; display: inline-block; width:10%;">
             <div class="form-floating mt-2 date-filter">
                 <input type="date" class="form-control" id="transaction-end-date" min="1900-01-01">
                 <label style="color:black; font-size: 12px;">End Date</label>
@@ -43,8 +49,8 @@
                         <div class="x_panel" style="width: 100%;">
                             <div class="x_title"></div>
                             <div class="x_content" style="width: 100%; display:flex;">
-                                <input type="file" name="myfile" class="form-control" style="width: 50%;">
-                                <button type='submit' class='btn btn-outline-secondary btn-sm' style="margin-left: 20px;">Upload</button>
+                                <input type="file" name="myfile" class="form-control" style="width: 65%;">
+                                <button type='submit' class='btn btn-outline-secondary btn-sm' style="margin-left: 20px; color: rgb(255, 255, 255);">Upload</button>
 
                             </div>
                         </div>
@@ -55,11 +61,11 @@
                 </div>
                 <div style=" display: inline-block; width:12%; margin-left: 20%;"></div>
                 <button type='button' class='btn btn-outline-secondary btn-lg' data-toggle='modal' data-target='#createTransactionFormModal' onclick='getCreateTransactionForm()'>
-                    <span class='material-icons align-middle' style='margin-right: 5px;'>add</span>
-                    Add Transaction
+                    <span class='material-icons align-middle' style='margin-right: 5px; color: white;' >add</span>
+                    <a style='color: white;' >Add Transaction</a>
                 </button>
             </div>
-            <br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br>
         </div>
         
 
@@ -191,7 +197,6 @@
                 </div>
             </div>
         </div>
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script type="module" src="{% static 'transactionTable.js' %}"></script>
     <script type="module" src="{% static 'createTransaction.js' %}"></script>

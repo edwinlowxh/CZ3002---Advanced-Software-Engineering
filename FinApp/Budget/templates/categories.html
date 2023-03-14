@@ -5,7 +5,22 @@
 {% block content %}
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-<body style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
+<body style="background-image: url('/static/nav/assets/img/categories.jpeg');
+background-repeat: no-repeat;
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+background-color: rgba(245, 245, 245, 0.5);
+overflow:auto">
+<style>
+    #delete-button:hover {
+    color: darkorange;
+}
+
+#edit-button:hover {
+    color: darkred;
+}
+</style>
     <center>
         <h1 style="margin-top: 200px;"><u>Categories</u></h1>
     </center>
@@ -28,11 +43,11 @@
                     <td>{{ category|get:key }}</th>
                         {% endfor %}
                     <td>
-                        <a href="#" style="margin-right: 20px;">
-                            <span class='material-icons' onclick="getUpdateCategoryForm(event)" data-toggle='modal' data-target='#updateCategoryFormModal'>edit</span>
+                        <a  href="#" style="margin-right: 20px;">
+                            <span class='material-icons'id="delete-button" onclick="getUpdateCategoryForm(event)" data-toggle='modal' data-target='#updateCategoryFormModal'>edit</span>
                         </a>
-                        <a href='#' style='margin-right: 20px;' onclick="deleteCategory(event)">
-                            <span class='material-icons'>delete</span>
+                        <a  href='#' style='margin-right: 20px;' onclick="deleteCategory(event)">
+                            <span class='material-icons'id="edit-button">delete</span>
                         </a>
                     </td>
                 </tr>
@@ -45,6 +60,7 @@
             <span class="material-icons align-middle" style="margin-right: 5px;">add</span>
             Add A Category 
         </button>
+        <br><br><br><br><br>
     </div>
 
     <div class="modal fade" id="createCategoryFormModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
