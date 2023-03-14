@@ -34,10 +34,12 @@ from Main.views import (
 )
 
 from Car.views import (
+    delete_trip,
+    get_trip,
     search_view,
     results_view,
     details_view,
-    trip_delete,
+    update_trip,
 )
 
 from Finance.views import (
@@ -119,7 +121,9 @@ urlpatterns = [
     path('car/search/', search_view, name="car_search"),
     path('car/results/', results_view, name="car_results"),
     path('car/details/<int:pk>/', details_view, name="car_details"),
-    path('car/details/<int:pk>/delete/', trip_delete, name="trip_delete"),
+    path('car/delete_trip/', delete_trip, name="trip_delete"),
+    path('car/get_trip/', get_trip, name="get_trip"),
+    path('car/update_trip/', update_trip, name="update_trip"),
 
     # Password reset Urls
     path('password_reset_confirm/<username>/', password_reset_confirm_view, name='password_reset_confirm'),
