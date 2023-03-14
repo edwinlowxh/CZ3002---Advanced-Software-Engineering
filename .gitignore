@@ -4,3 +4,4 @@
 **/venv
 **/env
 FinApp/db.sqlite3
+**/api_key.txt
