@@ -53,7 +53,7 @@ def get_budget_home(request):
 
 
     else:
-        return redirect('/login')
+        return render(request, 'home.html')
 
         
            
