@@ -43,6 +43,6 @@ class Trip(models.Model):
 
 class UserTrip(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    trips = models.ManyToManyField(Trip)
+    trips = models.ManyToManyField(Trip, blank=True)
     mileage = models.FloatField()
     user_trip_manager = UserTripManager()
