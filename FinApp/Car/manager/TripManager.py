@@ -46,9 +46,11 @@ class TripManager(models.Manager):
         url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&"
         
         # Get api key
-        f = open('./Car/manager/api_key.txt', 'r')
-        api_key = f.read()
-        f.close()
+        # f = open('./Car/manager/api_key.txt', 'r')
+        # api_key = f.read()
+        # f.close()
+
+        api_key = "AIzaSyCrwqS_5UpQl3gk1RDdk2KiTzxaQwI4smw"
 
         #get response
         r = requests.get(url + "origins=" + source + "&destinations=" + destination + "&key=" + api_key)
