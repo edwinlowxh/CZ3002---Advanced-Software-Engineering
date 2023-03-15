@@ -191,5 +191,20 @@ def update_trip(request):
                     return JsonResponse({'message': 'Failed to update trip', 'non_field_errors': 'Unable to update trip. Contact Administrator'}, status=500)
 
                 return JsonResponse(model_to_dict(trip), status=200)
-            
-            
+
+
+
+@csrf_exempt          
+def save_location(request):
+    if request.method == 'POST':
+        source_lat = request.POST.get('source_lat')
+        source_lng = request.POST.get('source_lng')
+        dest_lat = request.POST.get('dest_lat')
+        dest_lng = request.POST.get('dest_lng')
+        # do something with the location data
+        print(source_lat)
+        print(source_lng)
+        print(dest_lng)
+        print(dest_lat)
+        # e.g. save it to a database
+    return render(request, 'car/google_maps.html')

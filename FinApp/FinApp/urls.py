@@ -40,6 +40,7 @@ from Car.views import (
     results_view,
     details_view,
     update_trip,
+    save_location
 )
 
 from Finance.views import (
@@ -105,6 +106,8 @@ from Transaction.views_stats import (
 
 {
   
+    
+
 
 }
 urlpatterns = [
@@ -114,7 +117,7 @@ urlpatterns = [
     # path('login/', login_view, name="login"),
     # path('account/', account_view, name="account"),
     # path('password_change/', password_change_view, name='password_change'),
-    #path('', home_view, name="home"), 
+    # path('', home_view, name="home"), 
     path('', get_budget_home, name='home'),
 
     # Car urls
@@ -169,6 +172,8 @@ urlpatterns = [
     path('chart/filter-options/', get_filter_options, name='chart-filter-options'),
     path('line/<int:year>/', get_income_expense_year, name='get_income_expense_year'),
     path('monthly_expense/<int:year>/<int:month>', get_expense_monthly, name='get_expense_monthly'),
+
+    path('save_location/', save_location, name='save_location'),
     
 
     
