@@ -85,11 +85,11 @@
       <canvas id="month_line_chart"></canvas>
     </div>
  <div class="item" style="padding: 5%; overflow: auto;"> 
-      <center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> Incomes for March, 2023</a></b></center>
+      <center><b><a id="incomes" style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> </a></b></center>
       <div id="income-table-div" style="margin-top: 30px;"></div>
     </div>
     <div class="item" style="padding: 5%; overflow: auto; "> 
-      <center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;">Expenses for March, 2023</a></b></center>
+      <center><b><a id="expenses" style="font-family:Montserrat; font-size:20px; margin-top: 20px;"></a></b></center>
       <div id="expense-table-div" style="margin-top: 30px;"></div>
     </div>
    
@@ -204,6 +204,47 @@
     <script type="module" src="{% static 'getExpense.js' %}"></script>
     <script type="module" src="{% static 'income.js' %}"></script>
     <script type="module" src="{% static 'getIncome.js' %}"></script>
+
+
+    <script>
+      const monthElement = document.getElementById("month");
+      const yearElement = document.getElementById("year");
+      const incomesElement = document.getElementById("incomes");
+      const expensesElement = document.getElementById("expenses");
+
+      const months = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+
+      const Month = monthElement.value;
+      const selectedYear = yearElement.value;
+      const selectedMonth = months[Month - 1];
+      console.log(selectedYear)
+      console.log(selectedMonth)
+      incomesElement.innerHTML = `<center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> Incomes for ${selectedMonth}, ${selectedYear}</a></b></center>`;
+      expensesElement.innerHTML = `<center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> Expenses for ${selectedMonth}, ${selectedYear}</a></b></center>`;
+
+      monthElement.addEventListener("change", () => {
+        incomesElement.innerHTML = `<center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> Incomes for ${selectedMonth}, ${selectedYear}</a></b></center>`;
+      });
+
+      yearElement.addEventListener("change", () => {
+        expensesElement.innerHTML = `<center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> Expenses for ${selectedMonth}, ${selectedYear}</a></b></center>`;
+      });
+    </script>
+
+    
 
 <script>
   $(document).ready(function () {
