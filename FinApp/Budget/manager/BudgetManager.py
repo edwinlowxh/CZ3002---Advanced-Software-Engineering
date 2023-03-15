@@ -32,7 +32,7 @@ class BudgetManager(models.Manager):
         return super().get_queryset().filter(**filter_kwargs)
     
     def get_budget_total(self,user: User, year: int, month:int) -> models.QuerySet:
-        return super().get_queryset().filter(user=user, year= year, month = month).aggregate(Sum('limit'))
+        return super().get_queryset().filter(user=user, year= year, month = month).filter(category__is_active=True).aggregate(Sum('limit'))
             
     def create_budget(self, user: User, limit: float, year: int, month: int, category: Category) -> Budget:
         return super().create(

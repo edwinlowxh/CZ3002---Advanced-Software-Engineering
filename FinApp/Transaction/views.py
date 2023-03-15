@@ -178,7 +178,7 @@ def create_transaction(request):
             else:
                 return JsonResponse({'message': 'Failed to create transaction', 'field_errors': CreateTransactionForm.map_fields(form.errors, reverse=True)}, status=422)
         elif request.method == 'GET':
-            categories = Category.category_manager.get_categories(user=request.user)
+            categories = Category.category_manager.get_categories(user=request.user).filter(is_active = True)
             context = {'categories': [model_to_dict(category)['name'] for category in categories]}
             return JsonResponse(context, status=201)
     else:
