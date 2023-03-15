@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Maps Example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrwqS_5UpQl3gk1RDdk2KiTzxaQwI4smw"></script>
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Google Maps Example</h1>
+    <div id="map"></div>
+    <script>
+      var map;
+      var sourceMarker;
+      var destinationMarker;
+      
+      function initMap() {
+        // Create the map
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 1.3521, lng: 103.8198},
+          zoom: 12
+        });
+        
+        // Add a search box for the source location
+        var sourceSearchBox = new google.maps.places.SearchBox(document.getElementById('source-field'));
+        google.maps.event.addListener(sourceSearchBox, 'places_changed', function() {
+          var place = sourceSearchBox.getPlaces()[0];
+          if (!place.geometry) {
+            return;
+          }
+          if (sourceMarker) {
+            sourceMarker.setPosition(place.geometry.location);
+          } else {
+            sourceMarker = new google.maps.Marker({
+              position: place.geometry.location,
+              map: map,
+              icon: 'http://www.google.com/mapfiles/dd-start.png',
+              title: place.name,
+              draggable: true
+            });
+            google.maps.event.addListener(sourceMarker, 'dragend', function() {
+              var position = sourceMarker.getPosition();
+              $('#source-lat').val(position.lat());
+              $('#source-lng').val(position.lng());
+              document.getElementById('id_source_lat').value = position.lat();
+              document.getElementById('id_source_lng').value = position.lng();
+            });
+          }
+        });
+        
+        // Add a search box for the destination location
+        var destinationSearchBox = new google.maps.places.SearchBox(document.getElementById('destination-field'));
+        google.maps.event.addListener(destinationSearchBox, 'places_changed', function() {
+          var place = destinationSearchBox.getPlaces()[0];
+          if (!place.geometry) {
+            return;
+          }
+          if (destinationMarker) {
+            destinationMarker.setPosition(place.geometry.location);
+          } else {
+            destinationMarker = new google.maps.Marker({
+              position: place.geometry.location,
+              map: map,
+              icon: 'http://www.google.com/mapfiles/dd-end.png',
+              title: place.name,
+              draggable: true
+            });
+            google.maps.event.addListener(destinationMarker, 'dragend', function() {
+              var position = destinationMarker.getPosition();
+              $('#destination-lat').val(position.lat());
+              $('#destination-lng').val(position.lng());
+              document.getElementById('id_dest_lat').value = position.lat();
+              document.getElementById('id_dest_lng').value = position.lng();
+            });
+          }
+        });
+      }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrwqS_5UpQl3gk1RDdk2KiTzxaQwI4smw&libraries=places&callback=initMap"></script>
+    <input id="source-field" type="text" name="source" value="" placeholder="Source location">
+    <input id="source-lat" type="hidden" name="source_lat" value="">
+    <input id="source-lng" type="hidden" name="source_lng" value="">
+    <input id="destination-field" type="text" name="destination" value="" placeholder="Destination location">
+    <input id="destination-lat" type="hidden" name="destination_lat" value="">
+    <input id="destination-lng" type="hidden" name="destination_lng" value="">
+  </body>
+</html> 
+
+ <form id="location-form">
+    {% csrf_token %}
+    <input type="hidden" id="id_source_lat" name="source_lat">
+    <input type="hidden" id="id_source_lng" name="source_lng">
+    <input type="hidden" id="id_dest_lat" name="dest_lat">
+    <input type="hidden" id="id_dest_lng" name="dest_lng">
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<script>
+$(function() {
+    $('#location-form').submit(function(event) {
+        event.preventDefault();
+        $.ajax({
+            url: '{% url "save_location" %}',
+            type: 'post',
+            data: $(this).serialize(),
+            success: function(response) {
+                alert('Location saved successfully.');
+            },
+            error: function(response) {
+                alert('Error saving location.');
+            }
+        });
+    });
+});
+</script> 
