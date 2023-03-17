@@ -3,6 +3,16 @@
 {% load template_tags %}
 
 {% block content %}
+<style>
+  #create-trip-map, #update-trip-map {
+    height: 400px;
+    width: 100%;
+  }
+
+  div.pac-container {
+    z-index: 99999999999 !important;
+  }
+</style>  
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <body style="height:100vh; background: radial-gradient(ellipse at bottom, #1b2735 20%, #090a0f 80%);">
   <section id="portfolio-details" class="portfolio-details">
@@ -90,7 +100,7 @@
   </section>
 
   <div class="modal fade" id="createTripFormModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="formModalLabel" style="color: black;">Add a Trip</h5>
@@ -100,7 +110,8 @@
                 </button>
             </div>
             <div class="modal-body">
-              <form method="POST" id="create-trip-form">
+              <div id="create-trip-map"></div>
+              <form method="POST" id="create-trip-form" class="mt-5">
                 {% csrf_token %}
                 <div class="form-outline form-white mb-2">
                   <input type="text" name="source" id="source" class="form-control form-control-lg mb-6" placeholder="Source" required/>
@@ -114,6 +125,10 @@
                 <div class="d-flex mt-2">
                   <button class="btn btn-primary" style="margin-left: auto;" type="submit" name="create_trip">Create Trip</button>
                 </div>
+                <input id="source-lat" type="hidden" name="source_lat" value="">
+                <input id="source-long" type="hidden" name="source_long" value="">
+                <input id="destination-lat" type="hidden" name="destination_lat" value="">
+                <input id="destination-long" type="hidden" name="destination_long" value="">
               </form>
             </div>
         </div>
@@ -121,7 +136,7 @@
   </div>
 
   <div class="modal fade" id="updateTripFormModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="formModalLabel" style="color: black;">Update Trip</h5>
@@ -131,7 +146,8 @@
                 </button>
             </div>
             <div class="modal-body">
-              <form method="POST" id="update-trip-form">
+              <div id="update-trip-map"></div>
+              <form method="POST" id="update-trip-form" class="mt-5">
                 {% csrf_token %}
                 <div class="form-outline form-white mb-2">
                   <input type="text" name="source" id="source" class="form-control form-control-lg mb-6" placeholder="Source" required/>
@@ -144,7 +160,11 @@
                 </div>
                 <div class="d-flex mt-2">
                   <button class="btn btn-primary" style="margin-left: auto;" type="submit">Save</button>
-                </div>  
+                </div>
+                <input id="source-lat" type="hidden" name="source_lat" value="">
+                <input id="source-long" type="hidden" name="source_long" value="">
+                <input id="destination-lat" type="hidden" name="destination_lat" value="">
+                <input id="destination-long" type="hidden" name="destination_long" value="">  
               </form>
             </div>
         </div>
@@ -158,4 +178,7 @@
 <script type="module" src="{% static 'createTrip.js' %}"></script>
 <script type="module" src="{% static 'deleteTrip.js' %}"></script>
 <script type="module" src="{% static 'updateTrip.js' %}"></script>
+<script type="module" src="{% static 'map.js' %}"></script>
+<script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrwqS_5UpQl3gk1RDdk2KiTzxaQwI4smw&libraries=places&callback=initMap"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 {% endblock %}
