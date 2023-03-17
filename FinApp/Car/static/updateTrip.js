@@ -1,7 +1,5 @@
 import { fillForm } from "./form.js";
-import { newTableRow } from "./table.js";
-import { deleteTrip } from "./deleteTrip.js";
-
+import { setUpdateTripSourceMarker, setUpdateTripDestinationMarker } from "./map.js";
 
 window.getUpdateTripForm = getUpdateTripForm;
 
@@ -22,7 +20,18 @@ export async function getUpdateTripForm(event){
         return response.json()
     })
     .then(data => {
+        console.log(data['trip']);
         fillForm("#update-trip-form", data['trip']);
+        const sourceLat = parseFloat(data['trip']['source_lat']);
+        const sourceLong = parseFloat(data['trip']['source_long']);
+        const source = data['trip']['source'];
+        setUpdateTripSourceMarker('update-trip-form', 'source', {lat: sourceLat, lng: sourceLong}, source);
+
+        const destinationLat = parseFloat(data['trip']['destination_lat']);
+        const destinationLong = parseFloat(data['trip']['destination_long']);
+        const destination = data['trip']['destination'];
+        setUpdateTripDestinationMarker('update-trip-form', 'destination', {lat: destinationLat, lng: destinationLong}, destination);
+        
         document.getElementById("update-trip-form").onsubmit = (event) => {
             postUpdateTripForm(event, trip_id);
         };

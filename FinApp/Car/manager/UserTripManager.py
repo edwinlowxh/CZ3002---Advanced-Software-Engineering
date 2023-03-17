@@ -20,7 +20,10 @@ class UserTripManager(models.Manager):
             }
         )
     
-    def update_trip(self, user: User, trip_id: int, source: str, destination: str, frequency: int, distance: float) -> Tuple[Trip, float]:
+    def update_trip(self, user: User, trip_id: int, source: str, destination: str, 
+                    frequency: int, distance: float,
+                    source_lat: str, source_long: str,
+                    destination_lat: str, destination_long: str) -> Tuple[Trip, float]:
         Trip = apps.get_model('Car', 'Trip')
         old_trip = Trip.trip_manager.get_trip(id=trip_id)[0]
 
@@ -30,7 +33,11 @@ class UserTripManager(models.Manager):
         old_distance = old_trip.distance
         old_frequency = old_trip.frequency
 
-        trip = Trip.trip_manager.update_trip(id=trip_id, source=source, destination=destination, frequency=frequency, distance=distance)
+        trip = Trip.trip_manager.update_trip(
+            id=trip_id, source=source, destination=destination, frequency=frequency, distance=distance,
+            source_lat=source_lat, source_long=source_long,
+            destination_lat=destination_lat, destination_long=destination_long    
+        )
 
         if not trip:
             return None, 0
@@ -42,9 +49,16 @@ class UserTripManager(models.Manager):
 
         return trip, user_trips.mileage
 
-    def add_trip(self, user: User, source: str, destination: str, frequency: int, distance: float) -> Tuple[Trip, float]:
+    def add_trip(self, user: User, source: str, destination: str, 
+                 frequency: int, distance: float,
+                 source_lat: str, source_long: str,
+                 destination_lat: str, destination_long: str) -> Tuple[Trip, float]:
         Trip = apps.get_model('Car', 'Trip')
-        new_trip = Trip.trip_manager.add_trip(source=source, destination=destination, frequency=frequency, distance=distance)
+        new_trip = Trip.trip_manager.add_trip(
+            source=source, destination=destination, frequency=frequency, distance=distance,
+            source_lat=source_lat, source_long=source_long,
+            destination_lat=destination_lat, destination_long=destination_long    
+        )
 
         if not new_trip:
             return None, 0
@@ -66,5 +80,7 @@ class UserTripManager(models.Manager):
             user_trips.trips.remove(trip)
             user_trips.mileage -= float(trip.distance) * float(trip.frequency)
             user_trips.save()
+        
+        trip.delete()
 
         return user_trips.mileage

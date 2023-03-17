@@ -65,23 +65,29 @@ def results_view(request):
 
 
 def details_view(request, pk):
-    if request.user.is_authenticated:
-        print(request.method)       
+    if request.user.is_authenticated:      
         if request.method == 'POST':  # Add trip
-            print(request.POST)
             if 'create_trip' in request.POST:
                 source = request.POST.get('source')
                 destination = request.POST.get('destination')
                 frequency = request.POST.get('frequency')
-                distance = Trip.trip_manager.calculate_distance(source, destination)
+                source_lat = float(request.POST.get('source_lat'))
+                source_long = float(request.POST.get('source_long'))
+                destination_lat = float(request.POST.get('destination_lat'))
+                destination_long = float(request.POST.get('destination_long'))
+            
+                distance = Trip.trip_manager.calculate_distance(source=f'{source_lat},{source_long}',
+                                                                destination=f'{destination_lat},{destination_long}')
 
                 if distance == 0:
                     return JsonResponse({'message': 'Failed to add trip', 'non_field_errors': 'Unable to calculate trip distance for specified source and destination. Contact Administrator'}, status=500)
                 
                 trip, mileage = UserTrip.user_trip_manager.add_trip(
-                    user=request.user, source=source, 
-                    destination=destination, frequency=frequency, distance=distance)
-
+                    user=request.user, source=source, destination=destination, frequency=frequency, distance=distance,
+                    source_lat=source_lat, source_long=source_long,
+                    destination_lat=destination_lat, destination_long=destination_long    
+                )
+                
                 return JsonResponse(model_to_dict(trip), status=201)
             
             elif 'update_balance_sheet' in request.POST:
@@ -146,7 +152,6 @@ def get_trip(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
             trip_id = request.POST.get(TRIP_ID_VAR)
-            print(trip_id)
             trip = Trip.trip_manager.get_trip(id=trip_id)[0]
 
             if not trip:
@@ -158,6 +163,7 @@ def get_trip(request):
             if trip not in trips:
                 return JsonResponse({'message': 'Failed to retrieve trip details', 'non_field_errors': 'Failed to retrieve trip details. Contact Administrator'}, status=500)
             else:
+                print(model_to_dict(trip))
                 return JsonResponse({'trip': model_to_dict(trip)}, status=200)
             
 @csrf_exempt    
@@ -179,13 +185,22 @@ def update_trip(request):
                 source = request.POST.get(SOURCE_VAR)
                 destination = request.POST.get(DESTINATION_VAR)
                 frequency = request.POST.get(FREQUENCY_VAR)
-                distance = Trip.trip_manager.calculate_distance(source=source, destination=destination)
+                source_lat = float(request.POST.get('source_lat'))
+                source_long = float(request.POST.get('source_long'))
+                destination_lat = float(request.POST.get('destination_lat'))
+                destination_long = float(request.POST.get('destination_long'))
+            
+                distance = Trip.trip_manager.calculate_distance(source=f'{source_lat},{source_long}',
+                                                                destination=f'{destination_lat},{destination_long}')
 
                 if distance == 0:
                     return JsonResponse({'message': 'Failed to update trip', 'non_field_errors': 'Unable to calculate trip distance for specified source and destination'}, status=500)
 
-                trip, mileage = UserTrip.user_trip_manager.update_trip(user=request.user,
-                    trip_id=trip_id, source=source, destination=destination, frequency=frequency, distance=distance)
+                trip, mileage = UserTrip.user_trip_manager.update_trip(
+                    trip_id=trip_id, user=request.user, source=source, destination=destination, frequency=frequency, distance=distance,
+                    source_lat=source_lat, source_long=source_long,
+                    destination_lat=destination_lat, destination_long=destination_long    
+                )
 
                 if not trip:
                     return JsonResponse({'message': 'Failed to update trip', 'non_field_errors': 'Unable to update trip. Contact Administrator'}, status=500)
@@ -206,5 +221,11 @@ def save_location(request):
         print(source_lng)
         print(dest_lng)
         print(dest_lat)
+        print(
+            Trip.trip_manager.calculate_distance(
+                source=f'{source_lat},{source_lng}',
+                destination=f'{dest_lat},{dest_lng}'
+            )
+        )
         # e.g. save it to a database
     return render(request, 'car/google_maps.html')
