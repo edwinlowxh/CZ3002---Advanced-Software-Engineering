@@ -100,6 +100,9 @@ def details_view(request, pk):
                      category = car_category[0]
                 
                 car = Car.car_manager.get_car(pk)[0]  
+                user_trips = UserTrip.user_trip_manager.get_trips(user=request.user)[0]
+                trips = user_trips.trips.all()
+                mileage = user_trips.mileage
                 total_cost = calc_cost(car, mileage)
 
                 car_transaction = Transaction.transaction_manager.create_transaction(
