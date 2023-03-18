@@ -9,22 +9,27 @@
 <html lang="en">
 <style>
   @media print {
-  #month, #year, #submitbtn, #downloadbtn {
-    display: none;
-  }
-}
- /* Set the container element to a grid */
- .fourcontainer {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr; 
-        height: 90vh;
-      }
-      /* Style the grid items */
-      .item {
-        border: 1px solid rgb(59, 59, 59);
-      }
 
+    #month,
+    #year,
+    #submitbtn,
+    #downloadbtn {
+      display: none;
+    }
+  }
+
+  /* Set the container element to a grid */
+  .fourcontainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    height: 90vh;
+  }
+
+  /* Style the grid items */
+  .item {
+    border: 1px solid rgb(59, 59, 59);
+  }
 </style>
 
 <head>
@@ -41,64 +46,50 @@
 
   <div id="hidePrint" style="text-align:left; margin-top: 120px; display: flex;">
     <form id="filterForm" style=" display: flex;  margin-left: 10%; margin-right: 10px;">
-    <div style="margin-right: 10px;" >
-      <select id="month" class="form-select" style="margin-right: 10px;">
-        <!-- <option selected>January</option>
-        <option>Feburary</option>
-        <option>March</option>
-        <option>April</option>
-        <option>May</option>
-        <option>June</option>
-        <option>July</option>
-        <option>August</option>
-        <option>September</option>
-        <option>October</option>
-        <option>November</option>
-        <option>December</option> -->
-      </select>
-    </div>
-    <div style="margin-right: 10px;">
-      <select id="year" class="form-select">
-        <!-- <option selected>2023</option>
-        <option>2022</option>
-        <option>2021</option> -->
-      </select>
-    </div>
-    <input type="submit" value="Load" name="_load" id="submitbtn"
-      style="width: 80px; height:40px; background-color:rgb(155, 173, 255); border-radius:8px;">
+      <div style="margin-right: 10px;">
+        <select id="month" class="form-select" style="margin-right: 10px;">
+        </select>
+      </div>
+      <div style="margin-right: 10px;">
+        <select id="year" class="form-select">
+        </select>
+      </div>
+      <input type="submit" value="Load" name="_load" id="submitbtn"
+        style="width: 80px; height:40px; background-color:rgb(155, 173, 255); border-radius:8px;">
     </form>
-    
-    <form  style="display: inline-block; margin-left: 50%;">
-      <button id="downloadbtn"type="button" class="btn btn-primary" onClick="window.print()" style="width: 150px; height: 45px;">
+
+    <form style="display: inline-block; margin-left: 50%;">
+      <button id="downloadbtn" type="button" class="btn btn-primary" onClick="window.print()"
+        style="width: 150px; height: 45px;">
         <i class="bi bi-download"></i> Download
       </button>
     </form>
   </div>
 
   <div class="fourcontainer" style="margin-top: 15px">
-    <div class="item" style="padding: 5%; "> 
+    <div class="item" style="padding: 5%; ">
 
       <canvas id="year_line_chart"></canvas>
     </div>
-    <div class="item" style="padding: 5%; "> 
+    <div class="item" style="padding: 5%; ">
 
       <canvas id="month_line_chart"></canvas>
     </div>
- <div class="item" style="padding: 5%; overflow: auto;"> 
+    <div class="item" style="padding: 5%; overflow: auto;">
       <center><b><a id="incomes" style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> </a></b></center>
       <div id="income-table-div" style="margin-top: 30px;"></div>
     </div>
-    <div class="item" style="padding: 5%; overflow: auto; "> 
+    <div class="item" style="padding: 5%; overflow: auto; ">
       <center><b><a id="expenses" style="font-family:Montserrat; font-size:20px; margin-top: 20px;"></a></b></center>
       <div id="expense-table-div" style="margin-top: 30px;"></div>
     </div>
-   
+
 
 
   </div>
 
 
-    <!-- <form id="filterForm">
+  <!-- <form id="filterForm">
         <label for="year">Choose a year:</label>
         <select name="year" id="year"></select>
         <label for="month">Choose a month:</label>
@@ -109,87 +100,88 @@
 
 
 
-   
-   <div class="container" style="margin-top: 5%;  justify-content: center;">
-      <div class="row" style="margin-top: 5%; width: 90%;  display: block; margin: 0 auto;">
-        <canvas id="piechart" style="display: block; margin: 0 auto;"></canvas>
-      </div>
+
+  <div class="container" style="margin-top: 5%;  justify-content: center;">
+    <div class="row" style="margin-top: 5%; width: 90%;  display: block; margin: 0 auto;">
+      <canvas id="piechart" style="display: block; margin: 0 auto;"></canvas>
     </div>
-    <br><br><br><br><br><br>
-    <script>
-      let piechartCtx = document.getElementById("piechart").getContext("2d");
-      let piechart = new Chart(piechartCtx, {
-        type: "pie",
-        options: {
-          responsive: true,
-          layout: {
-            padding: {
-              left: 0,
-              right: 0,
-              top: 20,
-              bottom: 0
-            },
+  </div>
+  <br><br><br><br><br><br>
+  <script>
+    let piechartCtx = document.getElementById("piechart").getContext("2d");
+    let piechart = new Chart(piechartCtx, {
+      type: "pie",
+      options: {
+        responsive: true,
+        layout: {
+          padding: {
+            left: 0,
+            right: 0,
+            top: 20,
+            bottom: 0
           },
-          title: {
-            display: true,
-            fontSize: 20,
-            padding: 30,
-            fontColor: 'white',
-            fontFamily: 'Montserrat',
-          },
+        },
+        title: {
+          display: true,
+          fontSize: 20,
+          padding: 30,
+          fontColor: 'white',
+          fontFamily: 'Montserrat',
+        },
 
-          legend: {
-            position: 'chartArea',
-            align: 'end',
-            labels: {
-              fontSize: 14,
-              fontColor: '#CCCCCC',
-              fontFamily: 'Verdana',
-              padding: 20,
-            }
-          },
-        }
-      });
-
-      let linechartCtx = document.getElementById("year_line_chart").getContext("2d");
-      let year_line_chart = new Chart(linechartCtx, {
-        type: "line",
-        options: {
-          responsive: true,
-          title: {
-            display: true,
-            fontSize: 20,
-            fontColor: 'white',
-            padding: 30,
-            fontFamily: 'Montserrat',
-          },
-          legend: {
-            position: 'bottom',}
-        }
-      });
-
-
-      let monthlylineCtx = document.getElementById("month_line_chart").getContext("2d");
-      let month_line_chart = new Chart(monthlylineCtx, {
-        type: "line",
-        options: {
-          responsive: true,
-          title: {
-            display: true,
-            fontSize: 20,
-            fontColor: 'white',
-            padding: 30,
-            fontFamily: 'Montserrat',
-          },
-          legend: {
-            position: 'bottom',
+        legend: {
+          position: 'chartArea',
+          align: 'end',
+          labels: {
+            fontSize: 14,
+            fontColor: '#CCCCCC',
+            fontFamily: 'Verdana',
+            padding: 20,
           }
-        }
-        }
-      );
+        },
+      }
+    });
 
-    </script>
-    
+    let linechartCtx = document.getElementById("year_line_chart").getContext("2d");
+    let year_line_chart = new Chart(linechartCtx, {
+      type: "line",
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          fontSize: 20,
+          fontColor: 'white',
+          padding: 30,
+          fontFamily: 'Montserrat',
+        },
+        legend: {
+          position: 'bottom',
+        }
+      }
+    });
+
+
+    let monthlylineCtx = document.getElementById("month_line_chart").getContext("2d");
+    let month_line_chart = new Chart(monthlylineCtx, {
+      type: "line",
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          fontSize: 20,
+          fontColor: 'white',
+          padding: 30,
+          fontFamily: 'Montserrat',
+        },
+        legend: {
+          position: 'bottom',
+        }
+      }
+    }
+    );
+
+  </script>
+
 
 </body>
 
@@ -198,21 +190,31 @@
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <!-- <script type="module" src="{% static 'transactionTable.js' %}"></script> -->
-<script type="module" src="{% static 'statisticsExpenseTable.js' %}"></script>
-<script type="module" src="{% static 'statisticsIncomeTable.js' %}"></script>
-<script type="module" src="{% static 'expense.js' %}"></script>
-    <script type="module" src="{% static 'getExpense.js' %}"></script>
-    <script type="module" src="{% static 'income.js' %}"></script>
-    <script type="module" src="{% static 'getIncome.js' %}"></script>
 
 
-    <script>
-      const monthElement = document.getElementById("month");
-      const yearElement = document.getElementById("year");
-      const incomesElement = document.getElementById("incomes");
-      const expensesElement = document.getElementById("expenses");
 
-      const months = [
+<script>
+
+  $(document).ready(function () {
+
+    $.ajax({
+      url: "/chart/filter-options/",
+      type: "GET",
+      dataType: "json",
+      success: (jsonResponse) => {
+        // Load all the options
+        jsonResponse.options.forEach(option => {
+          $("#year").append(new Option(option, option));
+        });
+        jsonResponse.months.forEach(option => {
+          $("#month").append(new Option(option, option));
+        });
+
+        let year = $("#year").val();
+        let month = $("#month").val();
+        let incomes = $("#incomes");
+        let expenses = $("#expenses");
+        const months = [
           "January",
           "February",
           "March",
@@ -227,39 +229,13 @@
           "December",
         ];
 
-      const Month = monthElement.value;
-      const selectedYear = yearElement.value;
-      const selectedMonth = months[Month - 1];
-      console.log(selectedYear)
-      console.log(selectedMonth)
-      incomesElement.innerHTML = `<center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> Incomes for ${selectedMonth}, ${selectedYear}</a></b></center>`;
-      expensesElement.innerHTML = `<center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> Expenses for ${selectedMonth}, ${selectedYear}</a></b></center>`;
+        let selectedMonth = months[month - 1];
 
-      monthElement.addEventListener("change", () => {
-        incomesElement.innerHTML = `<center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> Incomes for ${selectedMonth}, ${selectedYear}</a></b></center>`;
-      });
+        console.log(month, selectedMonth, year)
 
-      yearElement.addEventListener("change", () => {
-        expensesElement.innerHTML = `<center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> Expenses for ${selectedMonth}, ${selectedYear}</a></b></center>`;
-      });
-    </script>
+        $("#incomes").html(`<center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> Incomes for ${selectedMonth}, ${year}</a></b></center>`);
+        $("#expenses").html(`<center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> Expenses for ${selectedMonth}, ${year}</a></b></center>`);
 
-    
-
-<script>
-  $(document).ready(function () {
-    $.ajax({
-      url: "/chart/filter-options/",
-      type: "GET",
-      dataType: "json",
-      success: (jsonResponse) => {
-        // Load all the options
-        jsonResponse.options.forEach(option => {
-          $("#year").append(new Option(option, option));
-        });
-        jsonResponse.months.forEach(option => {
-          $("#month").append(new Option(option, option));
-        });
         // Load data for the first option
         loadAllCharts(2023, 3);
         //   loadAllCharts($("#year").children().first().val(),$("#month").children().first().val());
@@ -271,8 +247,33 @@
   $("#filterForm").on("submit", (event) => {
     event.preventDefault();
 
-    const year = $("#year").val();
-    const month = $("#month").val();
+    let year = $("#year").val();
+    let month = $("#month").val();
+    let incomes = $("#incomes");
+    let expenses = $("#expenses");
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    let selectedMonth = months[month - 1];
+
+    console.log(month, selectedMonth, year)
+
+    $("#incomes").html(`<center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> Incomes for ${selectedMonth}, ${year}</a></b></center>`);
+    $("#expenses").html(`<center><b><a style="font-family:Montserrat; font-size:20px; margin-top: 20px;"> Expenses for ${selectedMonth}, ${year}</a></b></center>`);
+
+
     loadAllCharts(year, month)
   });
 
@@ -308,8 +309,16 @@
     loadChart(piechart, `pie/${year}/${month}`);
     loadChart(year_line_chart, `line/${year}`);
     loadChart(month_line_chart, `monthly_expense/${year}/${month}`);
-    
+
   }
 </script>
+<script type="module" src="{% static 'statisticsExpenseTable.js' %}"></script>
+<script type="module" src="{% static 'statisticsIncomeTable.js' %}"></script>
+<script type="module" src="{% static 'expense.js' %}"></script>
+<script type="module" src="{% static 'income.js' %}"></script>
+<script type="module" src="{% static 'getIncome.js' %}"></script>
+<script type="module" src="{% static 'getExpense.js' %}"></script>
+
+
 
 {% endblock %}
