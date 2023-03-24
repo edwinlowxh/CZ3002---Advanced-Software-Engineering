@@ -24,7 +24,7 @@
               <div class="portfolio-info">
                 <h4>{{ car.model }}</h4>
                 <h4>{{ car.spec }}</h4>
-                <h4>${{ car.currentPrice }}</h4>
+                <!-- <h4>${{ car.currentPrice }}</h4> -->
                 <div class="portfolio-links">
                   <a href="{{ car.image.url }}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="{{ car.model }} {{ car.spec }}"><i class="bi-zoom-in"></i></a>
                   <a href="{% url 'car_details' car.id %}" title="Select"><i class="bi-check-lg"></i></a>
